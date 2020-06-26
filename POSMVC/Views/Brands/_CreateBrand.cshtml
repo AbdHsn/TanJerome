@@ -1,0 +1,46 @@
+﻿@model POSMVC.Models.PageModels.BrandsVM.CreateBrandVM
+
+<div class="col-md-12">
+    <form enctype="multipart/form-data" id="frmAdd">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <label class="control-label">Brand Logo</label>
+                    <div class="img-container">
+                        <img class="img-thumbnail" id="img" alt="product image" onmouseover="toggleBtnClearPreview(this,'btnClear')" src="~/ProjectImage/defaultImage.png" width="100%" />
+                        <div class="middle">
+                            <button type='button' class="btn btn-sm btn-outline-danger" id="btnClear" onclick="document.getElementById('img').src = '/ProjectImage/defaultImage.png'">Clear Preview</button>
+                        </div>
+                    </div>
+                    <div class="custom-file">
+                        <input type="file" name="file" style="cursor:pointer" id="actualFile" class="custom-file-input cursor" onchange="document.getElementById('img').src = window.URL.createObjectURL(this.files[0])">
+                        <label class="custom-file-label" for="ProductImage">Upload User Image</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+
+                <div class="form-group pt-4">
+                    <label asp-for="Brand.Name" class="control-label">Brand Name</label>
+                    <input asp-for="Brand.Name" class="form-control" />
+                    <span asp-validation-for="Brand.Name" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group right-align">
+                    <br />
+                    <br />
+                    <hr />
+                    <button type="button" class="btn btn-sm btn-outline-success" style="width:150px" onclick='insertRecord("Brands", "CreateBrand", "frmAdd")'> <i class="zmdi zmdi-save"></i> Save</button>
+                    <button type="button" class="btn btn-sm btn-outline-danger" style="width:150px" onclick='closeModalCreateForm("mdlCreateForm","CreateForm")'><i class="zmdi zmdi-close"></i> Cancel</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+
+}

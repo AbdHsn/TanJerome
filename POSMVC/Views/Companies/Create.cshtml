@@ -1,0 +1,110 @@
+﻿@model POSMVC.Models.PageModels.CompaniesVM.CompanyDetails
+
+@{
+    ViewData["Title"] = "Company Information";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <h4>Company Details</h4>
+    <hr />
+
+    <div class="col-md-12">
+        <form enctype="multipart/form-data" id="frmCompany">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="col-md-6">
+                    <input type="hidden" name="Company.Id" value="@(Model.Company == null? "" : Model.Company.Id.ToString())" />
+                    <div class="form-group">
+                        <label asp-for="Company.Name" class="control-label"></label>
+                        <input asp-for="Company.Name" class="form-control" />
+                        <span asp-validation-for="Company.Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="Company.Branch" class="control-label"></label>
+                            <input asp-for="Company.Branch" class="form-control" />
+                            <span asp-validation-for="Company.Branch" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="Company.RegistrationNo" class="control-label"></label>
+                            <input asp-for="Company.RegistrationNo" class="form-control" />
+                            <span asp-validation-for="Company.RegistrationNo" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label asp-for="Company.Telephone" class="control-label"></label>
+                            <input asp-for="Company.Telephone" class="form-control" />
+                            <span asp-validation-for="Company.Telephone" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Company.Mobile" class="control-label"></label>
+                            <input asp-for="Company.Mobile" class="form-control" />
+                            <span asp-validation-for="Company.Mobile" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Company.Fax" class="control-label"></label>
+                            <input asp-for="Company.Fax" class="form-control" />
+                            <span asp-validation-for="Company.Fax" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Company.Website" class="control-label"></label>
+                        <input asp-for="Company.Website" class="form-control" />
+                        <span asp-validation-for="Company.Website" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Company.Address" class="control-label"></label>
+                        <textarea asp-for="Company.Address" class="form-control" rows="12"></textarea>
+                        <span asp-validation-for="Company.Address" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <label class="control-label">Logo</label>
+                        <div class="img-container">
+                            <img class="img-thumbnail" id="img" alt="Company Logo"  onmouseover="toggleBtnClearBtnRemove(this,'btnImgClear','btnImgRemove')"  src="~/@(string.IsNullOrEmpty(Model.Company.BigLogo) ? "images/DummyImage/dummy.png": Model.Company.BigLogo)" width="100%" />
+                            <div class="middle">
+                                <button type='button' class="btn btn-sm btn-outline-danger" style="display:none" id="btnImgRemove" onclick="deleteFile({id: @Model.Company.Id},'Companies', 'DeleteLogo')">Remove</button>
+                                <button type='button' class="btn btn-sm btn-outline-danger" style="display:none" id="btnImgClear" onclick="clearImagePreview('img', 'actualFile')">Clear Preview</button>
+                            </div>
+                        </div>
+                        <div class="custom-file">
+                            <input type="file" id="actualFile" name="ActualCompanyLogo" style="cursor:pointer" class="custom-file-input cursor" onchange="document.getElementById('img').src = window.URL.createObjectURL(this.files[0])">
+                            <label class="custom-file-label" for="ActualCompanyLogo">Upload Comapny Logo</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="Company.Description" class="control-label"></label>
+                        <textarea asp-for="Company.Description" class="form-control" rows="10"></textarea>
+                        <span asp-validation-for="Company.Description" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group right-align">
+                        <br />
+                        <br />
+                        <input type="button" value="Save" onclick='insertRecord("Companies", "Create", "frmCompany")' class="btn btn-outline-success" style="width:150px" />
+                        <a class="btn btn-outline-danger" style="width:150px" asp-controller="Home" asp-action="Index">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script>
+
+</script>
+
+}

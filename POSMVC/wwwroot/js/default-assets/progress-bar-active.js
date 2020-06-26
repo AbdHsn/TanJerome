@@ -1,0 +1,1 @@
+var i=0;function move(){if(0==i){i=1;var e=document.getElementById("myBar"),n=10,t=setInterval(function(){n>=100?(clearInterval(t),i=0):(n++,e.style.width=n+"%",e.innerHTML=n+"%")},10)}}

@@ -1,0 +1,11 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Warning"
+    }
+  },
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=AbdHsn-Laptop;Database=EyePosDB;User ID=AbdHsn-dbms; Password=123123;"
+  },
+  "AllowedHosts": "*"
+}

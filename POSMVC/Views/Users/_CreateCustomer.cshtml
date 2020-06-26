@@ -1,0 +1,74 @@
+﻿@model POSMVC.Models.PageModels.UsersVM.CreateUserVM
+
+    <div class="col-md-12">
+        <form enctype="multipart/form-data" id="frmCreateCustomer">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label asp-for="PersonalDetail.Name" class="control-label"></label>
+                            <input asp-for="PersonalDetail.Name" class="form-control" />
+                            <span asp-validation-for="PersonalDetail.Name" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label pr-4">Select Gender : </label>
+                        <label class="radio-inline"><input asp-for="PersonalDetail.Gender" type="radio" value="Male"> Male</label>
+                        <label class="radio-inline pl-3"><input asp-for="PersonalDetail.Gender" type="radio" value="Female"> Female</label>
+                        <label class="radio-inline pl-3"><input asp-for="PersonalDetail.Gender" type="radio" value="Common"> Common</label>
+                        <div><span asp-validation-for="PersonalDetail.Gender" class="text-danger"></span></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="PersonalDetail.MobileNo" class="control-label">Mobile No</label>
+                            <input asp-for="PersonalDetail.MobileNo" class="form-control" min="8" maxlength="8" />
+                            <span asp-validation-for="PersonalDetail.MobileNo" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="PersonalDetail.OtherPhone" class="control-label">Other Contacts</label>
+                            <input asp-for="PersonalDetail.OtherPhone" class="form-control" />
+                            <span asp-validation-for="PersonalDetail.OtherPhone" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Users.Email" class="control-label">Email</label>
+                        <input asp-for="Users.Email" class="form-control" />
+                        <span asp-validation-for="Users.Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PersonalDetail.Dob" class="control-label">Date of Birth</label>
+                        <input asp-for="PersonalDetail.Dob" class="form-control" type="date"/>
+                        <span asp-validation-for="PersonalDetail.Dob" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Users.UserTypeId" class="control-label">Customer Type</label>
+                        <select asp-for="Users.UserTypeId" class="form-control" asp-items="ViewBag.UserTypeId">
+                            <option disabled selected value="" class="">Select User Type</option>
+                        </select>
+                        <span asp-validation-for="Users.UserTypeId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PersonalDetail.Address" class="control-label"></label>
+                        <textarea asp-for="PersonalDetail.Address" id="presentAddress" class="form-control" rows="6"></textarea>
+                        <span asp-validation-for="PersonalDetail.Address" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group right-align">
+                        <br />
+                        <br />
+                        <hr />
+                        <button type="button" class="btn btn-sm btn-outline-success" style="width:150px" onclick='insertRecord("Users", "CreateCustomer", "frmCreateCustomer")'> <i class="zmdi zmdi-save"></i> Save</button>
+                        <button type="button" class="btn btn-sm btn-outline-danger" style="width:150px" onclick='closeModalCreateForm("mdlCreateForm","CreateForm")'><i class="zmdi zmdi-close"></i> Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    @section Scripts {
+
+    }

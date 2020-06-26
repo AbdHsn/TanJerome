@@ -1,0 +1,1 @@
+$(function(){"use strict";$("#tinymceEditExample").length&&tinymce.init({selector:"#tinymceEditExample",height:400})});

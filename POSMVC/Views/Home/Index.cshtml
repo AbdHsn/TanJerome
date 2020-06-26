@@ -1,0 +1,319 @@
+﻿@model POSMVC.Models.PageModels.HomeVM.HomeVM
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+<div class="container-fluid">
+    <div class="row justify-content-center">
+
+        <div class="col-md-6 col-xl-4">
+            <div class="card box-margin" style="height: 120px">
+                <div class="card-body" style="padding:0px">
+                    <div class="col-md-12" style="padding-top:10px">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <label class="label col-form-label-sm">CUSTOMER SEARCH</label>
+                            </div>
+                            <div class="col-md-2">
+                                <i class="fa fa-id-badge text-primary font-15 pull-right"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="CUSTOMER NAME" style="height:25px">
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" placeholder="CUSTOMER CONTACT NO" style="height:25px">
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" class="btn btn-outline-primary pull-right" style="height: 25px; width: 90px; text-align:center; padding:0px"> SEARCH </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--end card-body-->
+            </div>
+            <!--end card-->
+        </div>
+        <div class="col-md-6 col-xl-4">
+            <div class="card box-margin" style="height: 120px">
+                <div class="card-body" style="padding:0px">
+                    <div class="col-md-12" style="padding-top:10px">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <label class="label col-form-label-sm">VIEW SALES TRANSACTION OF DAY</label>
+                            </div>
+                            <div class="col-md-2">
+                                <i class="fa fa-bar-chart-o font-15 pull-right"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="row" style="padding-left:5px">
+                            <div class="col-md-3" style="line-height: 0.1"><small><u>Order No</u> </small></div><div class="col-md-9" style="line-height: 0.1"><label><small><u>Order Details</u> </small> </label></div>
+                            <div class="col-md-3"><small>#83322</small></div><div class="col-md-9"><small> dafdk  dkajdsk adskjlksadfas</small> </div>
+                            <div class="col-md-3"><small>#32233</small></div><div class="col-md-9"><small>ddds sdssde ee</small> </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <a class="pull-right" href="#"> <small>View More</small> </a>
+                    </div>
+
+                </div>
+                <!--end card-body-->
+            </div>
+            <!--end card-->
+        </div>
+        <div class="col-md-6 col-xl-4">
+            <div class="card box-margin" style="height: 120px">
+                <div class="card-body" style="padding:0px">
+                    <div class="col-md-12" style="padding-top:10px">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <label class="label col-form-label-sm">START/END SALES OF DAY</label>
+                            </div>
+                            <div class="col-md-2">
+                                <i class="fa fa-codiepie text-warning font-15 pull-right"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+
+                        <h4 class="text-primary CurrentClock" style="padding-left:5px"></h4>
+                    </div>
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-outline-danger pull-right" style="height: 25px; width:100px; text-align:center; padding:0px"> END SALE </button>
+                    </div>
+                </div>
+                <!--end card-body-->
+            </div>
+            <!--end card-->
+        </div>
+
+        <div class="col-xl-8 box-margin height-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h4 class="card-title">Pending Orders</h4>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" placeholder="ORDER NUMBER SEARCH" style="height:25px">
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-outline-primary pull-right" style="height: 25px; width: 120px; text-align:center; padding:0px"> SEARCH </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  Chart -->
+                    <div class="dashboard-area">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Order No</th>
+                                        <th scope="col">Customer Details</th>
+                                        <th scope="col">Order Details</th>
+                                        <th scope="col">Delivery Date</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            OR-8998798
+                                        </td>
+                                        <td class="txt-14">
+                                            <div class="media">
+                                                <div class="media-body company-details">
+                                                    <h6 class="font-15 mb-1">Jerome Tan</h6>
+                                                    <span class="font-13">#094444456</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="txt-14">
+
+                                            Order details will be here.....
+
+                                        </td>
+
+                                        <td class="txt-14">
+                                            @DateTime.Now
+                                        </td>
+
+                                        <td>
+                                            <a href="#" class="action-item mr-2" data-toggle="tooltip" title="" data-original-title="Update Order">
+                                                <i class="fa fa-pencil"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            OR-8998798
+                                        </td>
+                                        <td class="txt-14">
+                                            <div class="media">
+                                                <div class="media-body company-details">
+                                                    <h6 class="font-15 mb-1">Jerome Tan</h6>
+                                                    <span class="font-13">#094444456</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="txt-14">
+
+                                            Order details will be here.....
+
+                                        </td>
+
+                                        <td class="txt-14">
+                                            @DateTime.Now
+                                        </td>
+
+                                        <td>
+                                            <a href="#" class="action-item mr-2" data-toggle="tooltip" title="" data-original-title="Update Order">
+                                                <i class="fa fa-pencil"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            OR-8998798
+                                        </td>
+                                        <td class="txt-14">
+                                            <div class="media">
+                                                <div class="media-body company-details">
+                                                    <h6 class="font-15 mb-1">Jerome Tan</h6>
+                                                    <span class="font-13">#094444456</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="txt-14">
+
+                                            Order details will be here.....
+
+                                        </td>
+
+                                        <td class="txt-14">
+                                            @DateTime.Now
+                                        </td>
+
+                                        <td>
+                                            <a href="#" class="action-item mr-2" data-toggle="tooltip" title="" data-original-title="Update Order">
+                                                <i class="fa fa-pencil"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4">
+            <div class="card">
+                <div class="card-body" style="height: 380px">
+                    <div class="col-md-12" style="padding-top:5px">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="label col-form-label-sm">QUICK PRICE CHECK</label>
+                            </div>
+                            <div class="col-md-6">
+                                <i class="fa fa-book text-primary font-15 pull-right"> View All Prices</i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" placeholder="Item Name" style="height:25px">
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" class="btn btn-outline-primary pull-right" style="height: 25px; width: 80px; text-align:center; padding:0px"> SEARCH </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4 box-margin">
+            <div class="card">
+                <div class="card-body" style="height:380px">
+                    <h6 class="card-title">Sales Statement</h6>
+                    <div class="crm-statement border p-4">
+                        <h6 class="text-center font-weight-bold mb-30 font-24">Average</h6>
+                        <div class="row">
+                            <div class="col text-center mb-15">
+                                <h6 class="font-14 mb-1">Daily</h6>
+                                <p class="font-16 mb-0">$300</p>
+                            </div>
+                            <div class="col text-center mb-15">
+                                <h6 class="font-14 mb-1">Weekly</h6>
+                                <p class="font-16 mb-0">$1400</p>
+                            </div>
+                            <div class="col text-center mb-15">
+                                <h6 class="font-14 mb-1">Monthly</h6>
+                                <p class="font-16 mb-0">$5000</p>
+                            </div>
+                        </div>
+                        <div class="progress h-6 mt-15 mb-10">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: 65%;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-8 box-margin height-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Monthly sales</h4>
+                    <!--  Chart -->
+                    <div class="dashboard-area">
+                        <div id="apexChartD"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script>
+            //For showing 12 clock
+            var interval = setInterval(_12Clock, 1000);
+            function _12Clock() {
+                var currentTime = new Date();
+                const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+              var hours = currentTime.getHours();
+              var minutes = currentTime.getMinutes();
+             var seconds = currentTime.getSeconds();
+            var date = currentTime.getDate();
+            var year = currentTime.getFullYear();
+              var ampm = hours >= 12 ? 'pm' : 'am';
+
+              hours = hours % 12;
+              hours = hours ? hours : 12; // the hour '0' should be '12'
+              minutes = minutes < 10 ? '0' + minutes : minutes;
+              seconds = (seconds < 10 ? "0" : "") + seconds;
+
+              var strTime = date +" "+month[currentTime.getMonth()]+" "+year+ ", "+  hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+              $(".CurrentClock").html(strTime);
+        }
+    </script>
+
+}

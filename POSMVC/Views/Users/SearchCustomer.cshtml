@@ -1,0 +1,278 @@
+﻿@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@model IEnumerable<POSMVC.Models.PageModels.UsersVM.ListUser>
+
+
+@{
+    ViewData["Title"] = "Customer Search Result";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var userTypes = (SelectList)ViewBag.UserTypeId;
+    var selectedUserTypeName = (string)ViewBag.SelectedUserTypeName;
+    var searchValue = (string)ViewBag.SearchValue;
+}
+
+    <div class="container-fluid">
+
+        <div class="row">
+
+            <div class="col-md-6 col-xl-3 height-card box-margin">
+                <div class="card">
+                    <div class="card-body">
+                        Single Widget
+                        <div class="single-widget-area d-flex align-items-center justify-content-between">
+                            <div class="profit-icon">
+                                <i class="zmdi zmdi-favorite-outline"></i>
+                            </div>
+
+                            <div class="total-profit">
+                                <h6 class="mb-0">Returning Customers</h6>
+                                <div class="counter font-30 font-weight-bold" data-comma-separated="true">1,589</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-3 height-card box-margin">
+                <div class="card">
+                    <div class="card-body">
+                        Single Widget
+                        <div class="single-widget-area d-flex align-items-center justify-content-between">
+                            <div class="profit-icon">
+                                <i class="zmdi zmdi-shopping-cart"></i>
+                            </div>
+
+                            <div class="total-profit">
+                                <h6 class="mb-0">New Customers</h6>
+                                <div class="counter font-30 font-weight-bold" data-comma-separated="true">25,6987</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-3 height-card box-margin">
+                <div class="card">
+                    <div class="card-body">
+                        Single Widget
+                        <div class="single-widget-area d-flex align-items-center justify-content-between">
+                            <div class="profit-icon">
+                                <i class="zmdi zmdi-network"></i>
+                            </div>
+
+                            <div class="total-profit">
+                                <h6 class="mb-0">Conversion</h6>
+                                <div class="counter font-30 font-weight-bold" data-comma-separated="true">252.00</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-3 height-card box-margin">
+                <div class="card">
+                    <div class="card-body">
+                        Single Widget
+                        <div class="single-widget-area d-flex align-items-center justify-content-between">
+                            <div class="profit-icon">
+                                <i class="zmdi zmdi-eye"></i>
+                            </div>
+
+                            <div class="total-profit">
+                                <h6 class="mb-0">Bounce Rate</h6>
+                                <div class="counter font-30 font-weight-bold" data-comma-separated="true">15.00</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="card mb-30">
+                    <div class="card-body pb-0">
+                        <div class="justify-content-between align-items-center mb-20">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6 class="card-title mb-0">Search Result</h6>
+                                </div>
+                                <div class="col-md-6 float-right pr-4">
+                                    <span class="badge font-14 badge-soft-info float-right">
+                                        <a href="/Users/Customers?page=1&ddlId=0"><i class="zmdi zmdi-arrow-back"></i> Back Records</a>
+                                    </span>
+                                </div>
+                            </div>
+v>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <button type="button" class="btn btn-sm btn-outline-success" onclick='openModalCreateForm("mdlCreateForm","CreateForm","Users","CreateCustomer")'><i class="zmdi zmdi-collection-plus"></i> New Customer </button>
+                                </div>
+                                <div class="col-md-6 float-right">
+                                    <div class="input-group">
+                                        <input class="form-control py-2 border-right-0 border" value="@searchValue" name="mobile" type="search" placeholder="Search by mobile number" id="searchCustomer">
+                                        <span class="input-group-append">
+                                            <button class="btn btn-fill-default border-0" disabled>
+                                                <i class="fa fa-search"></i>
+                                            </button>
+                                        </span>
+
+                                        <div class="btn-group mb-2 pr-2">
+                                            <button type="button" class="btn btn-sm btn-fill-default  dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="height:40px;">View As : @selectedUserTypeName</button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item @(selectedUserTypeName == "All" ? "disabled" : "")" href="/Users/Customers?page=1&ddlId=0">All</a>
+                                                @foreach (var item in userTypes)
+                                                {
+                                                    <a class="dropdown-item @(string.Equals(selectedUserTypeName, item.Text) ? "disabled" : "")" href="/Users/Customers?page=1&ddlId=@item.Value">@item.Text</a>
+                                                }
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @if (Model.Count() <= 0)
+                        {
+                            <div class="text-center">
+                                <span class="badge font-11 badge-soft-purple"> There is no record found</span>
+
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="table-responsive order-stats">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Customer</th>
+                                            <th>Address</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td width="20%">
+                                                    <span class="font-15">@item.PersonalDetail.Name</span>
+                                                    <div class="mb-10">
+                                                        <span class="badge font-11 badge-soft-purple">
+                                                            Type: @item.UserType.TypeName
+                                                        </span>
+
+                                                    </div>
+
+                                                    @{
+                                                        if (!string.IsNullOrEmpty(item.PersonalDetail.MobileNo))
+                                                        {
+                                                            <div><small> Mobile No: @item.PersonalDetail.MobileNo </small> </div>
+                                                        }
+
+                                                        if (!string.IsNullOrEmpty(item.PersonalDetail.OtherPhone))
+                                                        {
+                                                            <div><small> Other Contacts: @item.PersonalDetail.OtherPhone </small> </div>
+                                                        }
+                                                    }
+                                                </td>
+                                                <td width="70%">
+                                                    <div class="row">
+                                                        <small> Address: @item.PersonalDetail.Address</small>
+                                                    </div>
+                                                </td>
+                                                <td width="10%">
+                                                    <a href="#" class="mr-2" data-toggle="tooltip" title="" data-original-title="View History"><i class="fa fa-history text-success font-18"></i></a>
+                                                    <a href="#" class="mr-2" data-toggle="tooltip" title="" data-original-title="Update Info" onclick='openModalUpdateForm("mdlUpdateForm", "UpdateForm", "Users","EditCustomer", "?id=@item.User.Id")'><i class="fa fa-edit text-info font-18"></i></a>
+                                                    <a href="#" data-toggle="tooltip" title="" data-original-title="Delete" onclick='deleteConfirmation({id: @item.User.Id}, "@item.PersonalDetail.Name", "Users", "DeleteCustomer")'><i class="fa fa-trash text-danger font-18"></i></a>
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="form-group pull-right">
+                                @Html.PagedListPager((IPagedList)Model, page => Url.Action("Customers", new { page = page }),
+                               new X.PagedList.Mvc.Common.PagedListRenderOptionsBase
+                               {
+                                   DisplayItemSliceAndTotal = true,
+                                   ContainerDivClasses = new[] { "navigation", "btn btn-default" },
+                                   LiElementClasses = new[] { "page-item" },
+                                   PageClasses = new[] { "btn-success", "page-link" },
+                                   ActiveLiElementClass = "btn-defult"
+                               })
+                            </div>
+                        }
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="mdlCreateForm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-modal="false">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title mt-0 font-16" id="myLargeModalLabel">Add New Customer</h5>
+                        <button type="button" class="close" onclick='closeModalCreateForm("mdlCreateForm","CreateForm")'>
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="CreateForm">
+                            <div class="text-center">
+                                <img src="~/ProjectImage/loading.gif" alt="Loading ..." />
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="mdlUpdateForm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-modal="false">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title mt-0 font-16" id="myLargeModalLabel">Update Customer</h5>
+                        <button type="button" class="close" onclick='closeModalUpdateForm("mdlUpdateForm","UpdateForm")'>
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="UpdateForm">
+                            <div class="text-center">
+                                <img src="~/ProjectImage/loading.gif" alt="Loading ..." />
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+@section Scripts{
+
+    <script src="~/js/jquery-ui-autocomplete.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('ul.pagination > li.disabled > a').addClass('page-link');
+
+            $('#searchCustomer').autocomplete({
+                minLength: 2,
+                source: '/Users/CustomerSearch',
+                select: function (event, ui) {
+                    window.location.href = "/Users/SearchResult?mobile=" + ui.item.label;
+                }
+            });
+
+        });
+    </script>
+
+}
+

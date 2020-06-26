@@ -1,0 +1,491 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    @*<meta charset="UTF-8">
+        <meta name="description" content="">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">*@
+    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <!-- Title -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Jerome Tan - Optical POS</title>
+    <!-- Favicon -->
+    <link rel="icon" href="~/img/core-img/favicon.png">
+
+    <environment include="Development">
+
+        <!-- #region Templete CSS -->
+        <link href="~/style.css" rel="stylesheet" />
+        <link href="~/css/jquery-ui-autocomplete.css" rel="stylesheet" />
+        <link href="~/css/sweetalert.css" rel="stylesheet" />
+
+        <!-- #endregion -->
+        <!-- #region Custom CSS -->
+        <link href="~/css/CustomStyle.css" rel="stylesheet" />
+        <link href="~/css/searchable-dropdown/jquery-customselect.css" rel="stylesheet" />
+        <!-- #endregion -->
+
+    </environment>
+    <environment exclude="Development">
+        <!-- #region Templete CSS -->
+        <link href="~/style.css" rel="stylesheet" />
+        <link href="~/css/searchable-dropdown/style.css" rel="stylesheet" />
+        <link href="~/css/searchable-dropdown/prism.css" rel="stylesheet" />
+        <link href="~/css/searchable-dropdown/chosen.css" rel="stylesheet" />
+        <!-- #endregion -->
+        <!-- #region Custom CSS -->
+        <link href="~/css/sweetalert.css" rel="stylesheet" />
+        <link href="~/css/CustomStyle.css" rel="stylesheet" />
+        <!-- #endregion -->
+    </environment>
+    @RenderSection("Css", required: false)
+</head>
+<body>
+
+    <!-- ======================================
+    ******* Page Wrapper Area Start **********
+    ======================================= -->
+    <div class="ecaps-page-wrapper">
+        <!-- Sidemenu Area -->
+        <div class="ecaps-sidemenu-area">
+            <!-- Desktop Logo -->
+            <div class="ecaps-logo">
+                <a asp-controller="Home" asp-action="Index">
+                <img class="desktop-logo" src="~/img/core-img/logo.png" alt="Desktop Logo"> 
+                <img class="small-logo" src="~/img/core-img/small-logo.png" alt="Mobile Logo">
+                </a>
+            </div>
+
+            <!-- Side Nav -->
+            <div class="ecaps-sidenav" id="ecapsSideNav">
+                <!-- Side Menu Area -->
+                <div class="side-menu-area">
+                    <!-- Sidebar Menu -->
+                    <nav>
+                        <ul class="sidebar-menu" data-widget="tree">
+                            <li><a asp-controller="Home" asp-action="Index" ><i class="zmdi zmdi-home"></i> <span class="font-11">HOME</span></a></li>
+                            <li class="treeview">
+                                <a href="javascript:void(0)"><i class="zmdi zmdi-money"></i> <span class="font-11">CASH & CARRY PURCHASE</span> <i class="fa fa-angle-right"></i></a>
+                                <ul class="treeview-menu">
+                                    <li><a href="calendar.html">- Calendar</a></li>
+                                    <li><a href="widgets.html">- Widgets</a></li>
+                                    <li><a href="chat-box.html">- Chat box</a></li>
+                                    <li><a href="timeline.html">- Timeline</a></li>
+                                </ul>
+                            </li>
+                            <li class="treeview">
+                                <a href="javascript:void(0)"><i class="zmdi zmdi-voicemail"></i> <span class="font-11">SPEC PURCHASE</span> <i class="fa fa-angle-right"></i></a>
+                                <ul class="treeview-menu">
+                                    <li><a href="mail-inbox.html">- Inbox</a></li>
+                                    <li><a href="mail-view.html">- Mail View</a></li>
+                                    <li><a href="compose-mail.html">- Compose Mail</a></li>
+                                </ul>
+                            </li>
+                            <li class="treeview">
+                                <a href="javascript:void(0)"><i class="zmdi zmdi-circle-o"></i> <span class="font-11">CONTACT LENS PURCHASE</span> <i class="fa fa-angle-right"></i></a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#">- Customers</a></li>
+                                    <li><a href="analytic-report.html">- Reports</a></li>
+                                    <li><a href="crm-add-clint.html">- Add Client</a></li>
+                                    <li><a href="crm-clint-list.html">- Client List</a></li>
+                                    <li><a href="crm-contact.html">- Contacts</a></li>
+                                    <li><a href="crm-profile-customer.html">- Profile</a></li>
+                                    <li><a href="crm-task.html">- Task</a></li>
+                                    <li><a href="crm-leads.html">- Leads</a></li>
+                                    <li><a href="cryp-exchange.html">- Exchange</a></li>
+                                    <li><a href="crypto-wallet.html">- Wallet</a></li>
+                                    <li><a href="crypto-news.html">- News</a></li>
+                                    <li><a href="crypto-setting.html">- Setting</a></li>
+                                </ul>
+                            </li>
+                            <li class="treeview">
+                                <a href="javascript:void(0)"><i class="zmdi zmdi-shopping-cart-plus"></i> <span class="font-11">CUSTOMER COLLECTION</span> <i class="fa fa-angle-right"></i></a>
+                                <ul class="treeview-menu">
+                                    <li><a href="alert.html">- Alert</a></li>
+                                    <li><a href="avatar.html">- Avatar</a></li>
+                                    <li><a href="buttons.html">- Button</a></li>
+                                    <li><a href="card.html">- Card</a></li>
+                                    <li><a href="notification.html">- Notification</a></li>
+                                    <li><a href="general.html">- General</a></li>
+                                    <li><a href="progressbar.html">- Progressbar</a></li>
+                                    <li><a href="preloader.html">- Preloader</a></li>
+                                    <li><a href="tab.html">- Tab</a></li>
+                                    <li><a href="dropdown.html">- Dropdown</a></li>
+                                    <li><a href="typography.html">- Typography</a></li>
+                                </ul>
+                            </li>                        
+                            <li class="treeview">
+                                <a href="javascript:void(0)"><i class="zmdi zmdi-accounts-outline"></i> <span class="font-11">PEOPLES</span> <i class="fa fa-angle-right"></i></a>
+                                <ul class="treeview-menu">
+                                    <li><a asp-controller="Users" asp-action="Customers">- Customer</a></li>
+                                    <li><a asp-controller="Users" asp-action="Customers">- Supplier</a></li>
+                                </ul>
+                            </li>
+                            <li class="treeview">
+                                <a href="javascript:void(0)"><del><i class="zmdi zmdi-shopping-cart-plus"></i></del><span class="font-11">UNCOLLECTED ORDERS</span> <i class="fa fa-angle-right"></i></a>
+                                <ul class="treeview-menu">
+                                    <li><a href="blank.html">- Blank Page</a></li>
+                                    <li><a href="gallery.html">- Gallery</a></li>
+                                    <li><a href="light-box-gallery.html">- Light Box Gallery</a></li>
+                                    <li><a href="modals.html">- Modals</a></li>
+                                    <li><a href="profile.html">- Profile</a></li>
+                                    <li><a href="ribbons.html">- Ribbons</a></li>
+                                    <li><a href="sweet-alert.html">- Sweet Alert</a></li>
+                                </ul>
+                            </li>
+                            <li class="treeview">
+                                <a href="javascript:void(0)"><i class="zmdi zmdi-money-box"></i> <span class="font-11">PAYOUT</span> <i class="fa fa-angle-right"></i></a>
+                                <ul class="treeview-menu">
+                                    <li><a href="product.html">- Product</a></li>
+                                    <li><a href="e-add-product.html">- Add Product</a></li>
+                                    <li><a href="product-details.html">- Single Product</a></li>
+                                    <li><a href="order.html">- Order</a></li>
+                                    <li><a href="cart.html">- Cart</a></li>
+                                    <li><a href="checkout.html">- Checkout</a></li>
+                                    <li><a href="invoice.html">- Invoice</a></li>
+                                </ul>
+                            </li>
+                            <li class="treeview">
+                                <a href="javascript:void(0)"><i class="zmdi zmdi-refresh-sync-alert"></i><span class="font-11">EXCHANGE/REFUND</span> <i class="fa fa-angle-right"></i></a>
+                                <ul class="treeview-menu">
+                                    <li><a href="slider.html">- Slider</a></li>
+                                    <li><a href="range-slider.html">- Range Slider</a></li>
+                                    <li><a href="contact.html">- Contact</a></li>
+                                    <li><a href="login.html">- Login</a></li>
+                                    <li><a href="register.html">- Register</a></li>
+                                    <li><a href="forget-password.html">- Forget Password</a></li>
+                                    <li><a href="lock-screen.html">- Lock Screen</a></li>
+                                    <li><a href="404.html">- 404</a></li>
+                                </ul>
+                            </li>
+                            <li class="treeview">
+                                <a href="javascript:void(0)"><i class="zmdi zmdi-codepen"></i><span class="font-11">INVENTORY</span> <i class="fa fa-angle-right"></i></a>
+                                <ul class="treeview-menu">
+                                    <li><a asp-controller="Items" asp-action="Items"> Items</a></li>
+                                    <li><a asp-controller="Items" asp-action="PurchaseItems"> Purchase Items</a></li>
+                                    <li><a asp-controller="Brands" asp-action="Brands"> Brands</a></li>
+                                </ul>
+                            </li>
+                            <li class="treeview">
+                                <a href="javascript:void(0)"><i class="zmdi zmdi-collection-bookmark"></i><span class="font-11">SALES HISTORY</span> <i class="fa fa-angle-right"></i></a>
+                                <ul class="treeview-menu">
+                                    <li><a href="basic-form.html">- Basic Form</a></li>
+                                    <li><a href="advanced-elements.html">- Elements</a></li>
+                                    <li><a href="form-validation.html">- Validation</a></li>
+                                    <li><a href="form-wizard.html">- Form Wizard</a></li>
+                                    <li><a href="form-input-mask.html">- Input Mask</a></li>
+                                    <li><a href="file-upload.html">- File upload</a></li>
+                                    <li><a href="rating.html">- Rating</a></li>
+                                </ul>
+                            </li>
+                            <li class="treeview">
+                                <a href="javascript:void(0)"><i class="zmdi zmdi-settings"></i><span class="font-11">SETTINGS</span> <i class="fa fa-angle-right"></i></a>
+                                <ul class="treeview-menu">
+                                    <li><a href="basic-table.html">- Basic Table</a></li>
+                                    <li><a href="filter-table.html">- Filter Table</a></li>
+                                    <li><a href="data-table.html">- Data Table</a></li>
+                                    <li><a href="price-table.html">- Price Table</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page Content -->
+        <div class="ecaps-page-content">
+            <!-- Top Header Area -->
+            <header class="top-header-area d-flex align-items-center justify-content-between">
+                <div class="left-side-content-area d-flex align-items-center">
+                    <!-- Mobile Logo -->
+                    <div class="mobile-logo mr-3 mr-sm-4">
+                        <a href="index.html"><img src="~/img/core-img/small-logo.png" alt="Mobile Logo"></a>
+                    </div>
+
+                    <!-- Triggers -->
+                    <div class="ecaps-triggers mr-1 mr-sm-3">
+                        <div class="menu-collasped" id="menuCollasped">
+                            <i class="zmdi zmdi-menu"></i>
+                        </div>
+                        <div class="mobile-menu-open" id="mobileMenuOpen">
+                            <i class="zmdi zmdi-menu"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="right-side-navbar d-flex align-items-center justify-content-end">
+                    <!-- Mobile Trigger -->
+                    <div class="right-side-trigger" id="rightSideTrigger">
+                        <i class="fa fa-reorder"></i>
+                    </div>
+
+                    <!-- Top Bar Nav -->
+                    <ul class="right-side-content d-flex align-items-center">
+                        <!-- Left Side Nav -->
+                        <li class="nav-item dropdown">
+                            <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-envelope-o" aria-hidden="true"></i></button>
+
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <!-- Top Message Area -->
+                                <div class="top-message-area">
+                                    <!-- Heading -->
+                                    <div class="top-message-heading">
+                                        <div class="heading-title">
+                                            <h6>Messages</h6>
+                                        </div>
+                                        <span>07 New</span>
+                                    </div>
+                                    <div class="message-box" id="messageBox">
+                                        <a href="#" class="dropdown-item">
+                                            @*<img src="img/member-img/10.png" alt="">*@
+                                            <img src="~/img/member-img/10.png" alt="">
+                                            <span class="message-text">
+                                                <span>Jhon Lina</span>
+                                                <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut, voluptas!</span>
+                                            </span>
+                                        </a>
+                                        <span class="message-heading">New Messages</span>
+                                        <a href="#" class="dropdown-item">
+                                            <img src="~/img/member-img/11.png" alt="">
+                                            <span class="message-text">
+                                                <span>Google Ads: You'll get a refund soon</span>
+                                                <span>27 min ago</span>
+                                            </span>
+                                        </a>
+                                        <a href="#" class="dropdown-item">
+                                            <img src="~/img/member-img/7.png" alt="">
+                                            <span class="message-text">
+                                                <span>New Feature: HTTP Method Selection</span>
+                                                <span>56 min ago</span>
+                                            </span>
+                                        </a>
+                                        <a href="#" class="dropdown-item">
+                                            <img src="~/img/member-img/8.png" alt="">
+                                            <span class="message-text">
+                                                <span>The Complete JavaScript Handbook</span>
+                                                <span>1 hour ago</span>
+                                            </span>
+                                        </a>
+                                        <span class="message-heading">Hot Messages</span>
+                                        <a href="#" class="dropdown-item">
+                                            <img src="~/img/member-img/9.png" alt="">
+                                            <span class="message-text">
+                                                <span>New comment: ecaps Template</span>
+                                                <span>2 days ago</span>
+                                            </span>
+                                        </a>
+                                        <a href="#" class="dropdown-item">
+                                            <img src="~/img/member-img/10.png" alt="">
+                                            <span class="message-text">
+                                                <span>6-hour video course on Angular</span>
+                                                <span>3 min ago</span>
+                                            </span>
+                                        </a>
+                                        <a href="#" class="dropdown-item">
+                                            <img src="~/img/member-img/11.png" alt="">
+                                            <span class="message-text">
+                                                <span>Google Ads: You'll get a refund soon</span>
+                                                <span>27 min ago</span>
+                                            </span>
+                                        </a>
+                                        <a href="#" class="dropdown-item">
+                                            <img src="~/img/member-img/12.png" alt="">
+                                            <span class="message-text">
+                                                <span>New Feature: HTTP Method Selection</span>
+                                                <span>56 min ago</span>
+                                            </span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bell-o" aria-hidden="true"></i> <span class="active-status"></span></button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <!-- Top Notifications Area -->
+                                <div class="top-notifications-area">
+                                    <!-- Heading -->
+                                    <div class="notifications-heading">
+                                        <div class="heading-title">
+                                            <h6>Notifications</h6>
+                                        </div>
+                                    </div>
+
+                                    <div class="notifications-box" id="notificationsBox">
+                                        <a href="#" class="dropdown-item">
+                                            <img src="~/img/member-img/1.png" alt="">
+                                            <span class="message-text">
+                                                <span>New Feature: HTTP Method Selection</span>
+                                                <span>56 min ago</span>
+                                            </span>
+                                        </a>
+                                        <a href="#" class="dropdown-item">
+                                            <img src="~/img/member-img/2.png" alt="">
+                                            <span class="message-text">
+                                                <span>Andrew Done Project</span>
+                                                <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam, quam.</span>
+                                            </span>
+                                        </a>
+                                        <a href="#" class="dropdown-item">
+                                            <img src="~/img/member-img/3.png" alt="">
+                                            <span class="message-text">
+                                                <span>New Feature: HTTP Method Selection</span>
+                                                <span>56 min ago</span>
+                                            </span>
+                                        </a>
+                                        <a href="#" class="dropdown-item">
+                                            <img src="~/img/member-img/4.png" alt="">
+                                            <span class="message-text">
+                                                <span>New Feature: HTTP Method Selection</span>
+                                                <span>56 min ago</span>
+                                            </span>
+                                        </a>
+                                        <a href="#" class="dropdown-item">
+                                            <img src="~/img/member-img/5.png" alt="">
+                                            <span class="message-text">
+                                                <span>New Feature: HTTP Method Selection</span>
+                                                <span>56 min ago</span>
+                                            </span>
+                                        </a>
+                                        <a href="#" class="dropdown-item">
+                                            <img src="~/img/member-img/6.png" alt="">
+                                            <span class="message-text">
+                                                <span>New Feature: HTTP Method Selection</span>
+                                                <span>56 min ago</span>
+                                            </span>
+                                        </a>
+                                        <a href="#" class="dropdown-item">
+                                            <img src="~/img/member-img/7.png" alt="">
+                                            <span class="message-text">
+                                                <span>New Feature: HTTP Method Selection</span>
+                                                <span>56 min ago</span>
+                                            </span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="~/img/member-img/4.png" alt=""></button>
+                            <div class="dropdown-menu header-profile dropdown-menu-right">
+                                <!-- User Profile Area -->
+                                <div class="user-profile-area">
+                                    <a href="#" class="dropdown-item"><i class="zmdi zmdi-account profile-icon" aria-hidden="true"></i> My profile</a>
+                                    <a href="#" class="dropdown-item"><i class="zmdi zmdi-email-open profile-icon" aria-hidden="true"></i> Messages</a>
+                                    <a href="#" class="dropdown-item"><i class="zmdi zmdi-brightness-7 profile-icon" aria-hidden="true"></i> Account settings</a>
+                                    <a href="#" class="dropdown-item"><i class="ti-unlink profile-icon" aria-hidden="true"></i> Sign-out</a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </header>
+
+            <!-- Main Content Area -->
+            <div class="main-content">
+
+                @RenderBody()
+                <!-- Footer Area -->
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <!-- Footer Area -->
+                            <footer class="footer-area d-flex align-items-center flex-wrap">
+                                <!-- Copywrite Text -->
+                                <div class="copywrite-text">
+                                    <p>Developed by <a href="#">&copy; Abdullah Bin Hasan</a></p>
+                                </div>
+                                <!-- Footer Nav -->
+                                <ul class="footer-nav d-flex align-items-center">
+                                    <li><a href="#">About</a></li>
+                                    <li><a href="#">Privacy</a></li>
+                                </ul>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================
+    ********* Page Wrapper Area End ***********
+    ======================================= -->
+    <environment include="Development">
+
+        <!-- #region Templete Preferred JS -->
+        <!-- Must needed plugins to the run this Template -->
+        <script src="~/js/jquery.min.js"></script>
+        <script src="~/js/searchable-dropdown/chosen.jquery.js"></script>
+        <script src="~/js/searchable-dropdown/prism.js"></script>
+        <script src="~/js/searchable-dropdown/init.js"></script>
+        <script src="~/js/popper.min.js"></script>
+        <script src="~/js/bootstrap.min.js"></script>
+        <script src="~/js/bundle.js"></script>
+        <script src="~/js/default-assets/setting.js"></script>
+        <script src="~/js/default-assets/fullscreen.js"></script>
+
+        <!-- Active JS -->
+        <script src="~/js/default-assets/active.js"></script>
+
+        <!-- These plugins only need for the run this page -->
+        @*<script src="~/js/default-assets/ammap.min.js"></script>
+        <script src="~/js/default-assets/radar.js"></script>
+        <script src="~/js/default-assets/widget-page-chart-active.js"></script>*@
+        <script src="~/js/default-assets/apexchart.min.js"></script>
+        <script src="~/js/default-assets/dashboard-active.js"></script>
+
+        <!-- #endregion -->
+        <!-- #region Validation Js -->
+        <script src="~/js/default-assets/jquery.validate.min.js"></script>
+        <script src="~/js/default-assets/form-validation-custom.js"></script>
+        @*<script src="~/js/jquery-validate/jquery.validate.js"></script>*@
+        @*<script src="~/js/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>*@
+        <!-- #endregion -->
+        <!-- #region CustomJs -->
+        <script src="~/js/sweetalert.min.js"></script>
+        <script src="~/js/CustomJavaScript.js"></script>
+        <!-- #endregion -->
+    </environment>
+
+    <environment exclude="Development">
+        <!-- #region Templete Preferred JS -->
+        <!-- Must needed plugins to the run this Template -->
+        <script src="~/js/jquery.min.js"></script>
+        <script src="~/js/searchable-dropdown/chosen.jquery.js"></script>
+        <script src="~/js/searchable-dropdown/prism.js"></script>
+        <script src="~/js/searchable-dropdown/init.js"></script>
+        <script src="~/js/popper.min.js"></script>
+        <script src="~/js/bootstrap.min.js"></script>
+        <script src="~/js/bundle.js"></script>
+        <script src="~/js/default-assets/setting.js"></script>
+        <script src="~/js/default-assets/fullscreen.js"></script>
+
+        <!-- Active JS -->
+        <script src="~/js/default-assets/active.js"></script>
+
+        <!-- These plugins only need for the run this page -->
+        @*<script src="js/default-assets/ammap.min.js"></script>
+        <script src="js/default-assets/radar.js"></script>
+        <script src="js/default-assets/widget-page-chart-active.js"></script>*@
+        <script src="~/js/default-assets/apexchart.min.js"></script>
+        <script src="~/js/default-assets/dashboard-active.js"></script>
+        <!-- #endregion -->
+        <!-- #region Validation Js -->
+        <script src="~/js/jquery-validate/jquery.validate.js"></script>
+        <script src="~/js/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+        <!-- #endregion -->
+        <!-- #region CustomJs -->
+        <script src="~/js/sweetalert.min.js"></script>
+        <script src="~/js/CustomJavaScript.js"></script>
+        <!-- #endregion -->
+    </environment>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

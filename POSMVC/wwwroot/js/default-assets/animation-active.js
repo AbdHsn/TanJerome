@@ -1,0 +1,1 @@
+!function(t){"use strict";t(".animation-toggle").hover(function(){var a=t(this).attr("data-animate");t(this).addClass("animated"),t(this).addClass(a),setTimeout(function(){t(".animation-toggle").removeClass(a)},2e3)})}(jQuery);

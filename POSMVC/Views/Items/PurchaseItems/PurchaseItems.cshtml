@@ -23,10 +23,10 @@
                                 <div class="col-md-6">
                                                                      
                                     <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-                                        <button type="button" class="btn btn-sm btn-outline-success" onclick='openModalCreateForm("mdlCreateForm","CreateForm","Items","CreatePurchaseItem")'><i class="zmdi zmdi-collection-plus"></i> New Purchase </button>
-                                        <button id="btnImport" type="button" class="btn btn-sm btn-outline-success" data-toggle="modal" data-target="#mdlImport"><i class="zmdi zmdi-playlist-plus"></i> Import Purchase Data From Excel</button>
+                                        <button type="button" class="btn btn-sm btn-outline-success" title="Single purchase entry" onclick='openModalCreateForm("mdlCreateForm","CreateForm","Items","CreatePurchaseItem")'><i class="zmdi zmdi-collection-plus"></i> New Purchase </button>
+                                        <button id="btnImport" type="button" class="btn btn-sm btn-outline-success" data-toggle="modal" title="Import purchase data from excel" data-target="#mdlImport"><i class="zmdi zmdi-playlist-plus"></i> Import </button>
                                         <div class="btn-group" role="group">
-                                            <button id="btnGroupDrop1" type="button" class="btn btn-sm btn-outline-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <button id="btnGroupDrop1" type="button" class="btn btn-sm btn-outline-success dropdown-toggle" data-toggle="dropdown" title="Bulk purchase entry" aria-haspopup="true" aria-expanded="false">
                                                 Bulk Purchase
                                             </button>
                                             <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
@@ -212,8 +212,6 @@
     </div>
 
 @section Scripts{
-
-    <script src="~/js/jquery-ui-autocomplete.js"></script>
 
     <script type="text/javascript">
         var lstItems = new Array();

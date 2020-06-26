@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace POSMVC
 {
+    //Starting Point....
     public class Program
     {
         public static void Main(string[] args)

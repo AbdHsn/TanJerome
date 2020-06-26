@@ -164,8 +164,9 @@
                                 <a href="javascript:void(0)"><i class="zmdi zmdi-codepen"></i><span class="font-11">INVENTORY</span> <i class="fa fa-angle-right"></i></a>
                                 <ul class="treeview-menu">
                                     <li><a asp-controller="Items" asp-action="Items"> Items</a></li>
-                                    <li><a asp-controller="Items" asp-action="PurchaseItems"> Purchase Items</a></li>
-                                    <li><a asp-controller="Brands" asp-action="Brands"> Brands</a></li>
+                                    <li><a asp-controller="Items" asp-action="PurchaseItems">Item Purchase </a></li>
+                                    <li><a asp-controller="Stock" asp-action="Stock"> Stock</a></li>
+                             
                                 </ul>
                             </li>
                             <li class="treeview">
@@ -183,10 +184,8 @@
                             <li class="treeview">
                                 <a href="javascript:void(0)"><i class="zmdi zmdi-settings"></i><span class="font-11">SETTINGS</span> <i class="fa fa-angle-right"></i></a>
                                 <ul class="treeview-menu">
-                                    <li><a href="basic-table.html">- Basic Table</a></li>
-                                    <li><a href="filter-table.html">- Filter Table</a></li>
-                                    <li><a href="data-table.html">- Data Table</a></li>
-                                    <li><a href="price-table.html">- Price Table</a></li>
+                                    <li><a asp-controller="Brands" asp-action="Brands"> Brands</a></li>
+                                    <li><a asp-controller="Supplier" asp-action="Supplier"> Supplier</a></li>
                                 </ul>
                             </li>
                         </ul>

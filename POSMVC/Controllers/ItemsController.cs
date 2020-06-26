@@ -55,11 +55,11 @@ namespace POSMVC.Controllers
             int pageRowSize = 10;
             int productType = ddlId ?? 0;
 
-            var products = new List<ListPurchaseVM>();
+            var purchaseItems = new List<ListPurchaseVM>();
 
             if (productType == 0)
             {
-                var getProducts = from pu in _context.Purchase
+                var getPurchase = from pu in _context.Purchase
                                   orderby pu.EntryDate descending
                                   join p in _context.Products on pu.ProductId equals p.Id
                                   join pt in _context.ProductType on p.ProductTypeId equals pt.Id
@@ -73,10 +73,10 @@ namespace POSMVC.Controllers
                                       Brand = br,
                                       Manufacturer = mf
                                   };
-                products = await getProducts.ToListAsync();
+                purchaseItems = await getPurchase.ToListAsync();
             }
 
-            var result = products.ToPagedList(pageNumber, pageRowSize);
+            var result = purchaseItems.ToPagedList(pageNumber, pageRowSize);
             return View("PurchaseItems/PurchaseItems", result);
         }
 
@@ -199,7 +199,6 @@ namespace POSMVC.Controllers
                         model.PurchaseNo = "PUR-" + DateTime.Now.Year + DateTime.Now.Month.ToString("00") + 1.ToString().PadLeft(10, '0');
                     }
 
-                    //1. Check Stock is exist or not for particular product, if Yes "Update Stock" Else "Create Stock"
                     var isStockExist = _context.Stock.Where(s => s.ProductId == model.ProductId).FirstOrDefault();
                     if (isStockExist != null)
                     {
@@ -466,9 +465,9 @@ namespace POSMVC.Controllers
             int pageRowSize = 10;
 
 
-            var products = new List<ListPurchaseVM>();
+            var purchaseItem = new List<ListPurchaseVM>();
 
-            var getProducts = from pu in _context.Purchase
+            var getPurchase = from pu in _context.Purchase
                               where pu.PurchaseNo == purchaseNo
                               orderby pu.EntryDate descending
                               join p in _context.Products on pu.ProductId equals p.Id
@@ -483,10 +482,10 @@ namespace POSMVC.Controllers
                                   Brand = br,
                                   Manufacturer = mf
                               };
-            products = await getProducts.ToListAsync();
+            purchaseItem = await getPurchase.ToListAsync();
 
             ViewBag.SearchValue = purchaseNo;
-            var result = products.ToPagedList(pageNumber, pageRowSize);
+            var result = purchaseItem.ToPagedList(pageNumber, pageRowSize);
 
             return View("PurchaseItems/SearchPurchaseItem", result);
         }

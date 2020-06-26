@@ -47,6 +47,7 @@ namespace POSMVC.Models.Entities
         public virtual DbSet<Scheduler> Scheduler { get; set; }
         public virtual DbSet<SpectacleRx> SpectacleRx { get; set; }
         public virtual DbSet<Stock> Stock { get; set; }
+        public virtual DbSet<StockAdjustment> StockAdjustment { get; set; }
         public virtual DbSet<StockReserved> StockReserved { get; set; }
         public virtual DbSet<StockTrace> StockTrace { get; set; }
         public virtual DbSet<SunglassDetail> SunglassDetail { get; set; }
@@ -784,6 +785,19 @@ namespace POSMVC.Models.Entities
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.LastUpdate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<StockAdjustment>(entity =>
+            {
+                entity.HasIndex(e => e.AdjustmentNo)
+                    .HasName("UQ__StockAdj__E60D0EF175548E97")
+                    .IsUnique();
+
+                entity.Property(e => e.AdjustmentNo).HasMaxLength(20);
+
+                entity.Property(e => e.EntryDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Note).HasMaxLength(100);
             });
 
             modelBuilder.Entity<StockReserved>(entity =>

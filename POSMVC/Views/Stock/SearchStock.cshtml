@@ -4,11 +4,10 @@
 
 
 @{
-    ViewData["Title"] = "Purchase Items";
+    ViewData["Title"] = "Search Result";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    //var productType = (SelectList)ViewBag.ProductType;
-    //var selectedProductTypeName = (string)ViewBag.SelectedProductTypeName;
+    var searchValue = (string)ViewBag.SearchValue;
 }
 
     <div class="container-fluid">
@@ -17,11 +16,22 @@
                 <div class="card mb-30">
                     <div class="card-body pb-0">
                         <div class="justify-content-between align-items-center mb-20">
-                            <h6 class="card-title mb-0">purchased Item Records</h6>
-                            <br />
                             <div class="row">
                                 <div class="col-md-6">
-                                                                     
+                                    <h6 class="card-title mb-0">Search Result</h6>
+                                </div>
+                                <div class="col-md-6 float-right pr-4">
+                                    <span class="badge font-14 badge-soft-info float-right">
+                                        <a href="/Items/PurchaseItems"><i class="zmdi zmdi-arrow-back"></i> Back Records</a>
+                                    </span>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+
+
+                                <div class="col-md-6">
+
                                     <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
                                         <button type="button" class="btn btn-sm btn-outline-success" title="Single purchase entry" onclick='openModalCreateForm("mdlCreateForm","CreateForm","Items","CreatePurchaseItem")'><i class="zmdi zmdi-collection-plus"></i> New Purchase </button>
                                         <button id="btnImport" type="button" class="btn btn-sm btn-outline-success" data-toggle="modal" title="Import purchase data from excel" data-target="#mdlImport"><i class="zmdi zmdi-playlist-plus"></i> Import </button>
@@ -45,22 +55,22 @@
                                 </div>
                                 <div class="col-md-6 float-right">
                                     <div class="input-group">
-                                        <input class="form-control py-2 border-right-0 border" name="PurchaseNo" type="search" placeholder="Search by Purchase No" id="searchItem">
+                                        <input class="form-control py-2 border-right-0 border" value="@searchValue" name="PurchaseNo" type="search" placeholder="Search by Purchase No" id="searchItem">
                                         <span class="input-group-append">
                                             <button class="btn btn-fill-default border-0" disabled>
                                                 <i class="fa fa-search"></i>
                                             </button>
                                         </span>
                                         @*<div class="btn-group mb-2 pr-2">
-                                            <button type="button" class="btn btn-sm btn-fill-default  dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="height:40px;">View As : @selectedProductTypeName</button>
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item @(selectedProductTypeName == "All" ? "disabled" : "")" href="/Items/Items?page=1&ddlId=0">All</a>
-                                                @foreach (var item in productType)
-                                                {
-                                                    <a class="dropdown-item @(string.Equals(selectedProductTypeName, item.Text) ? "disabled" : "")" href="/Items/Items?page=1&ddlId=@item.Value">@item.Text</a>
-                                                }
-                                            </div>aa
-                                        </div>*@
+                        <button type="button" class="btn btn-sm btn-fill-default  dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="height:40px;">View As : @selectedProductTypeName</button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item @(selectedProductTypeName == "All" ? "disabled" : "")" href="/Items/Items?page=1&ddlId=0">All</a>
+                            @foreach (var item in productType)
+                            {
+                                <a class="dropdown-item @(string.Equals(selectedProductTypeName, item.Text) ? "disabled" : "")" href="/Items/Items?page=1&ddlId=@item.Value">@item.Text</a>
+                            }
+                        </div>aa
+                    </div>*@
 
 
                                     </div>
@@ -136,7 +146,7 @@
                                 </table>
                             </div>
                             <div class="form-group pull-right">
-                                @Html.PagedListPager((IPagedList)Model, page => Url.Action("PurchaseItems", new { page = page }),
+                                @Html.PagedListPager((IPagedList)Model, page => Url.Action("Peoples", new { page = page }),
                                new X.PagedList.Mvc.Common.PagedListRenderOptionsBase
                                {
                                    DisplayItemSliceAndTotal = true,
@@ -212,6 +222,8 @@
     </div>
 
 @section Scripts{
+
+    
 
     <script type="text/javascript">
         var lstItems = new Array();

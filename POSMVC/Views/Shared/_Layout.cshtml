@@ -65,7 +65,7 @@
                     <!-- Sidebar Menu -->
                     <nav>
                         <ul class="sidebar-menu" data-widget="tree">
-                            <li><a asp-controller="Home" asp-action="Index" ><i class="zmdi zmdi-home"></i> <span class="font-11">HOME</span></a></li>
+                            <li><a asp-controller="Home" asp-action="Index"><i class="zmdi zmdi-home"></i> <span class="font-11">HOME</span></a></li>
                             <li class="treeview">
                                 <a href="javascript:void(0)"><i class="zmdi zmdi-money"></i> <span class="font-11">CASH & CARRY PURCHASE</span> <i class="fa fa-angle-right"></i></a>
                                 <ul class="treeview-menu">
@@ -75,8 +75,11 @@
                                     <li><a href="timeline.html">- Timeline</a></li>
                                 </ul>
                             </li>
+                            <li><a asp-controller="Orders" asp-action="CLOrder"><i class="zmdi zmdi-circle-o"></i> <span class="font-11" title="Contact Lense Purchase">CL PURCHASE</span></a></li>
+                            <li><a asp-controller="Orders" asp-action="SpecOrder"><i class="zmdi zmdi-voicemail"></i> <span class="font-11" title="Spectacle Purchase">SPEC PURCHASE</span></a></li>
                             <li class="treeview">
                                 <a href="javascript:void(0)"><i class="zmdi zmdi-voicemail"></i> <span class="font-11">SPEC PURCHASE</span> <i class="fa fa-angle-right"></i></a>
+
                                 <ul class="treeview-menu">
                                     <li><a href="mail-inbox.html">- Inbox</a></li>
                                     <li><a href="mail-view.html">- Mail View</a></li>
@@ -115,7 +118,7 @@
                                     <li><a href="dropdown.html">- Dropdown</a></li>
                                     <li><a href="typography.html">- Typography</a></li>
                                 </ul>
-                            </li>                        
+                            </li>
                             <li class="treeview">
                                 <a href="javascript:void(0)"><i class="zmdi zmdi-accounts-outline"></i> <span class="font-11">PEOPLES</span> <i class="fa fa-angle-right"></i></a>
                                 <ul class="treeview-menu">
@@ -166,7 +169,7 @@
                                     <li><a asp-controller="Items" asp-action="Items"> Items</a></li>
                                     <li><a asp-controller="Items" asp-action="PurchaseItems">Item Purchase </a></li>
                                     <li><a asp-controller="Stock" asp-action="Stock"> Stock</a></li>
-                             
+
                                 </ul>
                             </li>
                             <li class="treeview">

@@ -7,6 +7,7 @@ namespace POSMVC.Models.Entities
     {
         public long Id { get; set; }
         public long? UserId { get; set; }
+        public string Icno { get; set; }
         public string Name { get; set; }
         public string Gender { get; set; }
         public string MobileNo { get; set; }

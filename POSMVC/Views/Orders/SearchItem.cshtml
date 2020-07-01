@@ -1,0 +1,546 @@
+﻿@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@model IEnumerable<POSMVC.Models.PageModels.ItemVM.ListProductVM>
+
+
+@{
+    ViewData["Title"] = "Items";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var productType = (SelectList)ViewBag.ProductType;
+    var selectedProductTypeName = (string)ViewBag.SelectedProductTypeName;
+    var searchValue = (string)ViewBag.SearchValue;
+}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-30">
+                    <div class="card-body pb-0">
+                        <div class="justify-content-between align-items-center mb-20">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6 class="card-title mb-0">Search Result</h6>
+                                </div>
+                                <div class="col-md-6 float-right pr-4">
+                                    <span class="badge font-14 badge-soft-info float-right">
+                                        <a href="/Items/Items"><i class="zmdi zmdi-arrow-back"></i> Back Records</a>
+                                    </span>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-6">
+
+                                    <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                                        <button type="button" class="btn btn-sm btn-outline-success" onclick='openModalCreateForm("mdlCreateForm","CreateForm","Items","CreateSingleItem")'><i class="zmdi zmdi-collection-plus"></i> New Item </button>
+                                        @*<button id="btnNewItem" type="button" class="btn btn-sm btn-outline-success"><i class="zmdi zmdi-collection-plus"></i> New Item</button>*@
+                                        <button id="btnImport" type="button" class="btn btn-sm btn-outline-success" data-toggle="modal" data-target="#mdlImport"><i class="zmdi zmdi-playlist-plus"></i> Import From Excel</button>
+                                        <div class="btn-group" role="group">
+                                            <button id="btnGroupDrop1" type="button" class="btn btn-sm btn-outline-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Bulk Insert
+                                            </button>
+                                            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                                <a onclick="createItems(10)" class="dropdown-item" href="#">10 Items</a>
+                                                <a onclick="createItems(20)" class="dropdown-item" href="#">20 Items</a>
+                                                <a onclick="createItems(40)" class="dropdown-item" href="#">40 Items</a>
+                                                <a onclick="createItems(80)" class="dropdown-item" href="#">80 Items</a>
+                                                <a onclick="createItems(100)" class="dropdown-item" href="#">100 Items</a>
+                                                <a onclick="createItems(200)" class="dropdown-item" href="#">200 Items</a>
+                                                <a onclick="createItems(300)" class="dropdown-item" href="#">300 Items</a>
+                                                <a onclick="createItems(400)" class="dropdown-item" href="#">400 Items</a>
+                                                <a onclick="createItems(500)" class="dropdown-item" href="#">500 Items</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 float-right">
+                                    <div class="input-group">
+                                        <input class="form-control py-2 border-right-0 border" value="@searchValue" name="productCode" type="search" placeholder="Search by product code" id="searchItem">
+                                        <span class="input-group-append">
+                                            <button class="btn btn-fill-default border-0" disabled>
+                                                <i class="fa fa-search"></i>
+                                            </button>
+                                        </span>
+                                        <div class="btn-group mb-2 pr-2">
+                                            <button type="button" class="btn btn-sm btn-fill-default  dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="height:40px;">View As : @selectedProductTypeName</button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item @(selectedProductTypeName == "All" ? "disabled" : "")" href="/Items/Items?page=1&ddlId=0">All</a>
+                                                @foreach (var item in productType)
+                                                {
+                                                    <a class="dropdown-item @(string.Equals(selectedProductTypeName, item.Text) ? "disabled" : "")" href="/Items/Items?page=1&ddlId=@item.Value">@item.Text</a>
+                                                }
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @if (Model.Count() <= 0)
+                        {
+                            <div class="text-center">
+                                <span class="badge font-11 badge-soft-purple"> There is no record found</span>
+
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="table-responsive order-stats">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Product Details</th>
+                                            <th>Branding</th>
+                                            <th>Prices</th>
+                                            <th>
+
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td width="30%">
+                                                    <span class="font-15">@item.Products.Name</span>
+                                                    <p class="mb-0">
+                                                        <span class="font-11">Product Code: @item.Products.ProductCode</span>
+                                                    </p>
+                                                    <p class="mb-0">
+                                                        <span class="font-11">Type: @item.ProductType.TypeName</span>
+                                                    </p>
+                                                </td>
+                                                <td width="30%">
+                                                    <p class="mb-0">
+                                                        <span class="badge font-11 badge-soft-info @(item.Products.BrandId == 0 ? "visibility-hidden" : "")">
+                                                            Brand: @item.Brand.Name
+                                                        </span>
+                                                    </p>
+                                                    <p class="mb-0">
+                                                        <span class="badge font-11 badge-soft-purple @(item.Products.ManufacturerId == 0  ? "visibility-hidden" : "")">
+                                                            Supplier: @item.Manufacturer.ManufacturerName
+                                                        </span>
+                                                    </p>
+                                                </td>
+                                                <td width="20%">
+                                                    <div><small> CostPrice: @item.Products.CostPrice </small> </div>
+                                                    <div><small> SellingPrice: @item.Products.SellingPrice </small> </div>
+                                                </td>
+                                                <td width="20%">
+                                                    <a href="#" class="mr-2" data-toggle="tooltip" title="" data-original-title="Update Info" onclick='openModalUpdateForm("mdlUpdateForm", "UpdateForm", "Items", "EditSingleItem", "?id=@item.Products.Id")'><i class="fa fa-edit text-info font-18"></i></a>
+                                                    <a href="#" data-toggle="tooltip" title="" data-original-title="Delete" onclick='deleteConfirmation({id: @item.Products.Id}, "@item.Products.ProductCode", "Items", "DeleteSingleItem")'><i class="fa fa-trash text-danger font-18"></i></a>
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="form-group pull-right">
+                                @Html.PagedListPager((IPagedList)Model, page => Url.Action("Peoples", new { page = page }),
+                               new X.PagedList.Mvc.Common.PagedListRenderOptionsBase
+                               {
+                                   DisplayItemSliceAndTotal = true,
+                                   ContainerDivClasses = new[] { "navigation", "btn btn-default" },
+                                   LiElementClasses = new[] { "page-item" },
+                                   PageClasses = new[] { "btn-success", "page-link" },
+                                   ActiveLiElementClass = "btn-defult"
+                               })
+                            </div>
+                        }
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="mdlImport" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-modal="false">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title mt-0 font-16" id="myLargeModalLabel">Import Items From Excel</h5>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            @*<div class="text-center">
+                                <img src="~/ProjectImage/loading.gif" alt="Loading ..." />
+
+                            </div>*@
+
+                            <div class="input-group">
+                                <div class="img-container">
+                                    <img class="img-thumbnail" id="img" alt="product image" src="~/ProjectImage/uploadFile.png" />
+                                    <div class="middle">
+                                        <label class="btn btn-rounded btn-sm btn-outline-success mb-0 cursor">
+                                            <i class="zmdi zmdi-upload"> </i> Upload File <input type="file" hidden name="File" id="actualFile" onchange="uploadItem('Items', 'ImportFromExcel')">
+                                        </label>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="mdlCreateForm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-modal="false">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title mt-0 font-16" id="myLargeModalLabel">Add New Item</h5>
+                        <button type="button" class="close" onclick='closeModalCreateForm("mdlCreateForm","CreateForm")'>
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="CreateForm">
+                            <div class="text-center">
+                                <img src="~/ProjectImage/loading.gif" alt="Loading ..." />
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="mdlUpdateForm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-modal="false">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title mt-0 font-16" id="myLargeModalLabel">Update Customer</h5>
+                        <button type="button" class="close" onclick='closeModalUpdateForm("mdlUpdateForm","UpdateForm")'>
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="UpdateForm">
+                            <div class="text-center">
+                                <img src="~/ProjectImage/loading.gif" alt="Loading ..." />
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+@section Scripts{
+
+    
+
+    <script type="text/javascript">
+        var lstItems = new Array();
+        $(document).ready(function () {
+
+            $('ul.pagination > li.disabled > a').addClass('page-link');
+
+            $('#searchItem').autocomplete({
+                minLength: 2,
+                source: '/Items/ItemSearch',
+                select: function (event, ui) {
+                    window.location.href = "/Items/SearchResult?productCode=" + ui.item.label;
+                }
+            });
+        });
+
+        $('#btnNewItem').on('click', () => {         
+            $('#newItemSection').show();
+        })
+
+        $('#btnNewItemCancel').on('click', () => {         
+            $('#newItemSection').hide();
+        })
+
+        $('#btnNewItemCancel').on('click', () => {         
+            $('#newItemSection').hide();
+        })
+
+        function saveAll() {    
+            alert('Saveall');
+         
+            insertRecordWithoutForm('Items', 'CreateItems', lstItems);
+        }
+
+        function cancelAll(){   
+            alert('CancelAll');
+               console.log(lstItems);
+            $('#addedItemsPreview').empty();
+            $('#itemsPreviewSection').hide();
+            lstItems = new Array();
+             console.log(lstItems);
+        }
+
+
+
+        $('#btnAddToList').on('click', () => {          
+
+            var data = $("#frmNewItem").serialize().split("&");
+            var obj = {};
+            for (var key in data) {
+                obj[data[key].split("=")[0]] = data[key].split("=")[1];
+            }
+
+            var inputFile = $('#actualFile').val();
+            var lengthObject = parseInt(lstItems.length);
+            obj.Id = lengthObject + 1;
+            obj.File = inputFile;
+            lstItems.push(obj);
+
+            var btns = `
+                        <tr id='btnsExtra'>
+                            <td colspan="5">
+                                <div class="pull-right">
+                                    <button type="button" class="btn btn-sm btn-outline-success" onclick="saveAll()"> <i class="zmdi zmdi-save"></i> Save All</button>
+                                    <button id='btnCancelAll' type="button" class="btn btn-sm btn-outline-danger" onclick="cancelAll()"> <i class="zmdi zmdi-close"></i> Cancel All</button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+
+            $('#itemsPreviewSection').show();
+            $('#addedItemsPreview').empty();
+            for (i = 0; i < lstItems.length; i++) { 
+
+                var drawTr = '';
+                switch (+lstItems[i].ProductTypeId) {
+                    //Frame
+                    case 1:
+                        drawTr = `
+                            <tr>
+                                            <td>
+                                                <div class="input-group">
+                                                    <label class="control-label">Product Image</label>
+                                                    <div class="img-container">
+                                                        <img class="img-thumbnail" alt="item image" src="/ProjectImage/defaultImage.png" style="height: 150px; width: 150px" />
+                                                    </div>
+                                                </div>
+
+                                            </td>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div> Name: ${lstItems[i].Name}</div>
+                                                        <div> Type: ${lstItems[i].ProductTypeId}</div>
+                                                        <div> Brand: ${lstItems[i].BrandId}</div>
+                                                        <div> Manufacturer: ${lstItems[i].ManufacturerId}</div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div> Glass For: ${lstItems[i].FRGender}</div>
+                                                        <div> Size: ${lstItems[i].FRSize}</div>
+                                                        <div> Material: ${lstItems[i].FRMaterial}</div>
+                                                        <div> Face Shap: ${lstItems[i].FRShap}</div>
+                                                        <div> Color: ${lstItems[i].FRColor}</div>
+                                                        <div> Model: ${lstItems[i].FRModel}</div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                         <div> Description: ${lstItems[i].Description}</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="pull-right">
+                                                    <button type="button" class="btn btn-rounded btn-sm btn-outline-danger" onclick='closeModalCreateForm("mdlCreateForm","CreateForm")'> <i class="zmdi zmdi-close"></i> Remove</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                `;
+                        break;
+                    //Contact Lens
+                    case 2:
+                            drawTr = `
+                            <tr>
+                                            <td>
+                                                <div class="input-group">
+                                                    <label class="control-label">Product Image</label>
+                                                    <div class="img-container">
+                                                        <img class="img-thumbnail" alt="Item image" src="/ProjectImage/defaultImage.png" style="height: 150px; width: 150px" />
+                                                    </div>
+                                                </div>
+
+                                            </td>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div> Name: ${lstItems[i].Name}</div>
+                                                        <div> Type: ${lstItems[i].ProductTypeId}</div>
+                                                        <div> Brand: ${lstItems[i].BrandId}</div>
+                                                        <div> Manufacturer: ${lstItems[i].ManufacturerId}</div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div> Type: ${lstItems[i].CLType}</div>
+                                                        <div> BC: ${lstItems[i].CLBc}</div>
+                                                        <div> Material: ${lstItems[i].CLMaterial}</div>
+                                                        <div> Color: ${lstItems[i].CLColor}</div>
+                                                        <div> Diameter: ${lstItems[i].CLDiameter}</div>
+                                                        <div> Features: ${lstItems[i].CLFeatures}</div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                         <div> Description: ${lstItems[i].Description}</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="pull-right">
+                                                    <button type="button" class="btn btn-rounded btn-sm btn-outline-danger" onclick='closeModalCreateForm("mdlCreateForm","CreateForm")'> <i class="zmdi zmdi-close"></i> Remove</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                `;
+                        break;
+                    //Sun Glass
+                    case 3:
+                          drawTr = `
+                            <tr>
+                                            <td>
+                                                <div class="input-group">
+                                                    <label class="control-label">Product Image</label>
+                                                    <div class="img-container">
+                                                        <img class="img-thumbnail" alt="Item image" src="/ProjectImage/defaultImage.png" style="height: 150px; width: 150px" />
+                                                    </div>
+                                                </div>
+
+                                            </td>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div> Name: ${lstItems[i].Name}</div>
+                                                        <div> Type: ${lstItems[i].ProductTypeId}</div>
+                                                        <div> Brand: ${lstItems[i].BrandId}</div>
+                                                        <div> Manufacturer: ${lstItems[i].ManufacturerId}</div>
+                                                    </div>
+                                                    <div class="col-md-4">                       
+                                                        <div> Glass For: ${lstItems[i].SGGender}</div>
+                                                        <div> Size: ${lstItems[i].SGSize}</div>
+                                                        <div> Material: ${lstItems[i].SGMaterial}</div>
+                                                        <div> Face Shap: ${lstItems[i].SGFaceShap}</div>
+                                                        <div> Frame Color: ${lstItems[i].SGFrameColor}</div>
+                                                        <div> Lense Color: ${lstItems[i].SGLenseColor}</div>
+                                                        <div> Type: ${lstItems[i].SGType}</div>
+                                                        <div> Features: ${lstItems[i].SGFeatures}</div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                         <div> Description: ${lstItems[i].Description}</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="pull-right">
+                                                    <button type="button" class="btn btn-rounded btn-sm btn-outline-danger" onclick='closeModalCreateForm("mdlCreateForm","CreateForm")'> <i class="zmdi zmdi-close"></i> Remove</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                `;
+                        break;
+                    default:
+                            drawTr = `
+                            <tr id='rowNo${i}'>
+                                            <td>
+                                                <div class="input-group">
+                                                    <label class="control-label">Product Image</label>
+                                                    <div class="img-container">
+                                                        <img class="img-thumbnail" alt="Item image" src="" style="height: 150px; width: 150px" />
+                                                    </div>
+                                                </div>
+
+                                            </td>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div> Name: ${lstItems[i].Name}</div>
+                                                        <div> Type: ${lstItems[i].ProductTypeId}</div>
+                                                        <div> Brand: ${lstItems[i].BrandId}</div>
+                                                        <div> Manufacturer: ${lstItems[i].ManufacturerId}</div>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                         <div> Description: ${lstItems[i].Description}</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="pull-right">
+                                                    <button type="button" class="btn btn-rounded btn-sm btn-outline-danger" onclick='removeItemFromList("rowNo${i}","${i}")'> <i class="zmdi zmdi-close"></i> Remove</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                `;
+                }
+             $('#addedItemsPreview').append(drawTr);
+            }
+             $('#addedItemsPreview').append(btns);
+
+            //insertRecordWithoutForm('Items', 'CreateItems', lstItems);
+        });
+        
+        function removeItemFromList(row, index) {
+            alert(row + " " + index);
+            $('#' + row).remove();
+            console.log(lstItems);
+            lstItems.splice(index, 1);
+            console.log(lstItems);
+            var itemCount = parseInt(lstItems.length);
+            if (itemCount != null && itemCount < 1) {
+                 $('#btnsExtra').remove();
+                 $('#itemsPreviewSection').hide();
+            }
+        }
+
+        //Use for dynamic fields view on addNewItem
+        $('#tblAddItems tr td #addProductType').on('change', () => {
+
+            var id = $('#addProductType').val();
+            switch (+id) {
+                case 1:
+                    // alert("Frame");
+                    defaultFields();
+                    $("#tblAddItems tr #dynamicTd td[colspan]").attr('colspan', 1);
+                    $('.extraFields').show();
+                    $('.frameFields').show();
+                    break;
+                case 2:
+                    //alert("Contact Lens");
+                    defaultFields();
+                    $("#tblAddItems tr #dynamicTd td[colspan]").attr('colspan', 1);
+                    $('.extraFields').show();
+                    $('.contactLensFields').show();
+                    break;
+                case 3:
+                    //alert("SunGlass");
+                    defaultFields();
+                    $("#tblAddItems tr #dynamicTd td[colspan]").attr('colspan', 1);
+                    $('.extraFields').show();
+                    $('.sunglassFields').show();
+                    break;
+                default:
+                    defaultFields();
+            }
+
+            function defaultFields() {
+                $('.extraFields').hide();
+
+                $("#tblAddItems tr #dynamicTd td[colspan]").attr('colspan', 3);
+                //$('#extraFields1').hide();
+                //$('#extraFields2').hide();
+                $('.frameFields').hide();
+                $('.contactLensFields').hide();
+                $('.sunglassFields').hide();
+            }
+            //  alert("I am changed..." + id );
+        });
+
+    </script>
+
+}
+

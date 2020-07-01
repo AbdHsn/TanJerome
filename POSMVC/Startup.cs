@@ -25,6 +25,7 @@ namespace POSMVC
     public class Startup
     {
         public IConfiguration Configuration { get; }
+        private string _contentRootPath = "";
         public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Configuration = configuration;
@@ -32,6 +33,8 @@ namespace POSMVC
             .SetBasePath(env.ContentRootPath)
             .AddJsonFile("settings.json")
             .Build();
+
+            _contentRootPath = env.ContentRootPath;
         }
 
 
@@ -53,14 +56,29 @@ namespace POSMVC
             //        option.AccessDeniedPath = "/Accounts/Denied";
             //        option.LoginPath = "/Accounts/NotLogIn";
             //    });
+
+
             services.AddAutoMapper(typeof(Startup));
             services.AddMvc();//.SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddScoped<CommonFunctions>();
             services.AddScoped<CommonBusinessLogics>();
 
+            //Online Database
             services.AddDbContext<EyePosDBContext>(option =>
             option.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
+
+            ////Offline Database ...
+            //services.AddDbContext<EyePosDBContext>(option =>
+            //{
+            //    string conn = Configuration.GetConnectionString("connection");
+            //    if (conn.Contains("%CONTENTROOTPATH%"))
+            //    {
+            //        conn = conn.Replace("%CONTENTROOTPATH%", _contentRootPath);
+            //    }
+            //    option.UseSqlServer(conn);
+            //});
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

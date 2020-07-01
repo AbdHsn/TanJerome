@@ -1,0 +1,421 @@
+﻿@model POSMVC.Models.PageModels.OrdersVM.CreateCLOrderVM
+
+
+@{
+    ViewData["Title"] = "Order Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var userTypes = (SelectList)ViewBag.UserTypeId;
+    var selectedUserTypeName = (string)ViewBag.SelectedUserTypeName;
+}
+
+<div class="container-fluid">
+
+    <div class="row">
+
+        <div class="col-12">
+            <div class="card mb-30">
+                <div class="card-body pb-0">
+                    <div class="justify-content-between align-items-center mb-20">
+                        <h6 class="card-title mb-0">Purchase Contact Lense</h6>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button type="button" class="btn btn-sm btn-outline-success" onclick='openModalCreateForm("mdlCreateForm","CreateForm","Users","CreateCustomer")'><i class="zmdi zmdi-collection-plus"></i> New Customer </button>
+                            </div>
+                            <div class="col-md-6 float-right">
+                                <div class="input-group">
+                                    <input class="form-control py-2 border-right-0 border" name="mobile" type="search" placeholder="Search by mobile number" id="searchCustomer">
+                                    <span class="input-group-append">
+                                        <button class="btn btn-fill-default border-0" disabled>
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h6>Customer Details </h6>
+                            <hr />
+                        </div>
+                        <br />
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div> Customer Name: @Model.PersonalDetail?.Name</div>
+                            <div> Gender: @Model.PersonalDetail?.Gender</div>
+                            <div> Address: @Model.PersonalDetail?.Address</div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div> IC No: @Model.PersonalDetail?.Icno</div>
+                            <div> Mobile: @Model.PersonalDetail?.MobileNo </div>
+                            <div> Email: @Model.Users?.Email </div>
+                        </div>
+                        <hr />
+                    </div>
+                    <br />
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h6>Prescription Details </h6>
+                            <hr />
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-6" style="border:solid">
+                            <div class="text-center"> <h5 class="pt-3">Right</h5> <hr /> </div>
+                            <div style="overflow-x:auto;">
+                                <table class="">
+                                    <tr>
+                                        <th></th>
+                                        <th class="text-center">SPH</th>
+                                        <th class="text-center">CYL</th>
+                                        <th class="text-center">AXIS</th>
+                                        <th class="text-center">VA</th>
+                                        <th class="text-center">ADD</th>
+                                    </tr>
+                                    <tr>
+                                        <td class="pr-1 pb-1">NP</td>
+                                        <td class="pr-1 pb-1">
+                                            <input asp-for="ContactLense.Nprsph" class="form-control form-control-customized" />
+                                            <span asp-validation-for="ContactLense.Nprsph" class="text-danger"></span>
+                                        </td>
+                                        <td class="pr-1 pb-1">
+                                            <input asp-for="ContactLense.Nprcyl" class="form-control form-control-customized" />
+                                            <span asp-validation-for="ContactLense.Nprcyl" class="text-danger"></span>
+                                        </td>
+                                        <td class="pr-1 pb-1">
+                                            <input asp-for="ContactLense.Npraxis" class="form-control form-control-customized" />
+                                            <span asp-validation-for="ContactLense.Npraxis" class="text-danger"></span>
+                                        </td>
+
+                                        <td class="pr-1 pb-1">
+                                            <input asp-for="ContactLense.Nprva" class="form-control form-control-customized" />
+                                            <span asp-validation-for="ContactLense.Nprva" class="text-danger"></span>
+                                        </td>
+                                        <td class="pr-1 pb-1">
+                                            <input asp-for="ContactLense.Npradd" class="form-control form-control-customized" />
+                                            <span asp-validation-for="ContactLense.Npradd" class="text-danger"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="pr-1 pb-1">Near</td>
+                                        <td class="pr-1 pb-1">
+                                            <input asp-for="ContactLense.Nprsph" class="form-control form-control-customized" />
+                                            <span asp-validation-for="ContactLense.Nprsph" class="text-danger"></span>
+                                        </td>
+                                        <td class="pr-1 pb-1">
+                                            <input asp-for="ContactLense.Nprcyl" class="form-control form-control-customized" />
+                                            <span asp-validation-for="ContactLense.Nprcyl" class="text-danger"></span>
+                                        </td>
+                                        <td class="pr-1 pb-1">
+                                            <input asp-for="ContactLense.Npraxis" class="form-control form-control-customized" />
+                                            <span asp-validation-for="ContactLense.Npraxis" class="text-danger"></span>
+                                        </td>
+
+                                        <td class="pr-1 pb-1">
+                                            <input asp-for="ContactLense.Nprva" class="form-control form-control-customized" />
+                                            <span asp-validation-for="ContactLense.Nprva" class="text-danger"></span>
+                                        </td>
+                                        <td class="pr-1 pb-1">
+                                            <button class="btn btn-sm btn-fill-default py-1">Calculate</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="pr-1 pb-1">OP</td>
+                                        <td class="pr-1 pb-1">
+                                            <input asp-for="ContactLense.Nprsph" class="form-control form-control-customized" />
+                                            <span asp-validation-for="ContactLense.Nprsph" class="text-danger"></span>
+                                        </td>
+                                        <td class="pr-1 pb-1">
+                                            <input asp-for="ContactLense.Nprcyl" class="form-control form-control-customized" />
+                                            <span asp-validation-for="ContactLense.Nprcyl" class="text-danger"></span>
+                                        </td>
+                                        <td class="pr-1 pb-1">
+                                            <input asp-for="ContactLense.Npraxis" class="form-control form-control-customized" />
+                                            <span asp-validation-for="ContactLense.Npraxis" class="text-danger"></span>
+                                        </td>
+
+                                        <td class="pr-1 pb-1">
+                                            <input asp-for="ContactLense.Nprva" class="form-control form-control-customized" />
+                                            <span asp-validation-for="ContactLense.Nprva" class="text-danger"></span>
+                                        </td>
+                                        <td class="pr-1 pb-1">
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <br />
+                        </div>
+
+                        <div class="col-sm-12 col-md-6 col-lg-6" style="border:solid">
+                            <div class="text-center"> <h5 class="pt-3">Left</h5> <hr /> </div>
+                            <div style="overflow-x:auto;">
+                                <table class="">
+                                    <tr>
+                                        <th></th>
+                                        <th class="text-center">SPH</th>
+                                        <th class="text-center">CYL</th>
+                                        <th class="text-center">AXIS</th>
+                                        <th class="text-center">VA</th>
+                                        <th class="text-center">ADD</th>
+                                    </tr>
+                                    <tr>
+                                        <td class="pr-1 pb-1">NP</td>
+                                        <td class="pr-1 pb-1">
+                                            <input asp-for="ContactLense.Nplsph" class="form-control form-control-customized" />
+                                            <span asp-validation-for="ContactLense.Nplsph" class="text-danger"></span>
+                                        </td>
+                                        <td class="pr-1 pb-1">
+                                            <input asp-for="ContactLense.Nplcyl" class="form-control form-control-customized" />
+                                            <span asp-validation-for="ContactLense.Nplcyl" class="text-danger"></span>
+                                        </td>
+                                        <td class="pr-1 pb-1">
+                                            <input asp-for="ContactLense.Nplaxis" class="form-control form-control-customized" />
+                                            <span asp-validation-for="ContactLense.Nplaxis" class="text-danger"></span>
+                                        </td>
+
+                                        <td class="pr-1 pb-1">
+                                            <input asp-for="ContactLense.Nplva" class="form-control form-control-customized" />
+                                            <span asp-validation-for="ContactLense.Nplva" class="text-danger"></span>
+                                        </td>
+                                        <td class="pr-1 pb-1">
+                                            <input asp-for="ContactLense.Npladd" class="form-control form-control-customized" />
+                                            <span asp-validation-for="ContactLense.Npladd" class="text-danger"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="pr-1 pb-1">Near</td>
+                                        <td class="pr-1 pb-1">
+                                            <input asp-for="ContactLense.Nplsph" class="form-control form-control-customized" />
+                                            <span asp-validation-for="ContactLense.Nplsph" class="text-danger"></span>
+                                        </td>
+                                        <td class="pr-1 pb-1">
+                                            <input asp-for="ContactLense.Nplcyl" class="form-control form-control-customized" />
+                                            <span asp-validation-for="ContactLense.Nplcyl" class="text-danger"></span>
+                                        </td>
+                                        <td class="pr-1 pb-1">
+                                            <input asp-for="ContactLense.Nplaxis" class="form-control form-control-customized" />
+                                            <span asp-validation-for="ContactLense.Nplaxis" class="text-danger"></span>
+                                        </td>
+
+                                        <td class="pr-1 pb-1">
+                                            <input asp-for="ContactLense.Nplva" class="form-control form-control-customized" />
+                                            <span asp-validation-for="ContactLense.Nplva" class="text-danger"></span>
+                                        </td>
+                                        <td class="pr-1 pb-1">
+                                            <button class="btn btn-sm btn-fill-default py-1">Calculate</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="pr-1 pb-1">OP</td>
+                                        <td class="pr-1 pb-1">
+                                            <input asp-for="ContactLense.Nplsph" class="form-control form-control-customized" />
+                                            <span asp-validation-for="ContactLense.Nplsph" class="text-danger"></span>
+                                        </td>
+                                        <td class="pr-1 pb-1">
+                                            <input asp-for="ContactLense.Nplcyl" class="form-control form-control-customized" />
+                                            <span asp-validation-for="ContactLense.Nplcyl" class="text-danger"></span>
+                                        </td>
+                                        <td class="pr-1 pb-1">
+                                            <input asp-for="ContactLense.Nplaxis" class="form-control form-control-customized" />
+                                            <span asp-validation-for="ContactLense.Nplaxis" class="text-danger"></span>
+                                        </td>
+
+                                        <td class="pr-1 pb-1">
+                                            <input asp-for="ContactLense.Nplva" class="form-control form-control-customized" />
+                                            <span asp-validation-for="ContactLense.Nplva" class="text-danger"></span>
+                                        </td>
+                                        <td class="pr-1 pb-1">
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <br />
+                        </div>
+
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-row">
+                                <div class="col-sm-12 col-md-6">
+                                    <label class="control-label">Right BC</label>
+                                    <input asp-for="ContactLense.Rbc" class="form-control form-control-customized" />
+                                    <span asp-validation-for="ContactLense.Rbc" class="text-danger"></span>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+
+                                    <label class="control-label">Left BC</label>
+                                    <input asp-for="ContactLense.Rbc" class="form-control form-control-customized" />
+                                    <span asp-validation-for="ContactLense.Rbc" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-sm-12 col-md-6">
+                                    <label class="control-label">Right Diameter</label>
+                                    <input asp-for="ContactLense.Rdiameter" class="form-control form-control-customized" />
+                                    <span asp-validation-for="ContactLense.Rdiameter" class="text-danger"></span>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+
+                                    <label class="control-label">Left Diameter</label>
+                                    <input asp-for="ContactLense.Ldiameter" class="form-control form-control-customized" />
+                                    <span asp-validation-for="ContactLense.Ldiameter" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-sm-12 col-md-6">
+                                    <label class="control-label">Right K Reading</label>
+                                    <input asp-for="ContactLense.Krreading" class="form-control form-control-customized" />
+                                    <span asp-validation-for="ContactLense.Krreading" class="text-danger"></span>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+
+                                    <label class="control-label">Left K Reading</label>
+                                    <input asp-for="ContactLense.Klreading" class="form-control form-control-customized" />
+                                    <span asp-validation-for="ContactLense.Klreading" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-sm-12 col-md-6">
+                                    <label class="control-label">Right Fitting BC</label>
+                                    <input asp-for="ContactLense.RfittingBc" class="form-control form-control-customized" />
+                                    <span asp-validation-for="ContactLense.RfittingBc" class="text-danger"></span>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+
+                                    <label class="control-label">Left Fitting BC</label>
+                                    <input asp-for="ContactLense.LfittingBc" class="form-control form-control-customized" />
+                                    <span asp-validation-for="ContactLense.LfittingBc" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label asp-for="ContactLense.Remark" class="control-label"></label>
+                                    <textarea asp-for="ContactLense.Remark" id="presentAddress" class="form-control form-control-customized" rows="10" cols="85"></textarea>
+                                    <span asp-validation-for="ContactLense.Remark" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h6>Item Details </h6>
+                            <hr />
+                        </div>
+                        <div class="col-sm-12 col-md-4 col-lg-4">
+                            <label class="control-label">Select Item</label>
+                            <select asp-for="Products.Id" class="custom-select form-control" asp-items="ViewBag.Product" style="padding: 0px;">
+                                <option disabled selected value="">Select Product</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-md-2 col-lg-2">
+                            <label class="control-label">Unit Price</label>
+                            <input class="form-control form-control-customized" id="itemUnitPrice"/>
+                        </div>
+                        <div class="col-sm-12 col-md-2 col-lg-2">
+                            <label class="control-label ">Quantity</label>
+                            <input class="form-control form-control-customized" id="itemQty"/>
+                        </div>
+                        <div class="col-sm-12 col-md-2 col-lg-2">
+                            <label class="control-label">Total</label>
+                            <input class="form-control form-control-customized" id="itemTotal" readonly/>
+                        </div>
+                        <div class="col-sm-12 col-md-2 col-lg-2" style="padding-top:29px">
+                            <button class="btn btn-sm btn-fill-default py-1" id="btnCart"><i class="zmdi zmdi-collection-plus"></i> Cart</button>
+                            <button class="btn btn-sm btn-fill-default py-1" id="btnClear"><i class="zmdi zmdi-format-clear-all"></i>Clear</button>
+                        </div>
+
+                    </div>
+                    <br />
+
+
+                    @*//Input Fields*@
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="mdlCreateForm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-modal="false">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mt-0 font-16" id="myLargeModalLabel">Add New Customer</h5>
+                    <button type="button" class="close" onclick='closeModalCreateForm("mdlCreateForm","CreateForm")'>
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="CreateForm">
+                        <div class="text-center">
+                            <img src="~/ProjectImage/loading.gif" alt="Loading ..." />
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+
+    <script src="~/js/searchable-dropdown/jquery-customselect.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#Products_Id").customselect();
+        });
+
+        $(document).ready(function () {
+
+            $('ul.pagination > li.disabled > a').addClass('page-link');
+
+            $('#searchCustomer').autocomplete({
+                minLength: 2,
+                source: '/Orders/CustomerSearch',
+                select: function (event, ui) {
+                    window.location.href = "/Orders/CustomerSearchResult?mobile=" + ui.item.label;
+                }
+            });
+
+        });
+
+        $('#Products_Id').on("change", () => {
+
+            $('#itemQty').val("");
+            $('#itemTotal').val("");
+
+            var productData = { id: $("#Products_Id").val() };
+            getJsonData("Orders", "GetProduct", productData, 'GET');
+
+            var unitPrice = getJsonResult.sellingPrice;
+            $('#itemUnitPrice').val(unitPrice);
+        });
+
+
+        $('#itemQty').on("change", () => {
+            var itemQty = $('#itemQty').val();
+            var total = itemQty * getJsonResult.sellingPrice;
+            $('#itemTotal').val(total);
+        });
+
+        $('#btnClear').on("click", () => {
+            $('#itemUnitPrice').val("");
+            $('#itemQty').val("");
+            $('#itemTotal').val("");
+            $("#Products_Id").children($("a span").text("Select Product"));
+        });
+
+    </script>
+
+}
+

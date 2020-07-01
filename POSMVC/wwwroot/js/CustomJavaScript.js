@@ -142,6 +142,34 @@ function insertRecordWithoutForm(controller, action, modelObject) {
             }
         });
 }
+
+var getJsonResult = {};
+function getJsonData(controller, action, modelObject, httpRequestType) {
+
+    postData = JSON.stringify(modelObject);
+    $.ajax({
+        type: httpRequestType,
+        url: '/' + controller + '/' + action,
+        contentType: "application/json; charset=utf-8",
+        dataType: 'JSON',
+        data: { jsonData: postData },
+        async: false,
+        cache: false,
+        traditional: true,
+        success:
+            function (result) {
+                if (result != undefined) {
+                    getJsonResult = result;
+                    return getJsonResult;         
+                } 
+            },
+        error: function (result) {
+        },
+        complete: function (result) {
+        }
+    });
+}
+
 //These two methods not use anymore.
 function deleteRecord(modelObject, deleteItemName, controller, action) {
     swal({

@@ -179,86 +179,153 @@ namespace POSMVC.Models.Entities
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
-                entity.Property(e => e.Ladd)
-                    .HasColumnName("LADD")
-                    .HasMaxLength(10);
+                entity.Property(e => e.Klreading)
+                    .HasColumnName("KLReading")
+                    .HasMaxLength(11);
 
-                entity.Property(e => e.Laxis)
-                    .HasColumnName("LAXIS")
-                    .HasMaxLength(10);
+                entity.Property(e => e.Krreading)
+                    .HasColumnName("KRReading")
+                    .HasMaxLength(11);
 
                 entity.Property(e => e.Lbc)
                     .HasColumnName("LBC")
-                    .HasMaxLength(10);
+                    .HasMaxLength(11);
 
-                entity.Property(e => e.Lcyl)
-                    .HasColumnName("LCYL")
-                    .HasMaxLength(10);
+                entity.Property(e => e.Ldiameter)
+                    .HasColumnName("LDiameter")
+                    .HasMaxLength(11);
 
-                entity.Property(e => e.Ldia)
-                    .HasColumnName("LDIA")
-                    .HasMaxLength(10);
+                entity.Property(e => e.LfittingBc)
+                    .HasColumnName("LFittingBC")
+                    .HasMaxLength(11);
 
-                entity.Property(e => e.Liop)
-                    .HasColumnName("LIOP")
-                    .HasMaxLength(10);
+                entity.Property(e => e.NearLadd)
+                    .HasColumnName("NearLADD")
+                    .HasMaxLength(11);
 
-                entity.Property(e => e.Lkeratometry)
-                    .HasColumnName("LKeratometry")
-                    .HasMaxLength(10);
+                entity.Property(e => e.NearLaxis)
+                    .HasColumnName("NearLAXIS")
+                    .HasMaxLength(11);
 
-                entity.Property(e => e.Lsph)
-                    .HasColumnName("LSPH")
-                    .HasMaxLength(10);
+                entity.Property(e => e.NearLcyl)
+                    .HasColumnName("NearLCYL")
+                    .HasMaxLength(11);
 
-                entity.Property(e => e.Lva)
-                    .HasColumnName("LVA")
-                    .HasMaxLength(10);
+                entity.Property(e => e.NearLsph)
+                    .HasColumnName("NearLSPH")
+                    .HasMaxLength(11);
 
-                entity.Property(e => e.Note).HasMaxLength(50);
+                entity.Property(e => e.NearLva)
+                    .HasColumnName("NearLVA")
+                    .HasMaxLength(11);
 
-                entity.Property(e => e.Radd)
-                    .HasColumnName("RADD")
-                    .HasMaxLength(10);
+                entity.Property(e => e.NearRadd)
+                    .HasColumnName("NearRADD")
+                    .HasMaxLength(11);
 
-                entity.Property(e => e.Raxis)
-                    .HasColumnName("RAXIS")
-                    .HasMaxLength(10);
+                entity.Property(e => e.NearRaxis)
+                    .HasColumnName("NearRAXIS")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.NearRcyl)
+                    .HasColumnName("NearRCYL")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.NearRsph)
+                    .HasColumnName("NearRSPH")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.NearRva)
+                    .HasColumnName("NearRVA")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.Npladd)
+                    .HasColumnName("NPLADD")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.Nplaxis)
+                    .HasColumnName("NPLAXIS")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.Nplcyl)
+                    .HasColumnName("NPLCYL")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.Nplsph)
+                    .HasColumnName("NPLSPH")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.Nplva)
+                    .HasColumnName("NPLVA")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.Npradd)
+                    .HasColumnName("NPRADD")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.Npraxis)
+                    .HasColumnName("NPRAXIS")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.Nprcyl)
+                    .HasColumnName("NPRCYL")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.Nprsph)
+                    .HasColumnName("NPRSPH")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.Nprva)
+                    .HasColumnName("NPRVA")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.Oplaxis)
+                    .HasColumnName("OPLAXIS")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.Oplcyl)
+                    .HasColumnName("OPLCYL")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.Oplsph)
+                    .HasColumnName("OPLSPH")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.Oplva)
+                    .HasColumnName("OPLVA")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.Opraxis)
+                    .HasColumnName("OPRAXIS")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.Oprcyl)
+                    .HasColumnName("OPRCYL")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.Oprsph)
+                    .HasColumnName("OPRSPH")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.Oprva)
+                    .HasColumnName("OPRVA")
+                    .HasMaxLength(11);
 
                 entity.Property(e => e.Rbc)
                     .HasColumnName("RBC")
-                    .HasMaxLength(10);
+                    .HasMaxLength(11);
 
-                entity.Property(e => e.Rcyl)
-                    .HasColumnName("RCYL")
-                    .HasMaxLength(10);
+                entity.Property(e => e.Rdiameter)
+                    .HasColumnName("RDiameter")
+                    .HasMaxLength(11);
 
-                entity.Property(e => e.Rdia)
-                    .HasColumnName("RDIA")
-                    .HasMaxLength(10);
+                entity.Property(e => e.Remark).HasMaxLength(100);
 
-                entity.Property(e => e.Riop)
-                    .HasColumnName("RIOP")
-                    .HasMaxLength(10);
-
-                entity.Property(e => e.Rkeratometry)
-                    .HasColumnName("RKeratometry")
-                    .HasMaxLength(10);
-
-                entity.Property(e => e.Rsph)
-                    .HasColumnName("RSPH")
-                    .HasMaxLength(10);
-
-                entity.Property(e => e.Rva)
-                    .HasColumnName("RVA")
-                    .HasMaxLength(10);
+                entity.Property(e => e.RfittingBc)
+                    .HasColumnName("RFittingBC")
+                    .HasMaxLength(11);
 
                 entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
-
-                entity.HasOne(d => d.Customer)
-                    .WithMany(p => p.ContactLenseRx)
-                    .HasForeignKey(d => d.CustomerId)
-                    .HasConstraintName("FK__ContactLe__Custo__6FE99F9F");
             });
 
             modelBuilder.Entity<Customers>(entity =>
@@ -535,6 +602,10 @@ namespace POSMVC.Models.Entities
 
                 entity.Property(e => e.Gender).HasMaxLength(10);
 
+                entity.Property(e => e.Icno)
+                    .HasColumnName("ICNo")
+                    .HasMaxLength(20);
+
                 entity.Property(e => e.Language).HasMaxLength(20);
 
                 entity.Property(e => e.MaritalStatus).HasMaxLength(15);
@@ -710,74 +781,159 @@ namespace POSMVC.Models.Entities
             {
                 entity.ToTable("SpectacleRX");
 
+                entity.Property(e => e.Adimension)
+                    .HasColumnName("ADimension")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.Bdimension)
+                    .HasColumnName("BDimension")
+                    .HasMaxLength(11);
+
                 entity.Property(e => e.CheckedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
-                entity.Property(e => e.Ladd)
-                    .HasColumnName("LAdd")
-                    .HasMaxLength(10);
+                entity.Property(e => e.Ed)
+                    .HasColumnName("ED")
+                    .HasMaxLength(11);
 
-                entity.Property(e => e.Laxis)
-                    .HasColumnName("LAxis")
-                    .HasMaxLength(10);
+                entity.Property(e => e.FrameSize).HasMaxLength(11);
 
-                entity.Property(e => e.Lcyl)
-                    .HasColumnName("LCyl")
-                    .HasMaxLength(10);
+                entity.Property(e => e.Lbc)
+                    .HasColumnName("LBC")
+                    .HasMaxLength(11);
 
                 entity.Property(e => e.Lpd)
-                    .HasColumnName("LPd")
-                    .HasMaxLength(10);
+                    .HasColumnName("LPD")
+                    .HasMaxLength(100);
 
-                entity.Property(e => e.Lprism)
-                    .HasColumnName("LPrism")
-                    .HasMaxLength(10);
+                entity.Property(e => e.NearFarPd)
+                    .HasColumnName("NearFarPD")
+                    .HasMaxLength(100);
 
-                entity.Property(e => e.Lsph)
-                    .HasColumnName("LSph")
-                    .HasMaxLength(10);
+                entity.Property(e => e.NearLadd)
+                    .HasColumnName("NearLADD")
+                    .HasMaxLength(11);
 
-                entity.Property(e => e.Lva)
-                    .HasColumnName("LVa")
-                    .HasMaxLength(10);
+                entity.Property(e => e.NearLaxis)
+                    .HasColumnName("NearLAXIS")
+                    .HasMaxLength(11);
 
-                entity.Property(e => e.Note).HasMaxLength(50);
+                entity.Property(e => e.NearLcyl)
+                    .HasColumnName("NearLCYL")
+                    .HasMaxLength(11);
 
-                entity.Property(e => e.Radd)
-                    .HasColumnName("RAdd")
-                    .HasMaxLength(10);
+                entity.Property(e => e.NearLsph)
+                    .HasColumnName("NearLSPH")
+                    .HasMaxLength(11);
 
-                entity.Property(e => e.Raxis)
-                    .HasColumnName("RAxis")
-                    .HasMaxLength(10);
+                entity.Property(e => e.NearLva)
+                    .HasColumnName("NearLVA")
+                    .HasMaxLength(11);
 
-                entity.Property(e => e.Rcyl)
-                    .HasColumnName("RCyl")
-                    .HasMaxLength(10);
+                entity.Property(e => e.NearRadd)
+                    .HasColumnName("NearRADD")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.NearRaxis)
+                    .HasColumnName("NearRAXIS")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.NearRcyl)
+                    .HasColumnName("NearRCYL")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.NearRsph)
+                    .HasColumnName("NearRSPH")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.NearRva)
+                    .HasColumnName("NearRVA")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.Npladd)
+                    .HasColumnName("NPLADD")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.Nplaxis)
+                    .HasColumnName("NPLAXIS")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.Nplcyl)
+                    .HasColumnName("NPLCYL")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.Nplsph)
+                    .HasColumnName("NPLSPH")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.Nplva)
+                    .HasColumnName("NPLVA")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.Npradd)
+                    .HasColumnName("NPRADD")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.Npraxis)
+                    .HasColumnName("NPRAXIS")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.Nprcyl)
+                    .HasColumnName("NPRCYL")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.Nprsph)
+                    .HasColumnName("NPRSPH")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.Nprva)
+                    .HasColumnName("NPRVA")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.Oplaxis)
+                    .HasColumnName("OPLAXIS")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.Oplcyl)
+                    .HasColumnName("OPLCYL")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.Oplsph)
+                    .HasColumnName("OPLSPH")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.Oplva)
+                    .HasColumnName("OPLVA")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.Opraxis)
+                    .HasColumnName("OPRAXIS")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.Oprcyl)
+                    .HasColumnName("OPRCYL")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.Oprsph)
+                    .HasColumnName("OPRSPH")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.Oprva)
+                    .HasColumnName("OPRVA")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.PupilHeight).HasMaxLength(11);
+
+                entity.Property(e => e.Rbc)
+                    .HasColumnName("RBC")
+                    .HasMaxLength(11);
 
                 entity.Property(e => e.Rpd)
-                    .HasColumnName("RPd")
-                    .HasMaxLength(10);
-
-                entity.Property(e => e.Rprism)
-                    .HasColumnName("RPrism")
-                    .HasMaxLength(10);
-
-                entity.Property(e => e.Rsph)
-                    .HasColumnName("RSph")
-                    .HasMaxLength(10);
-
-                entity.Property(e => e.Rva)
-                    .HasColumnName("RVa")
-                    .HasMaxLength(10);
+                    .HasColumnName("RPD")
+                    .HasMaxLength(11);
 
                 entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
-
-                entity.HasOne(d => d.Customer)
-                    .WithMany(p => p.SpectacleRx)
-                    .HasForeignKey(d => d.CustomerId)
-                    .HasConstraintName("FK__Spectacle__Custo__7D439ABD");
             });
 
             modelBuilder.Entity<Stock>(entity =>

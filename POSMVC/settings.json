@@ -5,7 +5,12 @@
     }
   },
   "ConnectionStrings": {
+    //Online DB String
     "DefaultConnection": "Server=AbdHsn-Laptop;Database=EyePosDB;User ID=AbdHsn-dbms; Password=123123;"
+
+    //Offline DB String
+    //"connection": "Server=(localdb)\\mssqllocaldb;AttachDBFilename=%CONTENTROOTPATH%\\_Database\\EyePosDB.mdf;Trusted_Connection=true;MultipleActiveResultSets=true"
+
   },
   "AllowedHosts": "*"
 }

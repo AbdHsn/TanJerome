@@ -6,33 +6,49 @@ namespace POSMVC.Models.Entities
     public partial class ContactLenseRx
     {
         public long Id { get; set; }
-        public long? CustomerId { get; set; }
-        public string Rsph { get; set; }
-        public string Rcyl { get; set; }
-        public string Raxis { get; set; }
-        public string Rva { get; set; }
+        public long? UserId { get; set; }
+        public string Nprsph { get; set; }
+        public string Nprcyl { get; set; }
+        public string Npraxis { get; set; }
+        public string Nprva { get; set; }
+        public string Npradd { get; set; }
+        public string Nplsph { get; set; }
+        public string Nplcyl { get; set; }
+        public string Nplaxis { get; set; }
+        public string Nplva { get; set; }
+        public string Npladd { get; set; }
+        public string NearRsph { get; set; }
+        public string NearRcyl { get; set; }
+        public string NearRaxis { get; set; }
+        public string NearRva { get; set; }
+        public string NearRadd { get; set; }
+        public string NearLsph { get; set; }
+        public string NearLcyl { get; set; }
+        public string NearLaxis { get; set; }
+        public string NearLva { get; set; }
+        public string NearLadd { get; set; }
+        public string Oprsph { get; set; }
+        public string Oprcyl { get; set; }
+        public string Opraxis { get; set; }
+        public string Oprva { get; set; }
+        public string Oplsph { get; set; }
+        public string Oplcyl { get; set; }
+        public string Oplaxis { get; set; }
+        public string Oplva { get; set; }
         public string Rbc { get; set; }
-        public string Rdia { get; set; }
-        public string Radd { get; set; }
-        public string Riop { get; set; }
-        public string Rkeratometry { get; set; }
-        public string Lsph { get; set; }
-        public string Lcyl { get; set; }
-        public string Laxis { get; set; }
-        public string Lva { get; set; }
         public string Lbc { get; set; }
-        public string Ldia { get; set; }
-        public string Ladd { get; set; }
-        public string Liop { get; set; }
-        public string Lkeratometry { get; set; }
+        public string Rdiameter { get; set; }
+        public string Ldiameter { get; set; }
+        public string Krreading { get; set; }
+        public string Klreading { get; set; }
+        public string RfittingBc { get; set; }
+        public string LfittingBc { get; set; }
+        public string Remark { get; set; }
         public DateTime? CreatedDate { get; set; }
         public long? CreatedBy { get; set; }
         public DateTime? UpdatedDate { get; set; }
         public long? UpdatedBy { get; set; }
-        public DateTime? CheckedDate { get; set; }
         public long? CheckedBy { get; set; }
-        public string Note { get; set; }
-
-        public virtual Customers Customer { get; set; }
+        public DateTime? CheckedDate { get; set; }
     }
 }

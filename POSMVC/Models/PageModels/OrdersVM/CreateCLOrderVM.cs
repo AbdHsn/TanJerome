@@ -11,6 +11,7 @@ namespace POSMVC.Models.PageModels.OrdersVM
     {
         #region Customer Properties
         public Users Users { get; set; }
+        public UserType UserType { get; set; }
         public PersonalDetail PersonalDetail { get; set; }
 
         #endregion
@@ -20,6 +21,14 @@ namespace POSMVC.Models.PageModels.OrdersVM
 
         #endregion
         
+        #region Order and Order Detail Properties
+        public Orders Order { get; set; }
+        public OrderDetails OrderDetails { get; set; }
+
+        public List<OrderDetails> ListOrderDetails { get; set; }
+
+        #endregion
+
         #region Contact Lense Properties
         public ContactLenseRx ContactLense { get; set; }
 

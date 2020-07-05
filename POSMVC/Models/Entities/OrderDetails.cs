@@ -17,6 +17,6 @@ namespace POSMVC.Models.Entities
         public int? DiscountId { get; set; }
         public decimal? DiscountRate { get; set; }
         public decimal? DiscountAmount { get; set; }
-        public decimal? GrandTotal { get; set; }
+        public decimal? Total { get; set; }
     }
 }

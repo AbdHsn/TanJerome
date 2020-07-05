@@ -520,9 +520,9 @@ namespace POSMVC.Models.Entities
 
                 entity.Property(e => e.DiscountRate).HasColumnType("decimal(18, 2)");
 
-                entity.Property(e => e.GrandTotal).HasColumnType("decimal(18, 2)");
-
                 entity.Property(e => e.Price).HasColumnType("decimal(18, 2)");
+
+                entity.Property(e => e.Total).HasColumnType("decimal(18, 2)");
 
                 entity.Property(e => e.VatAmount).HasColumnType("decimal(18, 2)");
 
@@ -543,7 +543,7 @@ namespace POSMVC.Models.Entities
 
                 entity.Property(e => e.DiscountRate).HasColumnType("decimal(18, 2)");
 
-                entity.Property(e => e.FinalTotal).HasColumnType("decimal(18, 2)");
+                entity.Property(e => e.GrandTotal).HasColumnType("decimal(18, 2)");
 
                 entity.Property(e => e.Note).HasMaxLength(100);
 
@@ -556,21 +556,6 @@ namespace POSMVC.Models.Entities
                 entity.Property(e => e.VatAmount).HasColumnType("decimal(18, 2)");
 
                 entity.Property(e => e.VatRate).HasColumnType("decimal(18, 2)");
-
-                entity.HasOne(d => d.Customer)
-                    .WithMany(p => p.Orders)
-                    .HasForeignKey(d => d.CustomerId)
-                    .HasConstraintName("FK__Orders__Customer__74AE54BC");
-
-                entity.HasOne(d => d.Discount)
-                    .WithMany(p => p.Orders)
-                    .HasForeignKey(d => d.DiscountId)
-                    .HasConstraintName("FK__Orders__Discount__75A278F5");
-
-                entity.HasOne(d => d.Vat)
-                    .WithMany(p => p.Orders)
-                    .HasForeignKey(d => d.VatId)
-                    .HasConstraintName("FK__Orders__VatId__76969D2E");
             });
 
             modelBuilder.Entity<PaymentMethods>(entity =>
@@ -758,11 +743,6 @@ namespace POSMVC.Models.Entities
                     .WithMany(p => p.SalesTransaction)
                     .HasForeignKey(d => d.CustomerId)
                     .HasConstraintName("FK__SalesTran__Custo__7A672E12");
-
-                entity.HasOne(d => d.Order)
-                    .WithMany(p => p.SalesTransaction)
-                    .HasForeignKey(d => d.OrderId)
-                    .HasConstraintName("FK__SalesTran__Order__7B5B524B");
 
                 entity.HasOne(d => d.PaymentMethod)
                     .WithMany(p => p.SalesTransaction)

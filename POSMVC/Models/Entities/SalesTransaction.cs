@@ -14,7 +14,6 @@ namespace POSMVC.Models.Entities
         public DateTime? TransactionDate { get; set; }
 
         public virtual Customers Customer { get; set; }
-        public virtual Orders Order { get; set; }
         public virtual PaymentMethods PaymentMethod { get; set; }
     }
 }

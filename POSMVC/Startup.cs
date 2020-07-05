@@ -58,9 +58,9 @@ namespace POSMVC
             //    });
 
 
+            services.AddMvc().AddJsonOptions(option => 
+            option.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddAutoMapper(typeof(Startup));
-            services.AddMvc();//.SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
             services.AddScoped<CommonFunctions>();
             services.AddScoped<CommonBusinessLogics>();
 

@@ -83,12 +83,19 @@ namespace POSMVC.Controllers
         }
 
         [HttpGet, ActionName("CLOrder")]
-        public async Task<IActionResult> CreateCLOrder(long userId)
+        public async Task<IActionResult> CreateCLOrder()
         {
             var ddlProduct = from p in _context.Products
                              select new Products { ProductCode = p.ProductCode + "( Price: $"+ p.SellingPrice +")", Id = p.Id };
             ViewData["Product"] = new SelectList(ddlProduct, "Id", "ProductCode");
 
+            return View("CreateCLOrder", new CreateCLOrderVM());
+        }
+
+        [HttpPost, ActionName("CreateCLOrder")]
+        public async Task<IActionResult> CreateCLOrder([FromForm] CreateCLOrderVM model)
+        {
+           
             return View("CreateCLOrder", new CreateCLOrderVM());
         }
 
@@ -107,6 +114,75 @@ namespace POSMVC.Controllers
                 return BadRequest();
             }
         }
+        #endregion
+
+        #region Customer GetMethods
+        [HttpGet, ActionName("CreateCustomer")]
+        public async Task<IActionResult> Create()
+        {
+            var customerTypes = new List<int> { 4, 5, 6, 7 };
+
+            ViewData["UserTypeId"] = new SelectList(await _context.UserType.Where(u => customerTypes.Contains(u.Id)).ToListAsync(), "Id", "TypeName");
+            return PartialView("_CreateCustomer", new CreateCustomerVM());
+        }
+        #endregion
+
+        #region Customer PostMethods
+        [HttpPost, ActionName("CreateCustomer")]
+        public async Task<JsonResult> CreateCustomer(CreateCustomerVM user)
+        {
+            var result = (dynamic)null;
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    user.Users.CreateDate = DateTime.UtcNow;
+                    user.Users.UserName = user.Users.Email;
+                    _context.Users.Add(user.Users);
+                    await _context.SaveChangesAsync();
+
+                    user.PersonalDetail.UserId = user.Users.Id;
+                    _context.PersonalDetail.Add(user.PersonalDetail);
+                    await _context.SaveChangesAsync();
+
+                    ////Image insertion Code
+                    //if (user.Users.Id > 0)
+                    //{
+                    //    if (user.file != null)
+                    //    {
+                    //        string extension = Path.GetExtension(user.file.FileName);
+                    //        string smallImage = "StaticFiles/Users/SmallImage/";
+                    //        string bigImage = "StaticFiles/Users/BigImage/";
+
+                    //        if (_cmnFunction.SaveImage(user.file, user.Users.Id.ToString(), Path.Combine(_he.WebRootPath, smallImage), extension, 60, 60))
+                    //        {
+                    //            user.Users.SmallImage = smallImage + user.Users.Id.ToString() + extension;
+                    //        }
+
+                    //        if (_cmnFunction.SaveImage(user.file, user.Users.Id.ToString(), Path.Combine(_he.WebRootPath, bigImage), extension))
+                    //        {
+                    //            user.Users.BigImage = bigImage + user.Users.Id.ToString() + extension;
+                    //        }
+
+                    //        _context.Entry(user.Users).State = EntityState.Modified;
+                    //        await _context.SaveChangesAsync();
+                    //    }
+                    //}
+                    ////Image insertion Code
+                    ///
+                    return result = Json(new { success = true, message = user.PersonalDetail.Name + " successfully created.", redirectUrl = @"/Orders/CLOrder" });
+                }
+                else
+                    return result = Json(new { success = false, message = "Data is not valid.", redirectUrl = "" });
+
+            }
+            catch (Exception ex)
+            {
+                string err = @"Exception occured at Users/Create: " + ex.ToString();
+                return result = Json(new { success = false, message = "Operation failed. Contact with system admin.", redirectUrl = "" });
+            }
+        }
+
         #endregion
 
         #region Items GetMethods
@@ -577,37 +653,37 @@ namespace POSMVC.Controllers
         }
 
 
+        [Produces("application/json")]
         [HttpGet, ActionName("CustomerSearchResult")]
-        public async Task<IActionResult> CustomerSearchResult(string mobile)
+        public async Task<IActionResult> CustomerSearchResult(string jsonData)
         {
-            var pageNumber = 1;
-            int pageRowSize = 10;
-            int userTypeId = 0;
-
-            var mobileNo = mobile.Split(" (").FirstOrDefault();
-
-            var customers = new List<ListUser>();
-
-            var customerTypes = new List<int> { 4, 5, 6, 7 };
-
-            if (userTypeId == 0)
+            try
             {
-                var personalD = _context.PersonalDetail.Where(p => p.MobileNo == mobileNo);
-                var users = from u in _context.Users
-                            where customerTypes.Contains(Convert.ToInt32(u.UserTypeId))
-                            join ut in _context.UserType on u.UserTypeId equals ut.Id
-                            join pd in personalD on u.Id equals pd.UserId
-                            select new ListUser { User = u, UserType = ut, PersonalDetail = pd };
-                customers = await users.ToListAsync();
+                var data = JsonConvert.DeserializeObject<String>(jsonData);
+
+                var mobileNo = data.Split(" (").FirstOrDefault();
+
+                var customerTypes = new List<int> { 4, 5, 6, 7 };
+                var personalD = await _context.PersonalDetail.Where(p => p.MobileNo == mobileNo).FirstOrDefaultAsync();
+                var userData = await _context.Users.Where(u => u.Id == personalD.UserId).FirstOrDefaultAsync();
+                var userType = await _context.UserType.Where(ut => ut.Id == userData.UserTypeId).FirstOrDefaultAsync();
+
+                var cl = new CreateCLOrderVM()
+                {
+                    PersonalDetail = personalD,
+                    Users = userData,
+                    UserType = userType
+                };
+                var result = cl;
+                return Ok(result);
             }
-
-            ViewData["UserTypeId"] = new SelectList(_context.UserType.Where(u => customerTypes.Contains(u.Id)), "Id", "TypeName", userTypeId);
-            ViewData["SelectedUserTypeName"] = userTypeId == 0 ? "All" : _context.UserType.Find(userTypeId).TypeName;
-            ViewData["SearchValue"] = mobile;
-
-            var result = customers.ToPagedList(pageNumber, pageRowSize);
-            return View("SearchCustomer", result);
+            catch(Exception ex)
+            {
+                string err = ex.ToString();
+                return BadRequest();
+            }
         }
+
         #endregion
 
     }

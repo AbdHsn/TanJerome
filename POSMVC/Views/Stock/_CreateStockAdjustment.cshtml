@@ -5,12 +5,11 @@
         <div class="row">
             <div class="col-md-12 col-sm-12">
                 <div class="form-group">
-                    <label asp-for="ProductId" class="control-label">Choose Product</label>
-                    <select asp-for="ProductId"  class="custom-select form-control" asp-items="ViewBag.Product">
-                        <option disabled selected value="" >Select Product</option>
+                    <label class="control-label">Choose Product</label>
+                    <select asp-for="ProductId" class="selectpicker show-tick show-menu-arrow form-control" data-size="10" title="Select Product" asp-items="ViewBag.Product" data-live-search="true">
                     </select>
                     <span asp-validation-for="ProductId" class="text-danger"></span>
-                </div>  
+                </div>
             </div>
         </div>
 
@@ -48,11 +47,12 @@
     </form>
 </div>
 
-<script src="~/js/searchable-dropdown/jquery-customselect.js"></script>
+<script src="~/js/searchable-dropdown/bootstrap-select.js"></script>
 <script type="text/javascript">
 
-    $(function () {
-        $("#ProductId").customselect();
+    $('.selectpicker').selectpicker({
+        liveSearch: true,
+        maxOptions: 1
     });
 
 </script>

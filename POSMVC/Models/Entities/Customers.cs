@@ -9,7 +9,6 @@ namespace POSMVC.Models.Entities
         {
             Health = new HashSet<Health>();
             HealthDocument = new HashSet<HealthDocument>();
-            Orders = new HashSet<Orders>();
             SalesReturn = new HashSet<SalesReturn>();
             SalesTransaction = new HashSet<SalesTransaction>();
         }
@@ -28,7 +27,6 @@ namespace POSMVC.Models.Entities
 
         public virtual ICollection<Health> Health { get; set; }
         public virtual ICollection<HealthDocument> HealthDocument { get; set; }
-        public virtual ICollection<Orders> Orders { get; set; }
         public virtual ICollection<SalesReturn> SalesReturn { get; set; }
         public virtual ICollection<SalesTransaction> SalesTransaction { get; set; }
     }

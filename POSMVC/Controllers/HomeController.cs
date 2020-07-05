@@ -16,18 +16,15 @@ namespace POSMVC.Controllers
     public class HomeController : Controller
     {
         private readonly EyePosDBContext _context;
-        private readonly IMapper _mapper;
         private readonly CommonFunctions _cmnFunction;
         private readonly IHostingEnvironment _he;
         public HomeController(
             EyePosDBContext context,
-            IMapper mapper,
             CommonFunctions cmnFunction,
             IHostingEnvironment he
             )
         {
             _context = context;
-            _mapper = mapper;
             _cmnFunction = cmnFunction;
             _he = he;
         }

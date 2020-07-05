@@ -1,4 +1,4 @@
-﻿@model POSMVC.Models.PageModels.UsersVM.CreateUserVM
+﻿@model POSMVC.Models.PageModels.OrdersVM.CreateCustomerVM
 
 <div class="col-md-12">
     <form enctype="multipart/form-data" id="frmCreateCustomer">
@@ -6,7 +6,7 @@
             <div class="col-md-12">
                 <div class="form-row">
                     <div class="form-group col-md-12">
-                        <label asp-for="PersonalDetail.Name" class="control-label"></label>
+                        <label asp-for="PersonalDetail.Name" class="control-label">Order Name</label>
                         <input asp-for="PersonalDetail.Name" class="form-control" />
                         <span asp-validation-for="PersonalDetail.Name" class="text-danger"></span>
                     </div>
@@ -68,7 +68,7 @@
                     <br />
                     <br />
                     <hr />
-                    <button type="button" class="btn btn-sm btn-outline-success" style="width:150px" onclick='insertRecord("Users", "CreateCustomer", "frmCreateCustomer")'> <i class="zmdi zmdi-save"></i> Save</button>
+                    <button type="button" class="btn btn-sm btn-outline-success" style="width:150px" onclick='insertRecord("Orders", "CreateCustomer", "frmCreateCustomer")'> <i class="zmdi zmdi-save"></i> Save</button>
                     <button type="button" class="btn btn-sm btn-outline-danger" style="width:150px" onclick='closeModalCreateForm("mdlCreateForm","CreateForm")'><i class="zmdi zmdi-close"></i> Cancel</button>
                 </div>
             </div>
@@ -88,15 +88,4 @@
         liveSearch: true,
         maxOptions: 1
     });
-
-    $('#Quantity').on("change", () => {
-
-
-        priceRate = $('#PriceRate').val();
-        quantity = $('#Quantity').val();
-        var totalAmount = priceRate * quantity;
-        $('#FinalTotal').val(totalAmount);
-
-    })
-
 </script>

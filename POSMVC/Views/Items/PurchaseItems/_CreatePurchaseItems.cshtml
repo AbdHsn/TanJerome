@@ -6,18 +6,16 @@
             <div class="col-md-6 col-sm-12">
                 <div class="form-group">
                     <label asp-for="ProductId" class="control-label">Choose Product</label>
-                    <select asp-for="ProductId"  class="custom-select form-control" asp-items="ViewBag.Product">
-                        <option disabled selected value="" >Select Product</option>
+                    <select asp-for="ProductId" class="selectpicker show-tick show-menu-arrow form-control" data-size="10" title="Select Product" asp-items="ViewBag.Product" data-live-search="true">
                     </select>
                     <span asp-validation-for="ProductId" class="text-danger"></span>
-                </div>  
+                </div>
             </div>
             <div class="col-md-6 col-sm-12">
 
                 <div class="form-group">
                     <label>Select Supplier</label>
-                    <select asp-for="SupplierId" class="custom-select form-control" asp-items="ViewBag.Manufacturer">
-                        <option disabled selected value="">Select Supplier</option>
+                    <select asp-for="SupplierId" class="selectpicker show-tick show-menu-arrow form-control" data-size="10" title="Select Supplier" asp-items="ViewBag.Manufacturer" data-live-search="true">
                     </select>
                     <span asp-validation-for="ProductId" class="text-danger"></span>
                 </div>
@@ -76,17 +74,22 @@
     </form>
 </div>
 
-<script src="~/js/searchable-dropdown/jquery-customselect.js"></script>
+<script src="~/js/searchable-dropdown/bootstrap-select.js"></script>
 <script type="text/javascript">
 
-    $(function () {
-        $("#ProductId").customselect();
-        $("#SupplierId").customselect();
+    $('#ProductId').selectpicker({
+        liveSearch: true,
+        maxOptions: 1
+    });
+
+    $('#SupplierId').selectpicker({
+        liveSearch: true,
+        maxOptions: 1
     });
 
     $('#Quantity').on("change", () => {
-        
-        
+
+
         priceRate = $('#PriceRate').val();
         quantity = $('#Quantity').val();
         var totalAmount = priceRate * quantity;

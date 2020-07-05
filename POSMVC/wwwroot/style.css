@@ -1021,7 +1021,7 @@ button:focus {
 
 .dropdown-item.active,
 .dropdown-item:active {
-  background-color: transparent; }
+ /* background-color: transparent;*/ }
 
 .page-title-box {
   padding-bottom: 30px; }

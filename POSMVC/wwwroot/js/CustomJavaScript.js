@@ -85,6 +85,10 @@ function toggleBtnClearBtnRemove(sourcePath, btnClearId, btnRemoveId) {
 function insertRecord(controller, action, formId) {
     if ($('#' + formId).valid()) {
         var formData = new FormData($('#' + formId)[0]);
+        //var formData = $('#' + formId).serialize();
+        console.log("Form Values...");
+        console.log(formData);
+        console.log(JSON.stringify(formData));
         $.ajax({
             type: 'POST',
             data: formData,
@@ -143,31 +147,12 @@ function insertRecordWithoutForm(controller, action, modelObject) {
         });
 }
 
-var getJsonResult = {};
 function getJsonData(controller, action, modelObject, httpRequestType) {
-
     postData = JSON.stringify(modelObject);
-    $.ajax({
-        type: httpRequestType,
-        url: '/' + controller + '/' + action,
-        contentType: "application/json; charset=utf-8",
-        dataType: 'JSON',
-        data: { jsonData: postData },
-        async: false,
-        cache: false,
-        traditional: true,
-        success:
-            function (result) {
-                if (result != undefined) {
-                    getJsonResult = result;
-                    return getJsonResult;         
-                } 
-            },
-        error: function (result) {
-        },
-        complete: function (result) {
-        }
-    });
+    var httpRequest = new XMLHttpRequest();
+    httpRequest.open(httpRequestType, ('/' + controller + '/' + action + '?jsonData=' + postData), false);
+    httpRequest.send();
+    return JSON.parse(httpRequest.responseText);
 }
 
 //These two methods not use anymore.
@@ -337,5 +322,10 @@ function deleteConfirmation(modelObject, itemName, controller, action) {
                 swal.close();
             }
         });
+}
+
+function showMessage(title, message, messageType) {
+    //MessageTypes: success, warning, info
+    swal(title, message, messageType);
 }
 //~Database operation functions

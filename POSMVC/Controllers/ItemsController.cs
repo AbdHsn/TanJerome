@@ -192,11 +192,14 @@ namespace POSMVC.Controllers
                     if (getLastPurchaseNo != null)
                     {
                         int creatPurchaseNo = Convert.ToInt32(getLastPurchaseNo.PurchaseNo.Substring(10)) + 1;
-                        model.PurchaseNo = "PUR-" + DateTime.Now.Year + DateTime.Now.Month.ToString("00") + creatPurchaseNo.ToString().PadLeft(10, '0');
+                       // model.PurchaseNo = "PUR-" + DateTime.Now.Year + DateTime.Now.Month.ToString("00") + creatPurchaseNo.ToString().PadLeft(10, '0');
+                        model.PurchaseNo = _cmnBusinessFunction.GenerateNumberWithPrefix("PUR-", creatPurchaseNo.ToString());
                     }
                     else
                     {
-                        model.PurchaseNo = "PUR-" + DateTime.Now.Year + DateTime.Now.Month.ToString("00") + 1.ToString().PadLeft(10, '0');
+                        //model.PurchaseNo = "PUR-" + DateTime.Now.Year + DateTime.Now.Month.ToString("00") + 1.ToString().PadLeft(10, '0');
+                        model.PurchaseNo = _cmnBusinessFunction.GenerateNumberWithPrefix("PUR-", 1.ToString());
+
                     }
 
                     var isStockExist = _context.Stock.Where(s => s.ProductId == model.ProductId).FirstOrDefault();

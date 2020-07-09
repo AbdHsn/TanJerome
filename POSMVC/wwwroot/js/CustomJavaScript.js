@@ -115,36 +115,35 @@ function insertRecord(controller, action, formId) {
         swal("Failed to Save!", "Form is not valid", "error");
     }
 }
-function insertRecordWithoutForm(controller, action, modelObject) {
-
-    console.log("insertRecordWithoutForm Values..");
-    console.log(modelObject);
-    postData = JSON.stringify( modelObject );
-    console.log(postData);
-
+function insertRecordWithoutForm(controller, action, modelObject, icoId, icoClass) {
+   
     $.ajax({
         type: 'POST',
+        //Server receiving object name must be name as 'model'
+        data: { model: modelObject },
+        beforeSend: function () {
+            $('#' + icoId).removeClass(icoClass).addClass('spinner-border spinner-border-sm');
+        },
+        dataType: 'json',
+        cache: false,
         url: '/' + controller + '/' + action,
-        contentType: "application/json; charset=utf-8",
-        dataType: 'JSON',
-        data: {model: postData},
-            cache: false,
-            traditional: true,
-            success:
-                function (data) {
-                    if (data.success === true) {
-                        if (data.redirectUrl.length)
-                            window.location.href = data.redirectUrl;
-                    }
-                    if (data.success === false) {
-                        swal("Failed to save data!", data.message, "error");
-                    }
-                },
-            error: function (data) {
+        success:
+            function (data) {
+                if (data.success === true) {
+                    if (data.redirectUrl.length)
+                        window.location.href = data.redirectUrl;
+                }
+                if (data.success === false) {
+                    swal("Failed to proceed!", data.message, "error");
+                }
             },
-            complete: function (data) {
-            }
-        });
+        error: function (data) {
+        },
+        complete: function (data) {
+            $('#' + icoId).removeClass('spinner-border spinner-border-sm').addClass(icoClass);
+        }
+    });
+
 }
 
 function getJsonData(controller, action, modelObject, httpRequestType) {
@@ -152,7 +151,12 @@ function getJsonData(controller, action, modelObject, httpRequestType) {
     var httpRequest = new XMLHttpRequest();
     httpRequest.open(httpRequestType, ('/' + controller + '/' + action + '?jsonData=' + postData), false);
     httpRequest.send();
-    return JSON.parse(httpRequest.responseText);
+    try {
+        return JSON.parse(httpRequest.responseText);
+    } catch (e) {
+        return "";
+    }
+   
 }
 
 //These two methods not use anymore.
@@ -325,7 +329,7 @@ function deleteConfirmation(modelObject, itemName, controller, action) {
 }
 
 function showMessage(title, message, messageType) {
-    //MessageTypes: success, warning, info
+    //MessageTypes: success, warning, info, error
     swal(title, message, messageType);
 }
 //~Database operation functions

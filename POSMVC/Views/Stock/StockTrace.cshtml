@@ -77,7 +77,7 @@
                                 </table>
                             </div>
                             <div class="form-group pull-right">
-                                @Html.PagedListPager((IPagedList)Model, page => Url.Action("StockTrace", new { page = page }),
+                                @Html.PagedListPager((IPagedList)Model, page => Url.Action("StockTrace", new { page = page, productId = Model.FirstOrDefault().Products.Id }),
                                new X.PagedList.Mvc.Common.PagedListRenderOptionsBase
                                {
                                    DisplayItemSliceAndTotal = true,

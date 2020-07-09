@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using AutoMapper;
 using CommonLogics;
 using Microsoft.AspNetCore.Authorization;
@@ -51,54 +52,140 @@ namespace POSMVC.Controllers
         #endregion
 
         #region CLOrder GetMethods
-        public async Task<IActionResult> PurchaseItems(int? page, int? ddlId)
-        {
-            var pageNumber = page ?? 1;
-            int pageRowSize = 10;
-            int productType = ddlId ?? 0;
-
-            var purchaseItems = new List<ListPurchaseVM>();
-
-            if (productType == 0)
-            {
-                var getPurchase = from pu in _context.Purchase
-                                  orderby pu.EntryDate descending
-                                  join p in _context.Products on pu.ProductId equals p.Id
-                                  join pt in _context.ProductType on p.ProductTypeId equals pt.Id
-                                  join mf in _context.Manufacturer on p.ManufacturerId equals mf.Id
-                                  join br in _context.Brand on p.BrandId equals br.Id
-                                  select new ListPurchaseVM
-                                  {
-                                      Purchase = pu,
-                                      Products = p,
-                                      ProductType = pt,
-                                      Brand = br,
-                                      Manufacturer = mf
-                                  };
-                purchaseItems = await getPurchase.ToListAsync();
-            }
-
-            var result = purchaseItems.ToPagedList(pageNumber, pageRowSize);
-            return View("PurchaseItems/PurchaseItems", result);
-        }
-
         [HttpGet, ActionName("CLOrder")]
         public async Task<IActionResult> CreateCLOrder()
         {
-            var ddlProduct = from p in _context.Products
-                             select new Products { ProductCode = p.ProductCode + "( Price: $"+ p.SellingPrice +")", Id = p.Id };
+            var ddlProduct = from s in _context.Stock
+                             join p in _context.Products on s.ProductId equals p.Id
+                             select new { ProductCode = p.ProductCode + "( Available Qty: "+ s.AvailableQuantity +")", Id = p.Id };
             ViewData["Product"] = new SelectList(ddlProduct, "Id", "ProductCode");
 
             return View("CreateCLOrder", new CreateCLOrderVM());
         }
 
         [HttpPost, ActionName("CreateCLOrder")]
-        public async Task<IActionResult> CreateCLOrder([FromForm] CreateCLOrderVM model)
+        public async Task<JsonResult> CreateCLOrder(CreateCLOrderVM model)
         {
-           
-            return View("CreateCLOrder", new CreateCLOrderVM());
+            var result = (dynamic)null;
+            try
+            {
+
+                if (model.ContactLense != null && model.Users != null)
+                {
+
+                    using (TransactionScope transaction = new TransactionScope()) {
+
+                        Orders lastOrder = _context.Orders.OrderByDescending(o => o.OrderPlaceDate).FirstOrDefault();
+                        //Order No generating...
+                        if (lastOrder != null)
+                        {
+                            int newOrderNo = Convert.ToInt32(lastOrder.OrderNo.Substring(10)) + 1;
+                            model.Order.OrderNo = _cmnBusinessFunction.GenerateNumberWithPrefix("ORD-", newOrderNo.ToString());
+                        }
+                        else
+                        {
+                            model.Order.OrderNo = _cmnBusinessFunction.GenerateNumberWithPrefix("ORD-", 1.ToString());
+                        }
+                        //Importing Prescription record...
+                        if (model.ContactLense.Id > 0)
+                        {
+                            //Update if record exist
+                            var preCL = _context.ContactLenseRx.Find(model.ContactLense.Id);
+
+                            model.ContactLense.UserId = preCL.UserId;
+                            model.ContactLense.CreatedDate = preCL.CreatedDate;
+                            model.ContactLense.UpdatedDate = DateTime.UtcNow;
+                            model.ContactLense.CheckedBy = 0;
+                            model.ContactLense.CheckedDate = null;
+
+                            _context.Entry(preCL).CurrentValues.SetValues(model.ContactLense);
+                            _context.SaveChanges();
+                        }
+                        else
+                        {
+                            //Create new if not record exist
+                            model.ContactLense.UserId = model.Users.Id;
+                            model.ContactLense.CreatedDate = DateTime.UtcNow;
+                            _context.ContactLenseRx.Add(model.ContactLense);
+                            _context.SaveChanges();
+                        }
+                        //Importing Order Master record...
+                        model.Order.UserId = model.Users.Id;
+                        model.Order.GrandTotal = model.ListOrderDetails.Sum(s => s.Total);
+                        model.Order.BillingAddress = model.Order.BillingAddress;
+                        model.Order.OrderPlaceDate = DateTime.Now;
+                        model.Order.CollectionDate = model.Order.CollectionDate;
+                        model.Order.OrderStatus = "Received";
+                        _context.Orders.Add(model.Order);
+                        _context.SaveChanges();
+                        //Importing Order Child record...
+                        foreach (var item in model.ListOrderDetails)
+                        {
+                            //Checking stock is available or not, if not return back.
+                            var isStockAvailable = from s in _context.Stock
+                                                   where s.ProductId == item.ProductId
+                                                   join p in _context.Products on s.ProductId equals p.Id
+                                                   select new { s, p };
+
+                            var currentStock = isStockAvailable.FirstOrDefault();
+                            if (item.Quantity > currentStock.s.AvailableQuantity)
+                            {
+                                return result = Json(new { success = false, message = " Order can't proceed, "+ currentStock.p.ProductCode+ " out of stock.", redirectUrl = "" });
+                            }
+
+                            item.OrderId = model.Order.Id;
+                            //item.CollectionDate = DateTime.Now;
+                            _context.OrderDetails.Add(item);
+                            _context.SaveChanges();
+
+                            //Updating Stock of current item
+                            currentStock.s.LastQuantity = currentStock.s.AvailableQuantity;
+                            currentStock.s.AvailableQuantity -= item.Quantity;
+                            currentStock.s.LastUpdate = DateTime.UtcNow;
+
+                            _context.Stock.Update(currentStock.s);
+                            _context.SaveChanges();
+                            //Creating stock trace
+                            _cmnBusinessFunction.CreateStockTrace(new CreateStockTraceBM()
+                            {
+                                NewQuantity = -Convert.ToInt32(item.Quantity),
+                                ProductId = Convert.ToInt64(item.ProductId),
+                                ReferenecId = model.Order.OrderNo,
+                                TableReference = "Sales Order",
+                                Note = "Generated From Orders/CreateCLOrder"
+                            });
+                        }
+
+                        transaction.Complete();
+                        return result = Json(new { success = true, message = " Order successfully placed.", redirectUrl = @"/Orders/Payment" });
+                    }
+                }
+                else
+                    return result = Json(new { success = false, message = "Failed to place order.", redirectUrl = "" });
+            }
+            catch (Exception ex)
+            {
+                string err = ex.ToString();
+                return result = Json(new { success = false, message = "Operation failed. Contact with system admin.", redirectUrl = "" });
+            }
         }
 
+        [Produces("application/json")]
+        [HttpGet, ActionName("GetLastRX")]
+        public async Task<IActionResult> GetLastRX(string jsonData)
+        {
+            try
+            {
+                var user = JsonConvert.DeserializeObject<Users>(jsonData);
+                var result = await _context.ContactLenseRx.Where(u => u.UserId == user.Id).OrderByDescending(c => c.CreatedDate).FirstOrDefaultAsync();
+                return Ok(result);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+        
         [Produces("application/json")]
         [HttpGet, ActionName("GetProduct")]
         public async Task<IActionResult> GetProduct(string jsonData)
@@ -106,8 +193,12 @@ namespace POSMVC.Controllers
             try
             {
                 var product = JsonConvert.DeserializeObject<Products>(jsonData);
-                var result = await _context.Products.Where(p => p.Id == product.Id).FirstOrDefaultAsync();
-                return Ok(result);
+                var result = from s in _context.Stock
+                             where s.ProductId == product.Id
+                             join p in _context.Products on s.ProductId equals p.Id
+                             select new { stock = s, product = p };
+               // var result = await _context.Products.Where(p => p.Id == product.Id).FirstOrDefaultAsync();
+                return Ok(await result.FirstOrDefaultAsync());
             }
             catch
             {

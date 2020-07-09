@@ -38,5 +38,15 @@ namespace POSMVC.CommonBusinessFunctions
             _context.StockTrace.Add(createNewStockTrace);
             _context.SaveChanges();
         }
+
+        public string GenerateNumberWithPrefix(string prefix, string number)
+        {
+            return prefix + DateTime.Now.Year + DateTime.Now.Month.ToString("00") + number.PadLeft(10, '0');
+        }
+        
+        public string StockIncreaseOrDecrease(string prefix, string number)
+        {
+            return prefix + DateTime.Now.Year + DateTime.Now.Month.ToString("00") + number.PadLeft(10, '0');
+        }
     }
 }

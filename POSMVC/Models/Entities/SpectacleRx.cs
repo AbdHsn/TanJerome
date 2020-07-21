@@ -6,6 +6,7 @@ namespace POSMVC.Models.Entities
     public partial class SpectacleRx
     {
         public long Id { get; set; }
+        public long? UserId { get; set; }
         public string Nprsph { get; set; }
         public string Nprcyl { get; set; }
         public string Npraxis { get; set; }
@@ -44,6 +45,7 @@ namespace POSMVC.Models.Entities
         public string Rpd { get; set; }
         public string Lpd { get; set; }
         public string NearFarPd { get; set; }
+        public string Remark { get; set; }
         public DateTime? CreatedDate { get; set; }
         public long? CreatedBy { get; set; }
         public DateTime? UpdatedDate { get; set; }

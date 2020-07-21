@@ -35,6 +35,7 @@ namespace POSMVC.Models.Entities
         public virtual DbSet<Manufacturer> Manufacturer { get; set; }
         public virtual DbSet<OrderDetails> OrderDetails { get; set; }
         public virtual DbSet<Orders> Orders { get; set; }
+        public virtual DbSet<Payment> Payment { get; set; }
         public virtual DbSet<PaymentMethods> PaymentMethods { get; set; }
         public virtual DbSet<PersonalDetail> PersonalDetail { get; set; }
         public virtual DbSet<ProductType> ProductType { get; set; }
@@ -558,6 +559,23 @@ namespace POSMVC.Models.Entities
                 entity.Property(e => e.VatRate).HasColumnType("decimal(18, 2)");
             });
 
+            modelBuilder.Entity<Payment>(entity =>
+            {
+                entity.HasIndex(e => e.TransactionNo)
+                    .HasName("UQ__Payment__554342D9B731789B")
+                    .IsUnique();
+
+                entity.Property(e => e.InstrumentNo).HasMaxLength(25);
+
+                entity.Property(e => e.PaidAmount).HasColumnType("decimal(18, 2)");
+
+                entity.Property(e => e.TableReference).HasMaxLength(30);
+
+                entity.Property(e => e.TransactionDate).HasColumnType("datetime");
+
+                entity.Property(e => e.TransactionNo).HasMaxLength(20);
+            });
+
             modelBuilder.Entity<PaymentMethods>(entity =>
             {
                 entity.HasIndex(e => e.Name)
@@ -908,6 +926,8 @@ namespace POSMVC.Models.Entities
                 entity.Property(e => e.Rbc)
                     .HasColumnName("RBC")
                     .HasMaxLength(11);
+
+                entity.Property(e => e.Remark).HasMaxLength(100);
 
                 entity.Property(e => e.Rpd)
                     .HasColumnName("RPD")

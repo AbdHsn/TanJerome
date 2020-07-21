@@ -1,0 +1,408 @@
+﻿@model POSMVC.Models.PageModels.OrdersVM.CLOrderInvoice.CLOrderInvoiceVM
+
+@{
+    ViewData["Title"] = "Order Invoice";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+
+
+    <div class="row">
+        <div class="col-xl-12">
+            <!-- Content -->
+            <div class="card mb-30">
+                <div class="card-body p-5">
+
+                    <div class="container-fluid" id="printSection">
+                        <br />
+                        <div class="row">
+                            <div class="col-12 col-md-5 text-lg-right">
+                                <div class="text-center border-success float-md-right float-lg-right" style="border:solid 1px; height: 100px; width: 100px;">
+                                    <br /><br />
+                                    logo
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-7">
+                                <h2>Jerome Optic POS</h2>
+                                <p>
+                                    4/13/Cha, West Vasantak <br />
+                                    Cantonment, Dhaka
+                                </p>
+                            </div>
+                        </div>
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <h6 class="text-uppercase font-12 text-muted">Customer Details</h6>
+                                <p class="text-muted mb-4">
+                                    <strong class="text-body font-16 text-dark">@Model.PersonalDetail.Name</strong> <br>
+                                    Phone #@Model.PersonalDetail.MobileNo <br>
+                                    IC #@Model.PersonalDetail.Icno<br>
+                                    Email: @Model.User.Email
+                                </p>
+                            </div>
+                            <div class="col-12 col-md-6 text-md-right">
+                                <img src="data:image/png;base64,@System.Convert.ToBase64String(Model.QrCode)" class="float-lg-right float-md-right" alt="QrCode Missing" style="max-width: 25%; min-width:25%" />
+                                <h6 class="text-uppercase text-muted font-12 pt-2 mb-0">
+                                    #Order Invoice
+                                </h6>
+                                <p class="text-dark mb-0">
+                                    <strong class="text-body font-16 text-dark " id="orderNo">@Model.Order.OrderNo</strong>
+                                </p>
+                                <h6 class="text-uppercase text-muted font-12 mb-0">
+                                    #Order Date & Time
+                                </h6>
+                                <p class="mb-4 text-dark">
+                                    <time>@Model.Order.OrderPlaceDate.Value.ToString("dddd, dd MMMM yyyy")</time>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- #region Presciption Details -->
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <h6 class="text-uppercase font-12 text-muted">Presciption Details</h6>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <h6 class="text-uppercase font-12 text-muted pull-right">#Order Collection Date: @Model.Order.CollectionDate.Value.ToString("dddd, dd MMMM yyyy")</h6>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6 col-lg-6 rounded">
+                                <div class="text-center text-uppercase"> <h6 class="py-0">Right</h6> </div>
+                                <div style="overflow-x:auto;">
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <th width="10%"></th>
+                                            <th class="p-0 pb-0 text-center">SPH</th>
+                                            <th class="p-0 pb-0 text-center">CYL</th>
+                                            <th class="p-0 pb-0 text-center">AXIS</th>
+                                            <th class="p-0 pb-0 text-center">VA</th>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-0 pl-2">NP</td>
+                                            <td class="p-0 text-center">
+                                                @Model.ContactLense.Nprsph
+                                            </td>
+                                            <td class="p-0 text-center">
+                                                @Model.ContactLense.Nprcyl
+                                            </td>
+                                            <td class="p-0 text-center">
+                                                @Model.ContactLense.Npraxis
+                                            </td>
+
+                                            <td class="p-0 text-center">
+                                                @Model.ContactLense.Nprva
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-0 pl-2">Near</td>
+                                            <td class="p-0 text-center">
+                                                @Model.ContactLense.NearRsph
+                                            </td>
+                                            <td class="p-0 text-center">
+                                                @Model.ContactLense.NearRcyl
+                                            </td>
+                                            <td class="p-0 text-center">
+                                                @Model.ContactLense.NearRaxis
+                                            </td>
+
+                                            <td class="p-0 text-center">
+                                                @Model.ContactLense.NearRva
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-0 pl-2">OP</td>
+                                            <td class="p-0 text-center">
+                                                @Model.ContactLense.Oprsph
+                                            </td>
+                                            <td class="p-0 text-center">
+                                                @Model.ContactLense.Oprcyl
+                                            </td>
+                                            <td class="p-0 text-center">
+                                                @Model.ContactLense.Opraxis
+                                            </td>
+
+                                            <td class="p-0 text-center">
+                                                @Model.ContactLense.Oprva
+                                            </td>
+                                        </tr>
+                                        <tr><td class="p-0" colspan="5"></td></tr>
+                                        <tr class="border-top-2">
+
+                                            <td class="p-0 pr-2 text-right" colspan="4">Add</td>
+                                            <td class="p-0 text-center">
+                                                @Model.ContactLense.Npradd
+                                            </td>
+                                        </tr>
+                                        <tr class="border-top-2">
+
+                                            <td class="p-0 pr-2 text-right" colspan="4">Right BC</td>
+                                            <td class="p-0 text-center">
+                                                @Model.ContactLense.Rbc
+                                            </td>
+                                        </tr>
+                                        <tr class="border-top-2">
+
+                                            <td class="p-0 pr-2 text-right" colspan="4">Right Diameter</td>
+                                            <td class="p-0 text-center">
+                                                @Model.ContactLense.Rdiameter
+                                            </td>
+                                        </tr>
+                                        <tr class="border-top-2">
+
+                                            <td class="p-0 pr-2 text-right" colspan="4">Right KReading</td>
+                                            <td class="p-0 text-center">
+                                                @Model.ContactLense.Krreading
+                                            </td>
+                                        </tr>
+                                        <tr class="border-top-2">
+
+                                            <td class="p-0 pr-2 text-right" colspan="4">Right Fitting BC</td>
+                                            <td class="p-0 text-center">
+                                                @Model.ContactLense.RfittingBc
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <br />
+                            </div>
+
+                            <div class="col-sm-12 col-md-6 col-lg-6 rounded">
+
+                                <div class="text-center text-uppercase"> <h6 class="py-0">Left</h6> </div>
+                                <div style="overflow-x:auto;">
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <th width="10%"></th>
+                                            <th class="p-0 text-center">SPH</th>
+                                            <th class="p-0 text-center">CYL</th>
+                                            <th class="p-0 text-center">AXIS</th>
+                                            <th class="p-0 text-center">VA</th>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-0 pl-2">NP</td>
+                                            <td class="p-0 text-center">
+                                                @Model.ContactLense.Nplsph
+                                            </td>
+                                            <td class="p-0 text-center">
+                                                @Model.ContactLense.Nplcyl
+                                            </td>
+                                            <td class="p-0 text-center">
+                                                @Model.ContactLense.Nplaxis
+                                            </td>
+
+                                            <td class="p-0 text-center">
+                                                @Model.ContactLense.Nplva
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-0 pl-2">Near</td>
+                                            <td class="p-0 text-center">
+                                                @Model.ContactLense.NearLsph
+                                            </td>
+                                            <td class="p-0 text-center">
+                                                @Model.ContactLense.NearLcyl
+                                            </td>
+                                            <td class="p-0 text-center">
+                                                @Model.ContactLense.NearLaxis
+                                            </td>
+
+                                            <td class="p-0 text-center">
+                                                @Model.ContactLense.NearLva
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-0 pl-2">OP</td>
+                                            <td class="p-0 text-center">
+                                                @Model.ContactLense.Oplsph
+                                            </td>
+                                            <td class="p-0 text-center">
+                                                @Model.ContactLense.Oplcyl
+                                            </td>
+                                            <td class="p-0 text-center">
+                                                @Model.ContactLense.Oplaxis
+                                            </td>
+
+                                            <td class="p-0 text-center">
+                                                @Model.ContactLense.Oplva
+                                            </td>
+                                        </tr>
+                                        <tr><td class="p-0" colspan="5"></td></tr>
+                                        <tr class="border-top-2">
+
+                                            <td class="p-0 pr-2 text-right" colspan="4">Add</td>
+                                            <td class="p-0 text-center">
+                                                @Model.ContactLense.Npladd
+                                            </td>
+                                        </tr>
+                                        <tr class="border-top-2">
+
+                                            <td class="p-0 pr-2 text-right" colspan="4">Left BC</td>
+                                            <td class="p-0 text-center">
+                                                @Model.ContactLense.Lbc
+                                            </td>
+                                        </tr>
+                                        <tr class="border-top-2">
+
+                                            <td class="p-0 pr-2 text-right" colspan="4">Left Diameter</td>
+                                            <td class="p-0 text-center">
+                                                @Model.ContactLense.Ldiameter
+                                            </td>
+                                        </tr>
+                                        <tr class="border-top-2">
+
+                                            <td class="p-0 pr-2 text-right" colspan="4">Left KReading</td>
+                                            <td class="p-0 text-center">
+                                                @Model.ContactLense.Klreading
+                                            </td>
+                                        </tr>
+                                        <tr class="border-top-2">
+
+                                            <td class="p-0 pr-2 text-right" colspan="4">Left Fitting BC</td>
+                                            <td class="p-0 text-center">
+                                                @Model.ContactLense.LfittingBc
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <br />
+                            </div>
+                        </div>
+                        <!-- #endregion -->
+
+                        <div class="row">
+                            <div class="col-12">
+                                <!-- Table -->
+
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr class="pt-0">
+                                            <th class="px-0 pl-2 bg-transparent border-top-0">
+                                                <span class="font-14">#Order Items</span>
+                                            </th>
+                                            <th class="px-0 pr-2 bg-transparent border-top-0 text-right">
+                                                <span class="font-14">Quantity</span>
+                                            </th>
+                                            <th class="px-0 pr-2 bg-transparent border-top-0 text-right">
+                                                <span class="font-14">Unit Price</span>
+                                            </th>
+                                            <th class="px-0 pr-2 bg-transparent border-top-0 text-right">
+                                                <span class="font-14">Total</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.ListOrderDetails)
+                                        {
+                                            <tr>
+                                                <td class="px-2 py-0">
+                                                    @(Model.ListOrderDetails.IndexOf(item) + 1). @item.Product.Name (@item.Product.ProductCode)
+                                                </td>
+                                                <td class="px-2 py-0 text-right">
+                                                    @item.OrderDetail.Quantity
+                                                </td>
+                                                <td class="px-2 py-0 text-right">
+                                                    $@item.OrderDetail.Price
+                                                </td>
+                                                <td class="px-2 py-0 text-right">
+                                                    $@item.OrderDetail.Total
+                                                </td>
+                                            </tr>
+                                        }
+                                        <tr class="pt-0">
+                                            <td class="py-0 px-2 border-top" colspan="3">
+                                                <strong>Total</strong>
+                                            </td>
+                                            <td class="py-0 px-2 text-right">
+                                                <strong class="font-14">
+                                                    $@Model.Order.GrandTotal
+                                                </strong>
+                                            </td>
+                                        </tr>
+                                        <tr class="pt-0">
+                                            <td class="py-0 px-2 border-top" colspan="3">
+                                                <strong>Paid</strong>
+                                            </td>
+                                            <td class="py-0 px-2 text-right">
+                                                <strong class="font-14">
+
+                                                </strong>
+                                            </td>
+                                        </tr>
+                                        <tr class="pt-0">
+                                            <td class="py-0 px-2 border-top" colspan="3">
+                                                <strong>Due </strong>
+                                            </td>
+                                            <td class="py-0 px-2 text-right">
+                                                <strong class="font-14">
+
+                                                </strong>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <!-- Title -->
+                                <h6 class="text-uppercase">
+                                    Remark
+                                </h6>
+                                <!-- Text -->
+                                <p class="text-muted mb-0">
+                                    @Model.ContactLense.Remark
+                                </p>
+
+                            </div>
+                        </div> <!-- / .row -->
+
+
+                    </div>
+
+                    <div class="row pull-right">
+                        <button class="btn btn-rounded btn-outline-primary" id="btnPrint"><i class="zmdi zmdi-print"></i> Print</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/JSPDF/html2pdf.bundle.js"></script>
+    <script type="text/javascript">
+        //function test() {
+        //    console.log("Printing...");
+        //    var doc = new jsPDF({
+        //        orientation: 'portrait'
+        //    });
+        //    doc.text(20, 20, 'Abdullah Bin Hasan....');
+        //    doc.addPage();
+        //    doc.text(60, 1000, 'Abdullah Bin Hasan 2....');
+        //    //doc.save('ord.pdf');
+        //    doc.autoPrint();
+        //    doc.output('dataurlnewwindow');
+        //    console.log("Printing Ok..");
+        //}
+
+        $('#btnPrint').on('click', () => {
+            //// Get the element.
+            var element = document.getElementById('printSection');
+            //// Generate the PDF.
+            var opt = {
+                margin: 0,
+                filename: $('#orderNo').text() + '.pdf',
+                html2canvas: { scale: 1 },
+                image: { type: 'jpeg', quality: 0.98 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+            };
+            html2pdf().set(opt).from(element).save();
+        });
+
+    </script>
+
+}
+

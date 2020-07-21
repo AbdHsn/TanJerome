@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewData["Title"] = "Request Failed.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Preloader -->
+<div id="preloader">
+    <div class="preloader-load"></div>
+</div>
+<!-- Preloader -->
+<!-- Error Page Area -->
+<div class="colorlib-error-page-area">
+    <!-- Error Content -->
+    <div class="error-content">
+        <!-- Error Thumb -->
+        <div class="erro-thumb">
+            <img src="~/img/bg-img/bg.png" />
+        </div>
+        <h3 class="text-danger">@ViewBag.ErrorMessage </h3>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-rounded btn-outline-primary">Back To Home</a>
+    </div>
+</div>

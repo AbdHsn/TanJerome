@@ -1,4 +1,4 @@
-﻿@model POSMVC.Models.PageModels.OrdersVM.CreateCLOrderVM
+﻿@model POSMVC.Models.PageModels.OrdersVM.CreateSpecOrderVM
 
 
 @{
@@ -16,7 +16,7 @@
 
                     <!-- #region NewCustomer and Search Section -->
                     <div class="justify-content-between align-items-center mb-20">
-                        <h6 class="card-title mb-0"> Contact Lense Purchase</h6>
+                        <h6 class="card-title mb-0">Spectacle Purchase </h6>
                         <br />
                         <div class="row">
                             <div class="col-md-6">
@@ -87,8 +87,8 @@
                     </div>
                     <hr />
                     <div class="row">
-                        <input type="hidden" asp-for="ContactLense.Id" />
-                        <div class="col-sm-12 col-md-6 col-lg-6 rounded" style="border: solid 1px #e3dfdf">
+                        <input type="hidden" asp-for="SpectacleRx.Id" />
+                        <div class="col-sm-12 col-md-6 col-lg-6 rounded" style="border:solid 1px #e3dfdf">
                             <div class="text-center"> <h5 class="pt-3">Right</h5> <hr /> </div>
                             <div style="overflow-x:auto;">
                                 <table class="">
@@ -103,36 +103,36 @@
                                     <tr>
                                         <td class="pr-1 pb-1">NP</td>
                                         <td class="pr-1 pb-1">
-                                            <input asp-for="ContactLense.Nprsph" class="form-control form-control-customized" />
+                                            <input asp-for="SpectacleRx.Nprsph" class="form-control form-control-customized" />
                                         </td>
                                         <td class="pr-1 pb-1">
-                                            <input asp-for="ContactLense.Nprcyl" class="form-control form-control-customized" />
+                                            <input asp-for="SpectacleRx.Nprcyl" class="form-control form-control-customized" />
                                         </td>
                                         <td class="pr-1 pb-1">
-                                            <input asp-for="ContactLense.Npraxis" class="form-control form-control-customized" />
+                                            <input asp-for="SpectacleRx.Npraxis" class="form-control form-control-customized" />
                                         </td>
 
                                         <td class="pr-1 pb-1">
-                                            <input asp-for="ContactLense.Nprva" class="form-control form-control-customized" />
+                                            <input asp-for="SpectacleRx.Nprva" class="form-control form-control-customized" />
                                         </td>
                                         <td class="pr-1 pb-1">
-                                            <input asp-for="ContactLense.Npradd" class="form-control form-control-customized" />
+                                            <input asp-for="SpectacleRx.Npradd" class="form-control form-control-customized" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="pr-1 pb-1">Near</td>
                                         <td class="pr-1 pb-1">
-                                            <input asp-for="ContactLense.NearRsph" class="form-control form-control-customized" />
+                                            <input asp-for="SpectacleRx.NearRsph" class="form-control form-control-customized" />
                                         </td>
                                         <td class="pr-1 pb-1">
-                                            <input asp-for="ContactLense.NearRcyl" class="form-control form-control-customized" />
+                                            <input asp-for="SpectacleRx.NearRcyl" class="form-control form-control-customized" />
                                         </td>
                                         <td class="pr-1 pb-1">
-                                            <input asp-for="ContactLense.NearRaxis" class="form-control form-control-customized" />
+                                            <input asp-for="SpectacleRx.NearRaxis" class="form-control form-control-customized" />
                                         </td>
 
                                         <td class="pr-1 pb-1">
-                                            <input asp-for="ContactLense.NearRva" class="form-control form-control-customized" />
+                                            <input asp-for="SpectacleRx.NearRva" class="form-control form-control-customized" />
                                         </td>
                                         <td class="pr-1 pb-1">
                                             <button type="button" id="btnNRCalculate" class="btn btn-sm btn-fill-default py-1 w-100">Calculate</button>
@@ -141,17 +141,17 @@
                                     <tr>
                                         <td class="pr-1 pb-1">OP</td>
                                         <td class="pr-1 pb-1">
-                                            <input asp-for="ContactLense.Oprsph" class="form-control form-control-customized" />
+                                            <input asp-for="SpectacleRx.Oprsph" class="form-control form-control-customized" />
                                         </td>
                                         <td class="pr-1 pb-1">
-                                            <input asp-for="ContactLense.Oprcyl" class="form-control form-control-customized" />
+                                            <input asp-for="SpectacleRx.Oprcyl" class="form-control form-control-customized" />
                                         </td>
                                         <td class="pr-1 pb-1">
-                                            <input asp-for="ContactLense.Opraxis" class="form-control form-control-customized" />
+                                            <input asp-for="SpectacleRx.Opraxis" class="form-control form-control-customized" />
                                         </td>
 
                                         <td class="pr-1 pb-1">
-                                            <input asp-for="ContactLense.Oprva" class="form-control form-control-customized" />
+                                            <input asp-for="SpectacleRx.Oprva" class="form-control form-control-customized" />
                                         </td>
                                         <td class="pr-1 pb-1">
                                         </td>
@@ -161,10 +161,7 @@
                             <br />
                         </div>
 
-                       
-
                         <div class="col-sm-12 col-md-6 col-lg-6 rounded" style="border: solid 1px #e3dfdf">
-
                             <div class="text-center"> <h5 class="pt-3">Left</h5> <hr /> </div>
                             <div style="overflow-x:auto;">
                                 <table class="">
@@ -179,36 +176,36 @@
                                     <tr>
                                         <td class="pr-1 pb-1">NP</td>
                                         <td class="pr-1 pb-1">
-                                            <input asp-for="ContactLense.Nplsph" class="form-control form-control-customized" />
+                                            <input asp-for="SpectacleRx.Nplsph" class="form-control form-control-customized" />
                                         </td>
                                         <td class="pr-1 pb-1">
-                                            <input asp-for="ContactLense.Nplcyl" class="form-control form-control-customized" />
+                                            <input asp-for="SpectacleRx.Nplcyl" class="form-control form-control-customized" />
                                         </td>
                                         <td class="pr-1 pb-1">
-                                            <input asp-for="ContactLense.Nplaxis" class="form-control form-control-customized" />
+                                            <input asp-for="SpectacleRx.Nplaxis" class="form-control form-control-customized" />
                                         </td>
 
                                         <td class="pr-1 pb-1">
-                                            <input asp-for="ContactLense.Nplva" class="form-control form-control-customized" />
+                                            <input asp-for="SpectacleRx.Nplva" class="form-control form-control-customized" />
                                         </td>
                                         <td class="pr-1 pb-1">
-                                            <input asp-for="ContactLense.Npladd" class="form-control form-control-customized" />
+                                            <input asp-for="SpectacleRx.Npladd" class="form-control form-control-customized" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="pr-1 pb-1">Near</td>
                                         <td class="pr-1 pb-1">
-                                            <input asp-for="ContactLense.NearLsph" class="form-control form-control-customized" />
+                                            <input asp-for="SpectacleRx.NearLsph" class="form-control form-control-customized" />
                                         </td>
                                         <td class="pr-1 pb-1">
-                                            <input asp-for="ContactLense.NearLcyl" class="form-control form-control-customized" />
+                                            <input asp-for="SpectacleRx.NearLcyl" class="form-control form-control-customized" />
                                         </td>
                                         <td class="pr-1 pb-1">
-                                            <input asp-for="ContactLense.NearLaxis" class="form-control form-control-customized" />
+                                            <input asp-for="SpectacleRx.NearLaxis" class="form-control form-control-customized" />
                                         </td>
 
                                         <td class="pr-1 pb-1">
-                                            <input asp-for="ContactLense.NearLva" class="form-control form-control-customized" />
+                                            <input asp-for="SpectacleRx.NearLva" class="form-control form-control-customized" />
                                         </td>
                                         <td class="pr-1 pb-1">
                                             <button type="button" id="btnNLCalculate" class="btn btn-sm btn-fill-default py-1 w-100">Calculate</button>
@@ -217,17 +214,17 @@
                                     <tr>
                                         <td class="pr-1 pb-1">OP</td>
                                         <td class="pr-1 pb-1">
-                                            <input asp-for="ContactLense.Oplsph" class="form-control form-control-customized" />
+                                            <input asp-for="SpectacleRx.Oplsph" class="form-control form-control-customized" />
                                         </td>
                                         <td class="pr-1 pb-1">
-                                            <input asp-for="ContactLense.Oplcyl" class="form-control form-control-customized" />
+                                            <input asp-for="SpectacleRx.Oplcyl" class="form-control form-control-customized" />
                                         </td>
                                         <td class="pr-1 pb-1">
-                                            <input asp-for="ContactLense.Oplaxis" class="form-control form-control-customized" />
+                                            <input asp-for="SpectacleRx.Oplaxis" class="form-control form-control-customized" />
                                         </td>
 
                                         <td class="pr-1 pb-1">
-                                            <input asp-for="ContactLense.Oplva" class="form-control form-control-customized" />
+                                            <input asp-for="SpectacleRx.Oplva" class="form-control form-control-customized" />
                                         </td>
                                         <td class="pr-1 pb-1">
                                         </td>
@@ -244,54 +241,50 @@
                         <div class="col-sm-12 col-md-6 col-lg-6">
                             <div class="form-row">
                                 <div class="col-sm-12 col-md-6">
-                                    <label class="control-label">Right BC</label>
-                                    <input asp-for="ContactLense.Rbc" class="form-control form-control-customized" />
+                                    <label class="control-label">Pupil Height</label>
+                                    <input asp-for="SpectacleRx.PupilHeight" class="form-control form-control-customized" />
                                 </div>
                                 <div class="col-sm-12 col-md-6">
 
-                                    <label class="control-label">Left BC</label>
-                                    <input asp-for="ContactLense.Lbc" class="form-control form-control-customized" />
+                                    <label class="control-label">Frame Size</label>
+                                    <input asp-for="SpectacleRx.FrameSize" class="form-control form-control-customized" />
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="col-sm-12 col-md-6">
-                                    <label class="control-label">Right Diameter</label>
-                                    <input asp-for="ContactLense.Rdiameter" class="form-control form-control-customized" />
+                                    <label class="control-label">A Dimension</label>
+                                    <input asp-for="SpectacleRx.Adimension" class="form-control form-control-customized" />
                                 </div>
                                 <div class="col-sm-12 col-md-6">
 
-                                    <label class="control-label">Left Diameter</label>
-                                    <input asp-for="ContactLense.Ldiameter" class="form-control form-control-customized" />
+                                    <label class="control-label">B Dimension</label>
+                                    <input asp-for="SpectacleRx.Bdimension" class="form-control form-control-customized" />
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="col-sm-12 col-md-6">
+                                    <label class="control-label">Right PD</label>
+                                    <input asp-for="SpectacleRx.Rpd" class="form-control form-control-customized" />
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+
+                                    <label class="control-label">Left PD</label>
+                                    <input asp-for="SpectacleRx.Lpd" class="form-control form-control-customized" />
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="col-sm-12 col-md-6">
-                                    <label class="control-label">Right K Reading</label>
-                                    <input asp-for="ContactLense.Krreading" class="form-control form-control-customized" />
-                                </div>
-                                <div class="col-sm-12 col-md-6">
-
-                                    <label class="control-label">Left K Reading</label>
-                                    <input asp-for="ContactLense.Klreading" class="form-control form-control-customized" />
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="col-sm-12 col-md-6">
-                                    <label class="control-label">Right Fitting BC</label>
-                                    <input asp-for="ContactLense.RfittingBc" class="form-control form-control-customized" />
-                                </div>
-                                <div class="col-sm-12 col-md-6">
-
-                                    <label class="control-label">Left Fitting BC</label>
-                                    <input asp-for="ContactLense.LfittingBc" class="form-control form-control-customized" />
+                                <div class="col-sm-12 col-md-12">
+                                    <label class="control-label">NEAR/FAR PD</label>
+                                    <input asp-for="SpectacleRx.NearFarPd" class="form-control form-control-customized" />
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-6 col-lg-6">
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label asp-for="ContactLense.Remark" class="control-label"></label>
-                                    <textarea asp-for="ContactLense.Remark" id="ContactLense_Remark" class="form-control form-control-customized" rows="10" cols="85"></textarea>
+                                    <label asp-for="SpectacleRx.Remark" class="control-label"></label>
+                                    <textarea asp-for="SpectacleRx.Remark" id="SpectacleRx_Remark" class="form-control form-control-customized" rows="10" cols="85"></textarea>
                                 </div>
                             </div>
 
@@ -440,13 +433,13 @@
 
             select: function (event, ui) {
                 var serverData = getJsonData("Orders", "CustomerSearchResult", ui.item.label, "GET");
+                //Set Customer Values From Search
 
                 clearPrescription();
                 cartList = new Array();
                 toggleCartHeaderFooter(cartList);
                 $('#cartPreview').empty();
 
-                //Set Customer Values From Search
                 $('#Users_Id').val(serverData.users.id);
                 $('#pdName').text("Name: " + serverData.personalDetail.name);
                 $('#pdGender').text("Gender: " + serverData.personalDetail.gender);
@@ -459,18 +452,18 @@
 
         //Use For NR Calculator
         $('#btnNRCalculate').on("click", () => {
-            $('#ContactLense_NearRsph').val(parseFloat($('#ContactLense_Nprsph').val()) + parseFloat($('#ContactLense_Npradd').val()));
-            $('#ContactLense_NearRcyl').val($('#ContactLense_Nprcyl').val());
-            $('#ContactLense_NearRaxis').val($('#ContactLense_Npraxis').val());
-            $('#ContactLense_NearRva').val($('#ContactLense_Nprva').val());
+            $('#SpectacleRx_NearRsph').val(parseFloat($('#SpectacleRx_Nprsph').val()) + parseFloat($('#SpectacleRx_Npradd').val()));
+            $('#SpectacleRx_NearRcyl').val($('#SpectacleRx_Nprcyl').val());
+            $('#SpectacleRx_NearRaxis').val($('#SpectacleRx_Npraxis').val());
+            $('#SpectacleRx_NearRva').val($('#SpectacleRx_Nprva').val());
         });
 
         //Use For NL Calculator
         $('#btnNLCalculate').on("click", () => {
-            $('#ContactLense_NearLsph').val(parseFloat($('#ContactLense_Nplsph').val()) + parseFloat($('#ContactLense_Npladd').val()));
-            $('#ContactLense_NearLcyl').val($('#ContactLense_Nplcyl').val());
-            $('#ContactLense_NearLaxis').val($('#ContactLense_Nplaxis').val());
-            $('#ContactLense_NearLva').val($('#ContactLense_Nplva').val());
+            $('#SpectacleRx_NearLsph').val(parseFloat($('#SpectacleRx_Nplsph').val()) + parseFloat($('#SpectacleRx_Npladd').val()));
+            $('#SpectacleRx_NearLcyl').val($('#SpectacleRx_Nplcyl').val());
+            $('#SpectacleRx_NearLaxis').val($('#SpectacleRx_Nplaxis').val());
+            $('#SpectacleRx_NearLva').val($('#SpectacleRx_Nplva').val());
         });
 
         //$('#btnNLCalculate').on("click", () => {
@@ -484,94 +477,92 @@
                 showMessage("Customer selection is require.", "", "warning");
                 return;
             }
-            var serverData = getJsonData("Orders", "GetCLLastRX", user, 'GET');
+            var serverData = getJsonData("Orders", "GetSpecLastRX", user, 'GET');
 
             if (serverData.length == 0 || serverData == null) {
-                showMessage("No previous Contact Lense RX found.", "", "info");
+                showMessage("No previous Spectacle RX found.", "", "info");
                 return;
             }
-
+            console.log(serverData);
             $('#btnLastRXClear').show();
-            $('#ContactLense_Id').val(serverData.id);
-            $('#ContactLense_Nprsph').val(serverData.nprsph);
-            $('#ContactLense_Nprcyl').val(serverData.nprcyl);
-            $('#ContactLense_Npraxis').val(serverData.npraxis);
-            $('#ContactLense_Nprva').val(serverData.nprva);
-            $('#ContactLense_Npradd').val(serverData.npradd);
-            $('#ContactLense_Nplsph').val(serverData.nplsph);
-            $('#ContactLense_Nplcyl').val(serverData.nplcyl);
-            $('#ContactLense_Nplaxis').val(serverData.nplaxis);
-            $('#ContactLense_Nplva').val(serverData.nplva);
-            $('#ContactLense_Npladd').val(serverData.npladd);
-            $('#ContactLense_NearRsph').val(serverData.nearRsph);
-            $('#ContactLense_NearRcyl').val(serverData.nearRcyl);
-            $('#ContactLense_NearRaxis').val(serverData.nearRaxis);
-            $('#ContactLense_NearRva').val(serverData.nearRva);
-            $('#ContactLense_NearRadd').val(serverData.nearRadd);
-            $('#ContactLense_NearLsph').val(serverData.nearLsph);
-            $('#ContactLense_NearLcyl').val(serverData.nearLcyl);
-            $('#ContactLense_NearLaxis').val(serverData.nearLaxis);
-            $('#ContactLense_NearLva').val(serverData.nearLva);
-            $('#ContactLense_NearLadd').val(serverData.nearLadd);
-            $('#ContactLense_Oprsph').val(serverData.oprsph);
-            $('#ContactLense_Oprcyl').val(serverData.oprcyl);
-            $('#ContactLense_Opraxis').val(serverData.opraxis);
-            $('#ContactLense_Oprva').val(serverData.oprva);
-            $('#ContactLense_Oplsph').val(serverData.oplsph);
-            $('#ContactLense_Oplcyl').val(serverData.oplcyl);
-            $('#ContactLense_Oplaxis').val(serverData.oplaxis);
-            $('#ContactLense_Oplva').val(serverData.oplva);
-            $('#ContactLense_Rbc').val(serverData.rbc);
-            $('#ContactLense_Lbc').val(serverData.lbc);
-            $('#ContactLense_Rdiameter').val(serverData.rdiameter);
-            $('#ContactLense_Ldiameter').val(serverData.ldiameter);
-            $('#ContactLense_Krreading').val(serverData.krreading);
-            $('#ContactLense_Klreading').val(serverData.klreading);
-            $('#ContactLense_RfittingBc').val(serverData.rfittingBc);
-            $('#ContactLense_LfittingBc').val(serverData.lfittingBc);
-            $('#ContactLense_Remark').val(serverData.remark);
+            $('#SpectacleRx_Id').val(serverData.id);
+            $('#SpectacleRx_Nprsph').val(serverData.nprsph);
+            $('#SpectacleRx_Nprcyl').val(serverData.nprcyl);
+            $('#SpectacleRx_Npraxis').val(serverData.npraxis);
+            $('#SpectacleRx_Nprva').val(serverData.nprva);
+            $('#SpectacleRx_Npradd').val(serverData.npradd);
+            $('#SpectacleRx_Nplsph').val(serverData.nplsph);
+            $('#SpectacleRx_Nplcyl').val(serverData.nplcyl);
+            $('#SpectacleRx_Nplaxis').val(serverData.nplaxis);
+            $('#SpectacleRx_Nplva').val(serverData.nplva);
+            $('#SpectacleRx_Npladd').val(serverData.npladd);
+            $('#SpectacleRx_NearRsph').val(serverData.nearRsph);
+            $('#SpectacleRx_NearRcyl').val(serverData.nearRcyl);
+            $('#SpectacleRx_NearRaxis').val(serverData.nearRaxis);
+            $('#SpectacleRx_NearRva').val(serverData.nearRva);
+            $('#SpectacleRx_NearRadd').val(serverData.nearRadd);
+            $('#SpectacleRx_NearLsph').val(serverData.nearLsph);
+            $('#SpectacleRx_NearLcyl').val(serverData.nearLcyl);
+            $('#SpectacleRx_NearLaxis').val(serverData.nearLaxis);
+            $('#SpectacleRx_NearLva').val(serverData.nearLva);
+            $('#SpectacleRx_NearLadd').val(serverData.nearLadd);
+            $('#SpectacleRx_Oprsph').val(serverData.oprsph);
+            $('#SpectacleRx_Oprcyl').val(serverData.oprcyl);
+            $('#SpectacleRx_Opraxis').val(serverData.opraxis);
+            $('#SpectacleRx_Oprva').val(serverData.oprva);
+            $('#SpectacleRx_Oplsph').val(serverData.oplsph);
+            $('#SpectacleRx_Oplcyl').val(serverData.oplcyl);
+            $('#SpectacleRx_Oplaxis').val(serverData.oplaxis);
+            $('#SpectacleRx_Oplva').val(serverData.oplva);
+            $('#SpectacleRx_PupilHeight').val(serverData.pupilHeight);
+            $('#SpectacleRx_FrameSize').val(serverData.frameSize);
+            $('#SpectacleRx_Adimension').val(serverData.adimension);
+            $('#SpectacleRx_Bdimension').val(serverData.bdimension);
+            $('#SpectacleRx_Rpd').val(serverData.rpd);
+            $('#SpectacleRx_Lpd').val(serverData.lpd);
+            $('#SpectacleRx_NearFarPd').val(serverData.nearFarPd);
+            $('#SpectacleRx_Remark').val(serverData.remark);
         });
 
         //Use for Clean Last RX Value
         function clearPrescription() {
-            $('#ContactLense_Id').val("");
-            $('#ContactLense_Nprsph').val("");
-            $('#ContactLense_Nprcyl').val("");
-            $('#ContactLense_Npraxis').val("");
-            $('#ContactLense_Nprva').val("");
-            $('#ContactLense_Npradd').val("");
-            $('#ContactLense_Nplsph').val("");
-            $('#ContactLense_Nplcyl').val("");
-            $('#ContactLense_Nplaxis').val("");
-            $('#ContactLense_Nplva').val("");
-            $('#ContactLense_Npladd').val("");
-            $('#ContactLense_NearRsph').val("");
-            $('#ContactLense_NearRcyl').val("");
-            $('#ContactLense_NearRaxis').val("");
-            $('#ContactLense_NearRva').val("");
-            $('#ContactLense_NearRadd').val("");
-            $('#ContactLense_NearLsph').val("");
-            $('#ContactLense_NearLcyl').val("");
-            $('#ContactLense_NearLaxis').val("");
-            $('#ContactLense_NearLva').val("");
-            $('#ContactLense_NearLadd').val("");
-            $('#ContactLense_Oprsph').val("");
-            $('#ContactLense_Oprcyl').val("");
-            $('#ContactLense_Opraxis').val("");
-            $('#ContactLense_Oprva').val("");
-            $('#ContactLense_Oplsph').val("");
-            $('#ContactLense_Oplcyl').val("");
-            $('#ContactLense_Oplaxis').val("");
-            $('#ContactLense_Oplva').val("");
-            $('#ContactLense_Rbc').val("");
-            $('#ContactLense_Lbc').val("");
-            $('#ContactLense_Rdiameter').val("");
-            $('#ContactLense_Ldiameter').val("");
-            $('#ContactLense_Krreading').val("");
-            $('#ContactLense_Klreading').val("");
-            $('#ContactLense_RfittingBc').val("");
-            $('#ContactLense_LfittingBc').val("");
-            $('#ContactLense_Remark').val("");
+            $('#SpectacleRx_Id').val("");
+            $('#SpectacleRx_Nprsph').val("");
+            $('#SpectacleRx_Nprcyl').val("");
+            $('#SpectacleRx_Npraxis').val("");
+            $('#SpectacleRx_Nprva').val("");
+            $('#SpectacleRx_Npradd').val("");
+            $('#SpectacleRx_Nplsph').val("");
+            $('#SpectacleRx_Nplcyl').val("");
+            $('#SpectacleRx_Nplaxis').val("");
+            $('#SpectacleRx_Nplva').val("");
+            $('#SpectacleRx_Npladd').val("");
+            $('#SpectacleRx_NearRsph').val("");
+            $('#SpectacleRx_NearRcyl').val("");
+            $('#SpectacleRx_NearRaxis').val("");
+            $('#SpectacleRx_NearRva').val("");
+            $('#SpectacleRx_NearRadd').val("");
+            $('#SpectacleRx_NearLsph').val("");
+            $('#SpectacleRx_NearLcyl').val("");
+            $('#SpectacleRx_NearLaxis').val("");
+            $('#SpectacleRx_NearLva').val("");
+            $('#SpectacleRx_NearLadd').val("");
+            $('#SpectacleRx_Oprsph').val("");
+            $('#SpectacleRx_Oprcyl').val("");
+            $('#SpectacleRx_Opraxis').val("");
+            $('#SpectacleRx_Oprva').val("");
+            $('#SpectacleRx_Oplsph').val("");
+            $('#SpectacleRx_Oplcyl').val("");
+            $('#SpectacleRx_Oplaxis').val("");
+            $('#SpectacleRx_Oplva').val("");
+            $('#SpectacleRx_PupilHeight').val("");
+            $('#SpectacleRx_FrameSize').val("");
+            $('#SpectacleRx_Adimension').val("");
+            $('#SpectacleRx_Bdimension').val("");
+            $('#SpectacleRx_Rpd').val("");
+            $('#SpectacleRx_Lpd').val("");
+            $('#SpectacleRx_NearFarPd').val("");
+            $('#SpectacleRx_Remark').val("");
             $('#btnLastRXClear').hide();
         }
 
@@ -716,45 +707,44 @@
                 users: {
                     id: userId
                 },
-                contactLense: {
-                    id: $('#ContactLense_Id').val(),
-                    nprsph: $('#ContactLense_Nprsph').val(),
-                    nprcyl: $('#ContactLense_Nprcyl').val(),
-                    npraxis: $('#ContactLense_Npraxis').val(),
-                    nprva: $('#ContactLense_Nprva').val(),
-                    npradd: $('#ContactLense_Npradd').val(),
-                    nplsph: $('#ContactLense_Nplsph').val(),
-                    nplcyl: $('#ContactLense_Nplcyl').val(),
-                    nplaxis: $('#ContactLense_Nplaxis').val(),
-                    nplva: $('#ContactLense_Nplva').val(),
-                    npladd: $('#ContactLense_Npladd').val(),
-                    nearRsph: $('#ContactLense_NearRsph').val(),
-                    nearRcyl: $('#ContactLense_NearRcyl').val(),
-                    nearRaxis: $('#ContactLense_NearRaxis').val(),
-                    nearRva: $('#ContactLense_NearRva').val(),
-                    nearRadd: $('#ContactLense_NearRadd').val(),
-                    nearLsph: $('#ContactLense_NearLsph').val(),
-                    nearLcyl: $('#ContactLense_NearLcyl').val(),
-                    nearLaxis: $('#ContactLense_NearLaxis').val(),
-                    nearLva: $('#ContactLense_NearLva').val(),
-                    nearLadd: $('#ContactLense_NearLadd').val(),
-                    oprsph: $('#ContactLense_Oprsph').val(),
-                    oprcyl: $('#ContactLense_Oprcyl').val(),
-                    opraxis: $('#ContactLense_Opraxis').val(),
-                    oprva: $('#ContactLense_Oprva').val(),
-                    oplsph: $('#ContactLense_Oplsph').val(),
-                    oplcyl: $('#ContactLense_Oplcyl').val(),
-                    oplaxis: $('#ContactLense_Oplaxis').val(),
-                    oplva: $('#ContactLense_Oplva').val(),
-                    rbc: $('#ContactLense_Rbc').val(),
-                    lbc: $('#ContactLense_Lbc').val(),
-                    rdiameter: $('#ContactLense_Rdiameter').val(),
-                    ldiameter: $('#ContactLense_Ldiameter').val(),
-                    krreading: $('#ContactLense_Krreading').val(),
-                    klreading: $('#ContactLense_Klreading').val(),
-                    rfittingBc: $('#ContactLense_RfittingBc').val(),
-                    lfittingBc: $('#ContactLense_LfittingBc').val(),
-                    remark: $('#ContactLense_Remark').val()
+                spectacleRx: {
+                    id: $('#SpectacleRx_Id').val(),
+                    nprsph: $('#SpectacleRx_Nprsph').val(),
+                    nprcyl: $('#SpectacleRx_Nprcyl').val(),
+                    npraxis: $('#SpectacleRx_Npraxis').val(),
+                    nprva: $('#SpectacleRx_Nprva').val(),
+                    npradd: $('#SpectacleRx_Npradd').val(),
+                    nplsph: $('#SpectacleRx_Nplsph').val(),
+                    nplcyl: $('#SpectacleRx_Nplcyl').val(),
+                    nplaxis: $('#SpectacleRx_Nplaxis').val(),
+                    nplva: $('#SpectacleRx_Nplva').val(),
+                    npladd: $('#SpectacleRx_Npladd').val(),
+                    nearRsph: $('#SpectacleRx_NearRsph').val(),
+                    nearRcyl: $('#SpectacleRx_NearRcyl').val(),
+                    nearRaxis: $('#SpectacleRx_NearRaxis').val(),
+                    nearRva: $('#SpectacleRx_NearRva').val(),
+                    nearRadd: $('#SpectacleRx_NearRadd').val(),
+                    nearLsph: $('#SpectacleRx_NearLsph').val(),
+                    nearLcyl: $('#SpectacleRx_NearLcyl').val(),
+                    nearLaxis: $('#SpectacleRx_NearLaxis').val(),
+                    nearLva: $('#SpectacleRx_NearLva').val(),
+                    nearLadd: $('#SpectacleRx_NearLadd').val(),
+                    oprsph: $('#SpectacleRx_Oprsph').val(),
+                    oprcyl: $('#SpectacleRx_Oprcyl').val(),
+                    opraxis: $('#SpectacleRx_Opraxis').val(),
+                    oprva: $('#SpectacleRx_Oprva').val(),
+                    oplsph: $('#SpectacleRx_Oplsph').val(),
+                    oplcyl: $('#SpectacleRx_Oplcyl').val(),
+                    oplaxis: $('#SpectacleRx_Oplaxis').val(),
+                    oplva: $('#SpectacleRx_Oplva').val(),
+                    pupilHeight: $('#SpectacleRx_PupilHeight').val(),
+                    frameSize: $('#SpectacleRx_FrameSize').val(),
+                    adimension: $('#SpectacleRx_Adimension').val(),
+                    bdimension: $('#SpectacleRx_Bdimension').val(),
+                    rpd: $('#SpectacleRx_Rpd').val(),
+                    lpd: $('#SpectacleRx_Lpd').val(),
+                    nearFarPd: $('#SpectacleRx_NearFarPd').val(),
+                    remark: $('#SpectacleRx_Remark').val()
                 },
                 order: {
                     collectionDate: $('#Order_CollectionDate').val()
@@ -773,7 +763,7 @@
                 return;
             }
 
-            insertRecordWithoutForm("Orders", "CreateCLOrder", modelObject, "icoPlaceOrder", "zmdi zmdi-check");
+            insertRecordWithoutForm("Orders", "CreateSpecOrder", modelObject, "icoPlaceOrder", "zmdi zmdi-check");
         });
 
     </script>

@@ -84,16 +84,16 @@ namespace POSMVC
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            //app.UseStaticFiles();
+            #region Technical MiddleWare
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
-                app.UseHsts();
+                app.UseStatusCodePagesWithRedirects("/Technical/{0}");
             }
+            #endregion Technical MiddleWare
 
             app.UseStaticFiles();
             app.UseHttpsRedirection();

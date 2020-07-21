@@ -2,7 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
+using SystemDrawing = System.Drawing;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Net;
@@ -10,6 +10,9 @@ using System.Net.Mail;
 using System.Security.Claims;
 using System.Security.Cryptography; //[NOTE: Ramdome value generator]
 using System.Text;
+using ZXing;
+using ZXing.QrCode;
+using ZXing.CoreCompat.System.Drawing;
 
 namespace CommonLogics
 {
@@ -22,7 +25,7 @@ namespace CommonLogics
         {
             try
             {
-                Image img = Image.FromStream(actualImage.OpenReadStream(), true, true);
+                SystemDrawing.Image img = SystemDrawing.Image.FromStream(actualImage.OpenReadStream(), true, true);
                 if (height == 0 && width == 0)
                 {
                     height = img.Height;
@@ -35,10 +38,10 @@ namespace CommonLogics
                 Directory.CreateDirectory(savePath);
 
                 //[NOTE: Creating empty canvas]
-                var draw_NewImage = new Bitmap(width, height);
+                var draw_NewImage = new SystemDrawing.Bitmap(width, height);
 
                 //[NOTE: Drawing image inside empty canvas]
-                using (var g = Graphics.FromImage(draw_NewImage))
+                using (var g = SystemDrawing.Graphics.FromImage(draw_NewImage))
                 {
                     g.DrawImage(img, 0, 0, width, height);
                     draw_NewImage.Save(savePath + imageName + imageExtension);
@@ -222,5 +225,29 @@ namespace CommonLogics
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
         #endregion"Token Generate For Login"
+
+        #region Generate QrCode
+        public byte[] CreateQrCode(string content)
+        {
+            var writer = new BarcodeWriter
+            {
+                Format = BarcodeFormat.QR_CODE,
+                Options = new QrCodeEncodingOptions
+                {
+                    Height = 500,
+                    Width = 500,
+                    Margin = 1
+                }
+            };
+
+            var qrCodeImage = writer.Write(content); // BOOM!!
+
+            using (var stream = new MemoryStream())
+            {
+                qrCodeImage.Save(stream, SystemDrawing.Imaging.ImageFormat.Png);
+                return stream.ToArray();
+            }
+        }
+        #endregion
     }
 }

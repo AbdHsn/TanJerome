@@ -67,7 +67,7 @@
                     <nav>
                         <ul class="sidebar-menu" data-widget="tree">
                             <li><a asp-controller="Home" asp-action="Index"><i class="zmdi zmdi-home"></i> <span class="font-11">HOME</span></a></li>
-                            <li class="treeview">
+                            @*<li class="treeview">
                                 <a href="javascript:void(0)"><i class="zmdi zmdi-money"></i> <span class="font-11">CASH & CARRY PURCHASE</span> <i class="fa fa-angle-right"></i></a>
                                 <ul class="treeview-menu">
                                     <li><a href="calendar.html">- Calendar</a></li>
@@ -75,10 +75,11 @@
                                     <li><a href="chat-box.html">- Chat box</a></li>
                                     <li><a href="timeline.html">- Timeline</a></li>
                                 </ul>
-                            </li>
+                            </li>*@
+                            <li><a asp-controller="Orders" asp-action="CCOrder"><i class="zmdi zmdi-money-off"></i> <span class="font-11" title="Cash&Carry Purchase">CC PURCHASE</span></a></li>
                             <li><a asp-controller="Orders" asp-action="CLOrder"><i class="zmdi zmdi-circle-o"></i> <span class="font-11" title="Contact Lense Purchase">CL PURCHASE</span></a></li>
                             <li><a asp-controller="Orders" asp-action="SpecOrder"><i class="zmdi zmdi-voicemail"></i> <span class="font-11" title="Spectacle Purchase">SPEC PURCHASE</span></a></li>
-                            <li class="treeview">
+                            @*<li class="treeview">
                                 <a href="javascript:void(0)"><i class="zmdi zmdi-voicemail"></i> <span class="font-11">SPEC PURCHASE</span> <i class="fa fa-angle-right"></i></a>
 
                                 <ul class="treeview-menu">
@@ -86,7 +87,7 @@
                                     <li><a href="mail-view.html">- Mail View</a></li>
                                     <li><a href="compose-mail.html">- Compose Mail</a></li>
                                 </ul>
-                            </li>
+                            </li>*@
                             <li class="treeview">
                                 <a href="javascript:void(0)"><i class="zmdi zmdi-circle-o"></i> <span class="font-11">CONTACT LENS PURCHASE</span> <i class="fa fa-angle-right"></i></a>
                                 <ul class="treeview-menu">

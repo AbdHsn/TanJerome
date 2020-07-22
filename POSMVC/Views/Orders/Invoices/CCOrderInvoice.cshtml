@@ -14,13 +14,13 @@
             <div class="card mb-30">
                 <div class="card-body p-5">
 
-                    <div class="container-fluid"  id="printSection">
+                    <div class="container-fluid" id="printSection">
                         <br />
                         <div class="row">
                             <div class="col-12 col-md-5 text-lg-right">
                                 <div class="text-center border-success float-md-right float-lg-right" style="border:solid 1px; height: 100px; width: 100px;">
                                     <br /><br />
-logo
+                                    logo
                                 </div>
                             </div>
                             <div class="col-12 col-md-7">
@@ -105,7 +105,7 @@ logo
                                             </td>
                                             <td class="py-0 px-2 text-right">
                                                 <strong class="font-14">
-                                                    $@Model.Order.GrandTotal
+                                                    $@Model.TotalAmount
                                                 </strong>
                                             </td>
                                         </tr>
@@ -115,7 +115,7 @@ logo
                                             </td>
                                             <td class="py-0 px-2 text-right">
                                                 <strong class="font-14">
-                     
+                                                    $@Model.PaidAmount
                                                 </strong>
                                             </td>
                                         </tr>
@@ -125,7 +125,7 @@ logo
                                             </td>
                                             <td class="py-0 px-2 text-right">
                                                 <strong class="font-14">
-                
+                                                    $@Model.DueAmount
                                                 </strong>
                                             </td>
                                         </tr>
@@ -134,11 +134,27 @@ logo
                             </div>
                         </div> <!-- / .row -->
 
-
+                        <br />
                     </div>
 
-                    <div class="row pull-right">
-                        <button class="btn btn-rounded btn-outline-primary" id="btnPrint"><i class="zmdi zmdi-print"></i> Print</button>
+
+                    <div class="row">
+                        <div class="input-group mb-3 col-md-6">
+                            @if ( Model.PaidAmount < Model.TotalAmount )
+                            {
+                                <div class="input-group-prepend text-success pl-2">
+                                    <span class="input-group-text" id="basic-addon1">Payment</span>
+                                </div>
+                                <select id="paymentMethodId" class="form-control" asp-items="ViewBag.PaymentMethods">
+                                    <option disabled selected value="" class="">Choose Payment Method</option>
+                                </select>
+                                <input id="paidAmount" class="form-control" type="text" placeholder="Enter Amount" style="display:none">
+                                <button id="btnPaymentReceive" type="button" class="btn btn-sm btn-outline-success"><i id="icoReceive" class="zmdi zmdi-money"></i> Receive</button>
+                            }
+                        </div>
+                        <div class="clearfix col-md-6">
+                            <button class="btn btn-sm btn-outline-primary float-sm-right float-md-right float-lg-right" id="btnPrint"><i class="zmdi zmdi-print"></i> Print</button>
+                        </div>
                     </div>
 
                 </div>
@@ -150,20 +166,7 @@ logo
 @section Scripts{
     <script src="~/js/JSPDF/html2pdf.bundle.js"></script>
     <script type="text/javascript">
-        //function test() {
-        //    console.log("Printing...");
-        //    var doc = new jsPDF({
-        //        orientation: 'portrait'
-        //    });
-        //    doc.text(20, 20, 'Abdullah Bin Hasan....');
-        //    doc.addPage();
-        //    doc.text(60, 1000, 'Abdullah Bin Hasan 2....');
-        //    //doc.save('ord.pdf');
-        //    doc.autoPrint();
-        //    doc.output('dataurlnewwindow');
-        //    console.log("Printing Ok..");
-        //}
-
+        //Creating order invoice
         $('#btnPrint').on('click', () => {
             //// Get the element.
             var element = document.getElementById('printSection');
@@ -176,6 +179,41 @@ logo
                 jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
             };
             html2pdf().set(opt).from(element).save();
+        });
+
+        //PayementMethod Change Event
+        $('#paymentMethodId').on('change', () => {
+
+            var id = $('#paymentMethodId').val();
+            switch (+id) {
+                case 1:
+                    $('#paidAmount').show();
+                    break;
+                default:
+                    $('#paidAmount').hide();
+                    showMessage("This feature is not implemented yet.", "", "info");
+            }
+        });
+
+        //Receiving Payement
+        $('#btnPaymentReceive').on('click', () => {
+
+            var paidAmount = $('#paidAmount').val();
+            if (paidAmount === "" || paidAmount > @Model.Order.GrandTotal) {
+                showMessage("Please check your paid amount. ", "", "warning");
+                return;
+            }
+
+            modelObject = {
+                orderId: @Model.Order.Id,
+                orderNo: "@Model.Order.OrderNo",
+                userId: @Model.User.Id,
+                paidAmount: paidAmount,
+                paymentMethodId: $('#paymentMethodId').val(),
+                redirectLink: "/Orders/CCOrderInvoice"
+            };
+
+            insertRecordWithoutForm("Orders", "CreatePayment", modelObject, "icoReceive", "zmdi zmdi-money");
         });
 
     </script>

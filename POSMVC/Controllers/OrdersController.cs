@@ -18,7 +18,9 @@ using POSMVC.Models.PageModels.OrdersVM;
 using POSMVC.Models.PageModels.OrdersVM.CCOrderInvoice;
 using POSMVC.Models.PageModels.OrdersVM.CLOrderInvoice;
 using POSMVC.Models.PageModels.OrdersVM.SpecOrderInvoice;
+using POSMVC.Models.PageModels.PaymentsVM;
 using X.PagedList;
+using ZXing.QrCode.Internal;
 
 namespace POSMVC.Controllers
 {
@@ -205,6 +207,8 @@ namespace POSMVC.Controllers
                                    OrderDetail = od,
                                    Product = p
                                };
+            //Get Payments records
+            var getPayments = _context.Payment.Where(p => p.InstrumentNo == order.OrderNo);
 
             var model = new CLOrderInvoiceVM()
             {
@@ -213,9 +217,12 @@ namespace POSMVC.Controllers
                 PersonalDetail = getPersonalInfo,
                 ContactLense = contactLense,
                 ListOrderDetails = orderDetails.ToList(),
+                TotalAmount = order.GrandTotal,
+                PaidAmount = getPayments == null ? 0 : getPayments.Sum(s => s.PaidAmount),
                 QrCode = _cmnFunction.CreateQrCode(string.Format("#:{0}, OrderNo:{1}, OrderDate:{2}, TotalPrice:{3}", order.Id, order.OrderNo, order.OrderPlaceDate, order.GrandTotal))
             };
-
+            model.DueAmount = model.TotalAmount - model.PaidAmount;
+            ViewData["PaymentMethods"] = new SelectList(_context.PaymentMethods, "Id", "Name");
 
             return View("Invoices/CLOrderInvoice", model);
         }
@@ -399,6 +406,8 @@ namespace POSMVC.Controllers
                                    OrderDetail = od,
                                    Product = p
                                };
+            //Get Payments records
+            var getPayments = _context.Payment.Where(p => p.InstrumentNo == order.OrderNo);
 
             var model = new SpecOrderInvoiceVM()
             {
@@ -407,9 +416,12 @@ namespace POSMVC.Controllers
                 PersonalDetail = getPersonalInfo,
                 Spectacle = spectacle,
                 ListOrderDetails = orderDetails.ToList(),
+                TotalAmount = order.GrandTotal,
+                PaidAmount = getPayments == null ? 0 : getPayments.Sum(s => s.PaidAmount),
                 QrCode = _cmnFunction.CreateQrCode(string.Format("#:{0}, OrderNo:{1}, OrderDate:{2}, TotalPrice:{3}", order.Id, order.OrderNo, order.OrderPlaceDate, order.GrandTotal))
             };
-
+            model.DueAmount = model.TotalAmount - model.PaidAmount;
+            ViewData["PaymentMethods"] = new SelectList(_context.PaymentMethods, "Id", "Name");
 
             return View("Invoices/SpecOrderInvoice", model);
         }
@@ -536,6 +548,8 @@ namespace POSMVC.Controllers
                                    OrderDetail = od,
                                    Product = p
                                };
+            //Get Payments records
+            var getPayments = _context.Payment.Where(p => p.InstrumentNo == order.OrderNo);
 
             var model = new CCOrderInvoiceVM()
             {
@@ -543,13 +557,68 @@ namespace POSMVC.Controllers
                 User = getUser,
                 PersonalDetail = getPersonalInfo,
                 ListOrderDetails = orderDetails.ToList(),
+                TotalAmount = order.GrandTotal,
+                PaidAmount = getPayments == null ? 0 : getPayments.Sum(s => s.PaidAmount),
                 QrCode = _cmnFunction.CreateQrCode(string.Format("#:{0}, OrderNo:{1}, OrderDate:{2}, TotalPrice:{3}", order.Id, order.OrderNo, order.OrderPlaceDate, order.GrandTotal))
             };
-
+            model.DueAmount = model.TotalAmount - model.PaidAmount;
+            ViewData["PaymentMethods"] = new SelectList(_context.PaymentMethods, "Id", "Name");
 
             return View("Invoices/CCOrderInvoice", model);
         }
 
+        #endregion
+
+        #region Revceive OrdersPayment
+        [HttpPost, ActionName("CreatePayment")]
+        public JsonResult OrderPayment(PaymentsVM model)
+        {
+            var result = (dynamic)null;
+            try
+            {
+
+                if (model != null)
+                {
+
+                    using (TransactionScope transaction = new TransactionScope())
+                    {
+                        var newPayment = new Payment();
+                        Payment lastPayment = _context.Payment.OrderByDescending(o => o.TransactionDate).FirstOrDefault();
+
+                        //Order No generating...
+                        if (lastPayment != null)
+                        {
+                            int newPaymentNo = Convert.ToInt32(lastPayment.TransactionNo.Substring(10)) + 1;
+                            newPayment.TransactionNo = _cmnBusinessFunction.GenerateNumberWithPrefix("TRN-", newPaymentNo.ToString());
+                        }
+                        else
+                        {
+                            newPayment.TransactionNo = _cmnBusinessFunction.GenerateNumberWithPrefix("TRN-", 1.ToString());
+                        }
+
+                        //Creating new payment record...
+                        newPayment.UserId = model.UserId;
+                        newPayment.InstrumentNo = model.OrderNo;
+                        newPayment.TransactionDate = DateTime.UtcNow;
+                        newPayment.PaidAmount = model.PaidAmount;
+                        newPayment.PaymentMethodId = model.PaymentMethodId;
+                        newPayment.TableReference = "Orders";
+                        _context.Payment.Add(newPayment);
+                        _context.SaveChanges();
+
+                        transaction.Complete();
+                        return result = Json(new { success = true, message = " Payment successfully Done.", redirectUrl = model.RedirectLink + "?orderId=" + model.OrderId });
+                    }
+                }
+                else
+                    return result = Json(new { success = false, message = "Payment Failed!.", redirectUrl = "" });
+            }
+            catch (Exception ex)
+            {
+                string err = ex.ToString();
+                return result = Json(new { success = false, message = "Operation failed. Contact with system admin.", redirectUrl = "" });
+            }
+        }
         #endregion
 
         #region Customer GetMethods

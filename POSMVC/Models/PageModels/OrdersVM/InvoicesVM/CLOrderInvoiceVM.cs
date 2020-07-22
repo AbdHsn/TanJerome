@@ -24,6 +24,11 @@ namespace POSMVC.Models.PageModels.OrdersVM.CLOrderInvoice
         public byte[] QrCode { get; set; }
         #endregion
 
+        #region Calculation Properties
+        public decimal? TotalAmount { get; set; }
+        public decimal? PaidAmount { get; set; }
+        public decimal? DueAmount { get; set; }
+        #endregion
     }
 
     public class ListOfOrderDetail

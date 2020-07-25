@@ -19,7 +19,6 @@
 
   <ItemGroup>
     <Folder Include="CommonFunctions\" />
-    <Folder Include="Models\SharedModels\" />
     <Folder Include="SharedFunctions\" />
     <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\js\searchable-dropdown\" />

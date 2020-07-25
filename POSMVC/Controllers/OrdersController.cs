@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Transactions;
+using AutoMapper.Configuration.Conventions;
 using CommonLogics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -19,6 +22,7 @@ using POSMVC.Models.PageModels.OrdersVM.CCOrderInvoice;
 using POSMVC.Models.PageModels.OrdersVM.CLOrderInvoice;
 using POSMVC.Models.PageModels.OrdersVM.SpecOrderInvoice;
 using POSMVC.Models.PageModels.PaymentsVM;
+using POSMVC.Models.SharedModels;
 using X.PagedList;
 using ZXing.QrCode.Internal;
 
@@ -48,6 +52,132 @@ namespace POSMVC.Controllers
             _he = he;
         }
         #endregion
+
+        #region Orders
+        public async Task<IActionResult> Orders(int? page, string orderStatus = null)
+        {
+            var pageNumber = page ?? 1;
+            int pageRowSize = 3;
+            
+            var fetchOrders = new List<OrdersVM>();
+            if (string.IsNullOrEmpty(orderStatus) || orderStatus == "All")
+            {
+                var fetchOrder = from o in _context.Orders
+                                 join u in _context.Users on o.UserId equals u.Id
+                                 join ut in _context.UserType on u.UserTypeId equals ut.Id
+                                 join pd in _context.PersonalDetail on u.Id equals pd.UserId
+                                 orderby o.OrderPlaceDate descending
+                                 select new OrdersVM
+                                 {
+                                     Orders = o,
+                                     Users = u,
+                                     UserType = ut,
+                                     PersonalDetail = pd
+                                  };
+                fetchOrders = fetchOrder.ToList();
+            }
+            else
+            {
+                var fetchOrder = from o in _context.Orders
+                                  where o.OrderStatus == orderStatus
+                                  join u in _context.Users on o.UserId equals u.Id
+                                  join ut in _context.UserType on u.UserTypeId equals ut.Id
+                                  join pd in _context.PersonalDetail on u.Id equals pd.UserId
+                                  orderby o.OrderPlaceDate descending
+                                  select new OrdersVM
+                                  {
+                                      Orders = o,
+                                      Users = u,
+                                      UserType = ut,
+                                      PersonalDetail = pd
+                                  };
+                fetchOrders = fetchOrder.ToList();
+            }
+
+            var orders = new List<OrdersVM>();
+            foreach (var item in fetchOrders)
+            {
+                var orderVm = new OrdersVM();
+                orderVm.Orders = item.Orders;
+                orderVm.Users = item.Users;
+                orderVm.UserType = item.UserType;
+                orderVm.PersonalDetail = item.PersonalDetail;
+
+                //Fetch Payment data.
+                var paidAmounts = _context.Payment.Where(p => p.InstrumentNo == item.Orders.OrderNo) == null ? 0 : (decimal)_context.Payment.Where(p => p.InstrumentNo == item.Orders.OrderNo).Sum(s => s.PaidAmount);
+                orderVm.PaidAmount = paidAmounts;
+                orderVm.DueAmount = (decimal)(item.Orders.GrandTotal - paidAmounts);
+
+                if (paidAmounts == 0)
+                {
+                    orderVm.PaidStatus = "Not Paid";
+                }                
+                if (paidAmounts >= item.Orders.GrandTotal)
+                {
+                    orderVm.PaidStatus = "Full Paid";
+                }               
+                if (paidAmounts > 0 && paidAmounts < item.Orders.GrandTotal)
+                {
+                    orderVm.PaidStatus = "Partial Paid";
+                }
+
+                orders.Add(orderVm);
+            }
+
+            ViewData["ddlOrderStatus"] = new SelectList( 
+                from DefaultValues.OrderStatus e in Enum.GetValues(typeof(DefaultValues.OrderStatus)) 
+                select new { Id = (int)e, Name = e.ToString()}, "Id", "Name");
+
+            ViewData["SelectedOrderStatus"] = string.IsNullOrEmpty(orderStatus) ? "All" : orderStatus;
+            ViewData["PageNumber"] = pageNumber;
+            
+            var result = await orders.ToPagedListAsync(pageNumber, pageRowSize);
+
+            return View(result);
+        }
+        public async Task<IActionResult> OrdersStatusModified(long orderId, string newOrderStatus,  int? page, string oldOrderStatus = null)
+        {
+            var fetchOrder = await _context.Orders.FindAsync(orderId);
+            if (fetchOrder != null)
+            {
+                fetchOrder.OrderStatus = newOrderStatus;
+                fetchOrder.LastUpdate = DateTime.Now.ToUniversalTime();
+                _context.Orders.Update(fetchOrder);
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("Orders", new { page, orderStatus = oldOrderStatus });
+        }
+
+        [HttpGet, ActionName("ViewTransactions")]
+        public async Task<IActionResult> Transactions(long orderId)
+        {
+            var model = new Models.PageModels.OrdersVM.PaymentsVM();
+            if (orderId > 0)
+            {
+                var order = await _context.Orders.FindAsync(orderId);
+                var payments = from p in _context.Payment
+                               where p.InstrumentNo == order.OrderNo
+                               join pm in _context.PaymentMethods on p.PaymentMethodId equals pm.Id
+                               select new paymentDetail
+                               { 
+                                    Payment = p,
+                                    paymentMethods = pm
+                               };
+
+                    model = new Models.PageModels.OrdersVM.PaymentsVM() {
+                    Orders = order,
+                    ListPayments = payments.ToList(),
+                    TotalPaidAmount = (decimal)payments.Sum(s => s.Payment.PaidAmount),
+                   
+                };
+                model.DueAmount = (decimal)(order.GrandTotal - model.TotalPaidAmount);
+            }
+            return PartialView("_Transactions", model);
+        }
+
+        #endregion
+
 
         #region ContactLens Order GetMethods
         [HttpGet, ActionName("CLOrder")]
@@ -114,7 +244,8 @@ namespace POSMVC.Controllers
                         model.Order.BillingAddress = model.Order.BillingAddress;
                         model.Order.OrderPlaceDate = DateTime.Now;
                         model.Order.CollectionDate = model.Order.CollectionDate;
-                        model.Order.OrderStatus = "Placed";
+                        model.Order.OrderStatus = DefaultValues.OrderStatus.Process.ToString();
+
                         _context.Orders.Add(model.Order);
                         _context.SaveChanges();
                         //Importing Order Child record...
@@ -314,7 +445,7 @@ namespace POSMVC.Controllers
                         model.Order.BillingAddress = model.Order.BillingAddress;
                         model.Order.OrderPlaceDate = DateTime.Now;
                         model.Order.CollectionDate = model.Order.CollectionDate;
-                        model.Order.OrderStatus = "Placed";
+                        model.Order.OrderStatus = DefaultValues.OrderStatus.Process.ToString();
                         _context.Orders.Add(model.Order);
                         _context.SaveChanges();
                         //Importing Order Child record...
@@ -472,7 +603,7 @@ namespace POSMVC.Controllers
                         newOrder.GrandTotal = model.ListOrderDetails.Sum(s => s.Total);
                         newOrder.OrderPlaceDate = DateTime.Now;
                         newOrder.CollectionDate = DateTime.UtcNow;
-                        newOrder.OrderStatus = "Placed";
+                        newOrder.OrderStatus = DefaultValues.OrderStatus.Approved.ToString();
                         _context.Orders.Add(newOrder);
                         _context.SaveChanges();
                         //Importing Order Child record...
@@ -571,7 +702,7 @@ namespace POSMVC.Controllers
 
         #region Revceive OrdersPayment
         [HttpPost, ActionName("CreatePayment")]
-        public JsonResult OrderPayment(PaymentsVM model)
+        public JsonResult OrderPayment(Models.PageModels.PaymentsVM.PaymentsVM model)
         {
             var result = (dynamic)null;
             try

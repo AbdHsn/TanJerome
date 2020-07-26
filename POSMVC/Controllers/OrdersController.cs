@@ -877,5 +877,99 @@ namespace POSMVC.Controllers
 
         #endregion
 
+        #region OrderSearchMethods
+
+        [Produces("application/json")]
+        [HttpGet, ActionName("OrderSearch")]
+        public async Task<IActionResult> OrderSearch()
+        {
+            try
+            {
+                string term = HttpContext.Request.Query["term"].ToString();
+                var result = await _context.Orders.Where(p => p.OrderNo.Contains(term)).Select(p => p.OrderNo).ToListAsync();
+                return Ok(result);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+
+        [Produces("application/json")]
+        [HttpGet, ActionName("OrderSearchResult")]
+        public async Task<IActionResult> OrderSearchResult(string orderNo)
+        {
+            try
+            {
+                var pageNumber = 1;
+                int pageRowSize = 20;
+                string orderStatus = "";
+
+                var fetchOrders = new List<OrdersVM>();
+
+                var fetchOrder = from o in _context.Orders
+                                 where o.OrderNo == orderNo
+                                 join u in _context.Users on o.UserId equals u.Id
+                                 join ut in _context.UserType on u.UserTypeId equals ut.Id
+                                 join pd in _context.PersonalDetail on u.Id equals pd.UserId
+                                 orderby o.OrderPlaceDate descending
+                                 select new OrdersVM
+                                 {
+                                     Orders = o,
+                                     Users = u,
+                                     UserType = ut,
+                                     PersonalDetail = pd
+                                 };
+                fetchOrders = fetchOrder.ToList();
+
+                var orders = new List<OrdersVM>();
+                foreach (var item in fetchOrders)
+                {
+                    var orderVm = new OrdersVM();
+                    orderVm.Orders = item.Orders;
+                    orderVm.Users = item.Users;
+                    orderVm.UserType = item.UserType;
+                    orderVm.PersonalDetail = item.PersonalDetail;
+
+                    //Fetch Payment data.
+                    var paidAmounts = _context.Payment.Where(p => p.InstrumentNo == item.Orders.OrderNo) == null ? 0 : (decimal)_context.Payment.Where(p => p.InstrumentNo == item.Orders.OrderNo).Sum(s => s.PaidAmount);
+                    orderVm.PaidAmount = paidAmounts;
+                    orderVm.DueAmount = (decimal)(item.Orders.GrandTotal - paidAmounts);
+
+                    if (paidAmounts == 0)
+                    {
+                        orderVm.PaidStatus = "Not Paid";
+                    }
+                    if (paidAmounts >= item.Orders.GrandTotal)
+                    {
+                        orderVm.PaidStatus = "Full Paid";
+                    }
+                    if (paidAmounts > 0 && paidAmounts < item.Orders.GrandTotal)
+                    {
+                        orderVm.PaidStatus = "Partial Paid";
+                    }
+                    orders.Add(orderVm);
+                }
+
+                ViewData["ddlOrderStatus"] = new SelectList(
+                    from DefaultValues.OrderStatus e in Enum.GetValues(typeof(DefaultValues.OrderStatus))
+                    select new { Id = (int)e, Name = e.ToString() }, "Id", "Name");
+
+                ViewData["SelectedOrderStatus"] = string.IsNullOrEmpty(orderStatus) ? "All" : orderStatus;
+                ViewData["PageNumber"] = pageNumber;
+                ViewData["SearchValue"] = orderNo;
+                var result = await orders.ToPagedListAsync(pageNumber, pageRowSize);
+
+                return View("SearchOrders", result);
+            }
+            catch (Exception ex)
+            {
+                string err = ex.ToString();
+                return BadRequest();
+            }
+        }
+
+        #endregion
     }
 }

@@ -65,19 +65,19 @@ namespace POSMVC
             services.AddScoped<CommonBusinessLogics>();
 
             //Online Database
-            services.AddDbContext<EyePosDBContext>(option =>
-            option.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
-
-            ////Offline Database ...
             //services.AddDbContext<EyePosDBContext>(option =>
-            //{
-            //    string conn = Configuration.GetConnectionString("connection");
-            //    if (conn.Contains("%CONTENTROOTPATH%"))
-            //    {
-            //        conn = conn.Replace("%CONTENTROOTPATH%", _contentRootPath);
-            //    }
-            //    option.UseSqlServer(conn);
-            //});
+            //option.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
+
+            //Offline Database ...
+            services.AddDbContext<EyePosDBContext>(option =>
+            {
+                string conn = Configuration.GetConnectionString("connection");
+                if (conn.Contains("%CONTENTROOTPATH%"))
+                {
+                    conn = conn.Replace("%CONTENTROOTPATH%", _contentRootPath);
+                }
+                option.UseSqlServer(conn);
+            });
 
         }
 

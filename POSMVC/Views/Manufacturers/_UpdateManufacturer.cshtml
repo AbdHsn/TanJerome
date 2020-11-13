@@ -1,0 +1,58 @@
+﻿@model POSMVC.Models.PageModels.ManufacturersVM.EditManufacturerVM
+
+<div class="col-md-12">
+    <form enctype="multipart/form-data" id="frmUpdate">
+        <div class="row">
+            <input asp-for="Manufacturer.Id" type="hidden" class="form-control" />
+            <div class="col-md-6">
+                <div class="input-group">
+                    <label class="control-label">Supplier Logo</label>
+                    <div class="img-container">
+                        <img class="img-thumbnail" id="img" alt="product image" onmouseover="toggleBtnClearPreview(this,'btnClear')" src="~/@(string.IsNullOrEmpty(Model.Manufacturer.BigImage) ? "ProjectImage/defaultImage.png" : Model.Manufacturer.BigImage)" width="100%" />
+                        <div class="middle">
+                            <button type='button' class="btn btn-sm btn-outline-danger" id="btnClear" onclick="document.getElementById('img').src = '/ProjectImage/defaultImage.png'">Clear Preview</button>
+                        </div>
+                    </div>
+                    <div class="custom-file">
+                        <input type="file" name="file" style="cursor:pointer" id="actualFile" class="custom-file-input cursor" onchange="document.getElementById('img').src = window.URL.createObjectURL(this.files[0])">
+                        <label class="custom-file-label" for="ProductImage">Upload Image</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+
+                <div class="form-group pt-4">
+                    <label class="control-label">Supplier Name</label>
+                    <input asp-for="Manufacturer.ManufacturerName" class="form-control" />
+                    <span asp-validation-for="Manufacturer.ManufacturerName" class="text-danger"></span>
+                </div>
+                <div class="form-group pt-2">
+                    <label class="control-label">Contact Person Name</label>
+                    <input asp-for="Manufacturer.ContactName" class="form-control" />
+                    <span asp-validation-for="Manufacturer.ContactName" class="text-danger"></span>
+                </div>
+                <div class="form-group pt-2">
+                    <label asp-for="Manufacturer.ContactTitle" class="control-label">Contact Person Designation</label>
+                    <input asp-for="Manufacturer.ContactTitle" class="form-control" />
+                    <span asp-validation-for="Manufacturer.ContactTitle" class="text-danger"></span>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group right-align">
+                    <br />
+                    <br />
+                    <hr />
+                    <button type="button" class="btn btn-sm btn-outline-success" style="width:150px" onclick='insertRecord("Manufacturers", "EditManufacturer", "frmUpdate")'> <i class="zmdi zmdi-save"></i> Save</button>
+                    <button type="button" class="btn btn-sm btn-outline-danger" style="width:150px" onclick='closeModalCreateForm("mdlUpdateForm","UpdateForm")'><i class="zmdi zmdi-close"></i> Cancel</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+
+}

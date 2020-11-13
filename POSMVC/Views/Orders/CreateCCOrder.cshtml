@@ -32,11 +32,15 @@
                     <!-- #endregion -->
                     <!-- #region Customer Section -->
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <h6>Customer Details </h6>
-                            <hr />
                         </div>
-                        <br />
+                        <div class="col-md-6 clearfix">
+                            <button type="button" id="btnViewOrder" class="btn btn-rounded btn-outline-primary py-1 float-md-right"><i class="zmdi zmdi-view-list"></i> View Order History </button>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
                         <div class="col-sm-12 col-md-12 col-lg-12">
                             <div>
                                 <input type="hidden" class="form-control form-control-customized" asp-for="Users.Id" />
@@ -92,7 +96,7 @@
                         </div>
                         <div class="col-sm-12 col-md-2 col-lg-2">
                             <label class="control-label ">Quantity</label>
-                            <input class="form-control form-control-customized" id="itemQty" name="itemQty"/>
+                            <input class="form-control form-control-customized" id="itemQty" name="itemQty" />
                             <span class="text-danger"></span>
                         </div>
                         <div class="col-sm-12 col-md-2 col-lg-2">
@@ -170,6 +174,28 @@
                 </div>
                 <div class="modal-body">
                     <div id="CreateForm">
+                        <div class="text-center">
+                            <img src="~/ProjectImage/loading.gif" alt="Loading ..." />
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- #endregion -->
+    <!-- #region Modal Section for View Order History -->
+    <div class="modal fade" id="mdlViewHistory" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-modal="false">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mt-0 font-16" id="myLargeModalLabel">Previous Order History</h5>
+                    <button type="button" class="close" onclick='closeModalCreateForm("mdlViewHistory","loadHistory")'>
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="loadHistory">
                         <div class="text-center">
                             <img src="~/ProjectImage/loading.gif" alt="Loading ..." />
 
@@ -357,7 +383,7 @@
             toggleCartHeaderFooter(cartList);
         }
 
-        $('#btnPlaceOrder').on("click", () => {
+          $('#btnPlaceOrder').on("click", () => {
 
             var userId = $('#Users_Id').val();
             if (userId === undefined || userId == 0 || userId == null) {
@@ -381,6 +407,14 @@
             insertRecordWithoutForm("Orders", "CreateCCOrder", modelObject, "icoPlaceOrder", "zmdi zmdi-check");
         });
 
+        $('#btnViewOrder').on("click", () => {
+            var userId = $('#Users_Id').val();
+            if (userId === undefined || userId == 0 || userId == null) {
+                showMessage("Customer selection is require. ", "", "warning");
+                return;
+            }
+            openModalCreateForm("mdlViewHistory", "loadHistory", "Orders", "OldOrderHistory?userId="+userId);
+        });
     </script>
 
 }

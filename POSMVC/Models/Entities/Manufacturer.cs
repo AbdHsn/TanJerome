@@ -10,5 +10,8 @@ namespace POSMVC.Models.Entities
         public string ContactInfo { get; set; }
         public string SmallImage { get; set; }
         public string BigImage { get; set; }
+        public string ContactName { get; set; }
+        public string ContactTitle { get; set; }
+        public string Url { get; set; }
     }
 }

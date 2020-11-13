@@ -156,7 +156,6 @@
                                             </td>
                                             <td width="20%">
                                                 <span class="font-15">@item.PersonalDetail.Name</span>
-                                                <div><small> Email: @item.Users.Email </small> </div>
 
                                                 @{
                                                     if (!string.IsNullOrEmpty(item.PersonalDetail.MobileNo))
@@ -169,6 +168,7 @@
                                                         <div><small> Other Contacts: @item.PersonalDetail.OtherPhone </small> </div>
                                                     }
                                                 }
+                                                <div><small> Email: @item.Users.Email </small> </div>
                                                 <div><small> Customer Type: @item.UserType.TypeName </small> </div>
 
 
@@ -176,13 +176,52 @@
                                             <td width="25%">
                                                 <div><small> Order Date: @item.Orders.OrderPlaceDate.Value.ToString("dddd, dd MMMM yyyy")</small> </div>
                                                 <div><small> Collection Date: @item.Orders.CollectionDate.Value.ToString("dddd, dd MMMM yyyy")</small> </div>
-                                                <div><small> Order Status: @item.Orders.OrderStatus</small> </div>
+                                                @{
+
+                                                    switch (item.Orders.OrderStatus)
+                                                    {
+                                                        case "InProcess":
+                                                            <div>
+                                                                Order Status:
+                                                                <span class="badge font-11 badge-soft-purple">
+                                                                    @item.Orders.OrderStatus
+                                                                </span>
+                                                            </div>
+                                                            break;
+                                                        case "Uncollected":
+                                                            <div>
+                                                                Order Status:
+                                                                <span class="badge font-11 badge-soft-success">
+                                                                    @item.Orders.OrderStatus
+                                                                </span>
+                                                            </div>
+                                                            break;
+                                                        case "Collected":
+                                                            <div>
+                                                                Order Status:
+                                                                <span class="badge font-11 badge-soft-dark">
+                                                                    @item.Orders.OrderStatus
+                                                                </span>
+                                                            </div>
+                                                            break;
+                                                        case "Refunded":
+                                                            <div>
+                                                                Order Status:
+                                                                <span class="badge font-11 badge-soft-warning">
+                                                                    @item.Orders.OrderStatus
+                                                                </span>
+                                                            </div>
+                                                            break;
+                                                        default:
+                                                            break;
+                                                    }
+                                                }
 
                                             </td>
                                             <td width="25%">
-                                                <div><small> Total Charge: @item.Orders.GrandTotal</small> </div>
-                                                <div><small> Paid Amount: @item.PaidAmount</small> </div>
-                                                <div><small> Due Amount: @item.DueAmount</small> </div>
+                                                <div><small> Total: @item.Orders.GrandTotal</small> </div>
+                                                <div><small> Deposit: @item.PaidAmount</small> </div>
+                                                <div><small> Balance: @item.DueAmount</small> </div>
                                                 @{
 
                                                     switch (item.PaidStatus)
@@ -223,19 +262,15 @@
                                                     @{
                                                         switch (item.Orders.OrderStatus)
                                                         {
-                                                            case "Process":
-                                                                <a class="dropdown-item" role="presentation" href="@Url.Action("OrdersStatusModified", "Orders", new { orderId = item.Orders.Id, newOrderStatus = "Approved", page = pageNumber, oldOrderStatus = selectedOrderStatus })">&nbsp;Approved</a>
-                                                                <a class="dropdown-item" role="presentation" href="@Url.Action("OrdersStatusModified", "Orders", new { orderId = item.Orders.Id, newOrderStatus = "Rejected", page = pageNumber, oldOrderStatus = selectedOrderStatus })">&nbsp;Rejected</a>
+                                                            case "InProcess":
+                                                                <a class="dropdown-item" role="presentation" href="@Url.Action("OrdersStatusModified", "Orders", new { orderId = item.Orders.Id, newOrderStatus = "Uncollected", page = pageNumber, oldOrderStatus = selectedOrderStatus })">&nbsp;Ready</a>
                                                                 break;
-                                                            case "Approved":
-                                                                <a class="dropdown-item" role="presentation" href="@Url.Action("OrdersStatusModified", "Orders", new { orderId = item.Orders.Id, newOrderStatus = "Rejected", page = pageNumber, oldOrderStatus = selectedOrderStatus })">&nbsp;Rejected</a>
-                                                                <a class="dropdown-item" role="presentation" href="@Url.Action("OrdersStatusModified", "Orders", new { orderId = item.Orders.Id, newOrderStatus = "Delivered", page = pageNumber, oldOrderStatus = selectedOrderStatus })">&nbsp;Delivered</a>
+                                                            case "Uncollected":
+                                                                <a class="dropdown-item" role="presentation" href="@Url.Action("OrdersStatusModified", "Orders", new { orderId = item.Orders.Id, newOrderStatus = "Collected", page = pageNumber, oldOrderStatus = selectedOrderStatus })">&nbsp;Collected</a>
+                                                                <a class="dropdown-item" role="presentation" href="@Url.Action("OrdersStatusModified", "Orders", new { orderId = item.Orders.Id, newOrderStatus = "Refunded", page = pageNumber, oldOrderStatus = selectedOrderStatus })">&nbsp;Refund</a>
                                                                 break;
-                                                            case "Rejected":
-                                                                <a class="dropdown-item" role="presentation" href="@Url.Action("OrdersStatusModified", "Orders", new { orderId = item.Orders.Id, newOrderStatus = "Approved", page = pageNumber, oldOrderStatus = selectedOrderStatus })">&nbsp;Approved</a>
-                                                                break;
-                                                            case "Delivered":
-                                                                <a class="dropdown-item" role="presentation" href="@Url.Action("OrdersStatusModified", "Orders", new { orderId = item.Orders.Id, newOrderStatus = "Refunded", page = pageNumber, oldOrderStatus = selectedOrderStatus })">&nbsp;Refunded</a>
+                                                            case "Collected":
+                                                                <a class="dropdown-item" role="presentation" href="@Url.Action("OrdersStatusModified", "Orders", new { orderId = item.Orders.Id, newOrderStatus = "Refunded", page = pageNumber, oldOrderStatus = selectedOrderStatus })">&nbsp;Refund</a>
                                                                 break;
                                                             default:
                                                                 <a class="dropdown-item disabled" role="presentation" href="#">&nbsp;No Action Left</a>

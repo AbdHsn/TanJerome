@@ -72,9 +72,11 @@
 
                         <div class="row">
                             <div class="col-sm-12 col-md-6 col-lg-6 rounded">
-                                <div class="text-center text-uppercase"> <h6 class="py-0">Right</h6> </div>
                                 <div style="overflow-x:auto;">
                                     <table class="table table-bordered">
+                                        <tr class="bg-gray">
+                                            <th class="p-0 text-center" colspan="5"> <span class="font-14 font-weight-bolder">RIGHT</span></th>
+                                        </tr>
                                         <tr>
                                             <th width="10%"></th>
                                             <th class="p-0 pb-0 text-center">SPH</th>
@@ -168,14 +170,14 @@
                                         </tr>
                                     </table>
                                 </div>
-                                <br />
                             </div>
 
                             <div class="col-sm-12 col-md-6 col-lg-6 rounded">
-
-                                <div class="text-center text-uppercase"> <h6 class="py-0">Left</h6> </div>
                                 <div style="overflow-x:auto;">
                                     <table class="table table-bordered">
+                                        <tr class="bg-gray">
+                                            <th class="p-0 text-center" colspan="5"> <span class="font-14 font-weight-bolder">LEFT</span></th>
+                                        </tr>
                                         <tr>
                                             <th width="10%"></th>
                                             <th class="p-0 text-center">SPH</th>
@@ -269,7 +271,6 @@
                                         </tr>
                                     </table>
                                 </div>
-                                <br />
                             </div>
                         </div>
                         <!-- #endregion -->
@@ -280,6 +281,9 @@
 
                                 <table class="table table-bordered">
                                     <thead>
+                                        <tr class="bg-gray">
+                                            <th class="p-0 text-center" colspan="4"> <span class="font-14 font-weight-bolder">Order Details</span></th>
+                                        </tr>
                                         <tr class="pt-0">
                                             <th class="px-0 pl-2 bg-transparent border-top-0">
                                                 <span class="font-14">#Order Items</span>
@@ -345,19 +349,88 @@
                                         </tr>
                                     </tbody>
                                 </table>
-
-                                <!-- Title -->
-                                <h6 class="text-uppercase">
-                                    Remark
-                                </h6>
-                                <!-- Text -->
-                                <p class="text-muted mb-0">
-                                    @Model.ContactLense.Remark
-                                </p>
-
                             </div>
                         </div> <!-- / .row -->
 
+                        <div class="row">
+                            <div class="col-12">
+                                <!-- Table -->
+
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr class="bg-gray">
+                                            <th class="p-0 text-center" colspan="4"> <span class="font-14 font-weight-bolder">Transaction History</span></th>
+                                        </tr>
+                                        <tr class="pt-0">
+                                            <th class="px-0 pl-2 bg-transparent border-top-0">
+                                                <span class="font-14">#Transaction Date</span>
+                                            </th>
+                                            <th class="px-0 pr-2 bg-transparent border-top-0 text-right">
+                                                <span class="font-14">Transaction No</span>
+                                            </th>
+                                            <th class="px-0 pr-2 bg-transparent border-top-0 text-right">
+                                                <span class="font-14">Payment Method</span>
+                                            </th>
+                                            <th class="px-0 pr-2 bg-transparent border-top-0 text-right">
+                                                <span class="font-14">Paid Amount</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model.listPayment.Count > 0)
+                                        {
+                                            foreach (var item in Model.listPayment)
+                                            {
+                                                <tr>
+                                                    <td class="px-2 py-0">
+                                                        @(Model.listPayment.IndexOf(item) + 1). @item.Payment.TransactionDate.Value.ToString("ddd, dd MMM yyyy")
+                                                    </td>
+                                                    <td class="px-2 py-0 text-right">
+                                                        @item.Payment.TransactionNo
+                                                    </td>
+                                                    <td class="px-2 py-0 text-right">
+                                                        @item.PaymentMethods.Name
+                                                    </td>
+                                                    <td class="px-2 py-0 text-right">
+                                                        $@item.Payment.PaidAmount
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <tr class="pt-0">
+                                                <td class="py-0 px-2 text-center" colspan="4">
+                                                    <strong class="text-danger font-14">
+                                                        No Transaction yet.
+                                                    </strong>
+                                                </td>
+                                            </tr>
+                                        }
+
+                                        <tr class="pt-0">
+                                            <td class="py-0 px-2 border-top" colspan="3">
+                                                <strong>Total Paid Amount</strong>
+                                            </td>
+                                            <td class="py-0 px-2 text-right">
+                                                <strong class="font-14">
+                                                    $@Model.PaidAmount
+                                                </strong>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Title -->
+                        <h6 class="text-uppercase m-0">
+                            Remark
+                        </h6>
+                        <!-- Text -->
+                        <p class="text-muted mb-0">
+                            @Model.ContactLense.Remark
+                        </p>
 
                     </div>
                     <br />
@@ -437,7 +510,7 @@
 
             var paidAmount = $('#paidAmount').val();
             if (paidAmount === "" || paidAmount > @Model.Order.GrandTotal) {
-                showMessage("Please check your paid amount. ", "", "warning");
+                showMessage("Please recheck your paid amount. ", "", "warning");
                 return;
             }
 
@@ -450,7 +523,7 @@
                 redirectLink: "/Orders/CLOrderInvoice"
             };
 
-            insertRecordWithoutForm("Orders", "CreatePayment", modelObject, "icoReceive", "zmdi zmdi-money");
+            insertRecordWithoutForm("Payments", "ReceiveInstantPayment", modelObject, "icoReceive", "zmdi zmdi-money");
         });
 
     </script>

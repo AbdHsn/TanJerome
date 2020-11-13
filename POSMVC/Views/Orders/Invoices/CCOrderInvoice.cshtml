@@ -55,7 +55,7 @@
                                     #Order Date & Time
                                 </h6>
                                 <p class="mb-4 text-dark">
-                                    <time>@Model.Order.OrderPlaceDate.Value.ToString("dddd, dd MMMM yyyy")</time>
+                                    <time>@Model.Order.OrderPlaceDate.Value.ToString("ddd, dd MMM yyyy")</time>
                                 </p>
                             </div>
                         </div>
@@ -66,6 +66,9 @@
 
                                 <table class="table table-bordered">
                                     <thead>
+                                        <tr class="bg-gray">
+                                            <th class="p-0 text-center" colspan="4"> <span class="font-14 font-weight-bolder">Order Details</span></th>
+                                        </tr>
                                         <tr class="pt-0">
                                             <th class="px-0 pl-2 bg-transparent border-top-0">
                                                 <span class="font-14">#Order Items</span>
@@ -134,7 +137,76 @@
                             </div>
                         </div> <!-- / .row -->
 
-                        <br />
+                        <div class="row">
+                            <div class="col-12">
+                                <!-- Table -->
+
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr class="bg-gray">
+                                            <th class="p-0 text-center" colspan="4"> <span class="font-14 font-weight-bolder">Transaction History</span></th>
+                                        </tr>
+                                        <tr class="pt-0">
+                                            <th class="px-0 pl-2 bg-transparent border-top-0">
+                                                <span class="font-14">#Transaction Date</span>
+                                            </th>
+                                            <th class="px-0 pr-2 bg-transparent border-top-0 text-right">
+                                                <span class="font-14">Transaction No</span>
+                                            </th>
+                                            <th class="px-0 pr-2 bg-transparent border-top-0 text-right">
+                                                <span class="font-14">Payment Method</span>
+                                            </th>
+                                            <th class="px-0 pr-2 bg-transparent border-top-0 text-right">
+                                                <span class="font-14">Paid Amount</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model.listPayment.Count > 0)
+                                        {
+                                            foreach (var item in Model.listPayment)
+                                            {
+                                                <tr>
+                                                    <td class="px-2 py-0">
+                                                        @(Model.listPayment.IndexOf(item) + 1). @item.Payment.TransactionDate.Value.ToString("dddd, dd MMMM yyyy")
+                                                    </td>
+                                                    <td class="px-2 py-0 text-right">
+                                                        @item.Payment.TransactionNo
+                                                    </td>
+                                                    <td class="px-2 py-0 text-right">
+                                                        @item.PaymentMethods.Name
+                                                    </td>
+                                                    <td class="px-2 py-0 text-right">
+                                                        $@item.Payment.PaidAmount
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <tr class="pt-0">
+                                                <td class="py-0 px-2 text-center" colspan="4">
+                                                    <strong class="text-danger font-14">
+                                                        No Transaction yet.
+                                                    </strong>
+                                                </td>
+                                            </tr>
+                                        }
+
+                                        <tr class="pt-0">
+                                            <td class="py-0 px-2 border-top" colspan="3">
+                                                <strong>Total Paid Amount</strong>
+                                            </td>
+                                            <td class="py-0 px-2 text-right">
+                                                <strong class="font-14">
+                                                    $@Model.PaidAmount
+                                                </strong>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
 
 
@@ -200,7 +272,7 @@
 
             var paidAmount = $('#paidAmount').val();
             if (paidAmount === "" || paidAmount > @Model.Order.GrandTotal) {
-                showMessage("Please check your paid amount. ", "", "warning");
+                showMessage("Please recheck your paid amount. ", "", "warning");
                 return;
             }
 
@@ -213,12 +285,10 @@
                 redirectLink: "/Orders/CCOrderInvoice"
             };
 
-            insertRecordWithoutForm("Orders", "CreatePayment", modelObject, "icoReceive", "zmdi zmdi-money");
+            insertRecordWithoutForm("Payments", "ReceiveInstantPayment", modelObject, "icoReceive", "zmdi zmdi-money");
         });
 
     </script>
 
 }
 
-
-Motive: Good service brings good revenue.

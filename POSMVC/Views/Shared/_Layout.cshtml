@@ -101,8 +101,9 @@
                             <li class="treeview">
                                 <a href="javascript:void(0)"><i class="zmdi zmdi-accounts-outline"></i> <span class="font-11">PEOPLES</span> <i class="fa fa-angle-right"></i></a>
                                 <ul class="treeview-menu">
-                                    <li><a asp-controller="Users" asp-action="Customers">- Customer</a></li>
-                                    <li><a asp-controller="Users" asp-action="Customers">- Supplier</a></li>
+                                    <li><a asp-controller="Users" asp-action="Customers">Customer</a></li>
+                                    <li><a asp-controller="Users" asp-action="Users">Employee</a></li>
+                                    <li><a asp-controller="Manufacturers" asp-action="Manufacturers">Supplier</a></li>
                                 </ul>
                             </li>
                             <li class="treeview">
@@ -120,13 +121,9 @@
                             <li class="treeview">
                                 <a href="javascript:void(0)"><i class="zmdi zmdi-money-box"></i> <span class="font-11">PAYOUT</span> <i class="fa fa-angle-right"></i></a>
                                 <ul class="treeview-menu">
-                                    <li><a href="product.html">- Product</a></li>
-                                    <li><a href="e-add-product.html">- Add Product</a></li>
-                                    <li><a href="product-details.html">- Single Product</a></li>
-                                    <li><a href="order.html">- Order</a></li>
-                                    <li><a href="cart.html">- Cart</a></li>
-                                    <li><a href="checkout.html">- Checkout</a></li>
-                                    <li><a href="invoice.html">- Invoice</a></li>
+                                    <li><a asp-controller="Payments" asp-action="ReceiveLatePayment">Receive Order Payment</a></li>
+                                    <li><a asp-controller="Orders" asp-action="ReceiveOrderPayment">Receive Order Payment</a></li>
+
                                 </ul>
                             </li>
                             <li class="treeview">

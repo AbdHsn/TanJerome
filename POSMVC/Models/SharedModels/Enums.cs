@@ -25,10 +25,9 @@ namespace POSMVC.Models.SharedModels
     {
         public enum OrderStatus
         {
-            Process = 1,
-            Approved,
-            Rejected,
-            Delivered,
+            InProcess = 1,
+            Collected,
+            Uncollected,
             Refunded
         }
     }

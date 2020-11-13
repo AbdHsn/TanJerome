@@ -1,0 +1,277 @@
+﻿@model POSMVC.Models.PageModels.PaymentsVM.GetPaymentDetailsVM
+
+@{
+    var lstPayment = Model.lstPayment.ToList();
+    var lstOrderDetail = Model.lstOrderDetails.ToList();
+}
+
+<div class="row">
+    <div class="col-6">
+        <h5 class="mb-0">@Model.Order.OrderNo</h5>
+        <p class="mb-0 line-height-1"><strong>Order Date: @Model.Order.OrderPlaceDate.Value.ToString("ddd, dd MMM yyyy")</strong></p>
+        <p class="mb-0 line-height-1">
+            <strong>Order Status: </strong>
+            @{
+                switch (Model.Order.OrderStatus)
+                {
+                    case "InProcess":
+                        <span class="badge font-11 badge-soft-purple">
+                            @Model.Order.OrderStatus
+                        </span>
+                        break;
+                    case "Uncollected":
+
+
+                        <span class="badge font-11 badge-soft-success">
+                            @Model.Order.OrderStatus
+                        </span>
+
+                        break;
+                    case "Collected":
+
+
+                        <span class="badge font-11 badge-soft-dark">
+                            @Model.Order.OrderStatus
+                        </span>
+
+                        break;
+                    case "Refunded":
+
+
+                        <span class="badge font-11 badge-soft-warning">
+                            @Model.Order.OrderStatus
+                        </span>
+
+                        break;
+                    default:
+                        break;
+                }
+            }
+        </p>
+
+
+    </div>
+    <div class="col-6">
+        @*<h5 class="mb-0">Charged Amount $@Model.Order.GrandTotal</h5>*@
+        <br />
+        <p class="mb-0 line-height-1"><strong>Customer: @Model.User.FirstName @Model.User.LastName</strong></p>
+        <p class="mb-0 line-height-1"><strong>Contact No: @Model.PersonalDetail.MobileNo@(Model.PersonalDetail.OtherPhone != null? ", "+ Model.PersonalDetail.OtherPhone : "")</strong></p>
+
+    </div>
+</div>
+
+<div class="row pt-2">
+    <div class="col-12">
+        <!-- Table -->
+       
+        <table class="table table-bordered">
+            <thead>
+                <tr class="bg-gray">
+                    <th class="p-0 text-center" colspan="4"> <span class="font-14 font-weight-bolder">Order Details</span></th>
+                </tr>
+                <tr class="pt-0">
+                    <th class="px-0 pl-2 bg-transparent border-top-0">
+                        <span class="font-14">#Order Items</span>
+                    </th>
+                    <th class="px-0 pr-2 bg-transparent border-top-0 text-right">
+                        <span class="font-14">Quantity</span>
+                    </th>
+                    <th class="px-0 pr-2 bg-transparent border-top-0 text-right">
+                        <span class="font-14">Unit Price</span>
+                    </th>
+                    <th class="px-0 pr-2 bg-transparent border-top-0 text-right">
+                        <span class="font-14">Total</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in lstOrderDetail)
+                {
+                    <tr>
+                        <td class="px-2 py-0">
+                            @(lstOrderDetail.IndexOf(item) + 1). @item.Products.Name (@item.Products.ProductCode)
+                        </td>
+                        <td class="px-2 py-0 text-right">
+                            @item.OrderDetails.Quantity
+                        </td>
+                        <td class="px-2 py-0 text-right">
+                            $@item.OrderDetails.Price
+                        </td>
+                        <td class="px-2 py-0 text-right">
+                            $@item.OrderDetails.Total
+                        </td>
+                    </tr>
+                }
+                <tr class="pt-0">
+                    <td class="py-0 px-2 border-top" colspan="3">
+                        <strong>Total Charge</strong>
+                    </td>
+                    <td class="py-0 px-2 text-right">
+                        <strong class="font-14">
+                            $@Model.Order.GrandTotal
+                        </strong>
+                    </td>
+                </tr>
+                <tr class="pt-0">
+                    <td class="py-0 px-2 border-top" colspan="3">
+                        <strong>Paid Amount</strong>
+                    </td>
+                    <td class="py-0 px-2 text-right">
+                        <strong class="font-14">
+                            $@Model.TotalPaid
+                        </strong>
+                    </td>
+                </tr>
+                <tr class="pt-0">
+                    <td class="py-0 px-2 border-top" colspan="3">
+                        <strong>Due Amount</strong>
+                    </td>
+                    <td class="py-0 px-2 text-right">
+                        <strong class="font-14">
+                            $@Model.Due
+                        </strong>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div> <!-- / .row -->
+
+
+<div class="row">
+    <div class="col-12">
+        <!-- Table -->
+
+        <table class="table table-bordered">
+            <thead>
+                <tr class="bg-gray">
+                    <th class="p-0 text-center" colspan="4"> <span class="font-14 font-weight-bolder">Transaction History</span></th>
+                </tr>
+                <tr class="pt-0">
+                    <th class="px-0 pl-2 bg-transparent border-top-0">
+                        <span class="font-14">#Transaction Date</span>
+                    </th>
+                    <th class="px-0 pr-2 bg-transparent border-top-0 text-right">
+                        <span class="font-14">Transaction No</span>
+                    </th>
+                    <th class="px-0 pr-2 bg-transparent border-top-0 text-right">
+                        <span class="font-14">Payment Method</span>
+                    </th>
+                    <th class="px-0 pr-2 bg-transparent border-top-0 text-right">
+                        <span class="font-14">Paid Amount</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (lstPayment.Count > 0)
+                {
+                    foreach (var item in lstPayment)
+                    {
+                        <tr>
+                            <td class="px-2 py-0">
+                                @(lstPayment.IndexOf(item) + 1). @item.Payment.TransactionDate.Value.ToString("dddd, dd MMMM yyyy")
+                            </td>
+                            <td class="px-2 py-0 text-right">
+                                @item.Payment.TransactionNo
+                            </td>
+                            <td class="px-2 py-0 text-right">
+                                @item.PaymentMethods.Name
+                            </td>
+                            <td class="px-2 py-0 text-right">
+                                $@item.Payment.PaidAmount
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr class="pt-0">
+                        <td class="py-0 px-2 text-center" colspan="4">
+                            <strong class="text-danger font-14">
+                                No Transaction yet.
+                            </strong>
+                        </td>
+                    </tr>
+                }
+
+                <tr class="pt-0">
+                    <td class="py-0 px-2 border-top" colspan="3">
+                        <strong>Total Paid Amount</strong>
+                    </td>
+                    <td class="py-0 px-2 text-right">
+                        <strong class="font-14">
+                            $@Model.TotalPaid
+                        </strong>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="input-group">
+            @if (Model.TotalPaid < Model.Order.GrandTotal)
+            {
+                <div class="input-group-prepend text-success">
+                    <span class="input-group-text" id="basic-addon1">Payment</span>
+                </div>
+                <select id="paymentMethodId" name="PaymentMethodId" class="form-control" asp-items="ViewBag.PaymentMethods">
+                    <option disabled selected value="" class="">Choose Payment Method</option>
+                </select>
+                <input id="payAmount" name="PayAmount" class="form-control" type="text" placeholder="Enter Amount" style="display:none">
+                <button id="btnPaymentReceive" type="button" class="btn btn-sm btn-outline-success"><i id="icoReceive" class="zmdi zmdi-money"></i> Receive</button>
+
+            }
+            <button type="button" class="btn btn-sm btn-outline-danger" onclick='closeModalCreateForm("mdlCreateForm","CreateForm")'><i class="zmdi zmdi-close"></i> Close</button>
+
+        </div>
+        
+
+        @*<div class="col-md-4 form-group">
+        </div>*@
+    </div>
+</div>
+
+<script src="~/js/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript">
+
+      //PayementMethod Change Event
+        $('#paymentMethodId').on('change', () => {
+
+            var id = $('#paymentMethodId').val();
+            switch (+id) {
+                case 1:
+                    $('#payAmount').show();
+                    break;
+                default:
+                    $('#payAmount').hide();
+                    showMessage("This feature is not implemented yet.", "", "info");
+            }
+        });
+
+        //Receiving Payement
+        $('#btnPaymentReceive').on('click', () => {
+
+            var paidAmount = $('#payAmount').val();
+            if (paidAmount === "" || paidAmount > @Model.Order.GrandTotal) {
+                showMessage("Please recheck your paid amount. ", "", "warning");
+                return;
+            }
+
+            modelObject = {
+
+                order: {
+                    id:@Model.Order.Id,
+                    userId:@Model.User.Id,
+                    orderNo:"@Model.Order.OrderNo"
+                },
+                payAmount: paidAmount,
+                paymentMethodId: $('#paymentMethodId').val(),
+            };
+
+            insertRecordWithoutForm("Payments", "ReceiveLatePayment", modelObject, "icoReceive", "zmdi zmdi-money");
+        });
+
+</script>

@@ -1,0 +1,85 @@
+﻿@model POSMVC.Models.PageModels.PaymentsVM.PaymentsVM
+
+
+@{
+    ViewData["Title"] = "Create Return Order";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-30">
+                <div class="card-body">
+                    <div class="justify-content-between align-items-center mb-20">
+                        <h6 class="card-title mb-2 text-center">Receive Payment of Order</h6>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-8">
+                            <input class="form-control c3-circle" name="orderNo" type="search" placeholder="Search by order no" id="searchOrder" style="border-radius: 1.25rem">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="mdlCreateForm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-modal="false">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mt-0 font-16" id="myLargeModalLabel">Payment Details</h5>
+                    <button type="button" class="close" onclick='closeModalCreateForm("mdlCreateForm","CreateForm")'>
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="CreateForm">
+                        <div class="text-center">
+                            <img src="~/ProjectImage/loading.gif" alt="Loading ..." />
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts{
+
+
+    
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $('ul.pagination > li.disabled > a').addClass('page-link');
+
+            $('#searchOrder').autocomplete({
+                minLength: 2,
+                source: '/Orders/OrderSearch',
+                select: function (event, ui)
+                {
+                    openModalWithQueryString("mdlCreateForm", "CreateForm", "Payments", "GetPaymentDetails", "orderNo=" + ui.item.label);
+                  //  openModalCreateForm("mdlCreateForm", "CreateForm", "Payments", "GetPaymentDetails");
+                   // window.location.href = "/Payments/GetOrderPayment?orderNo=" + ui.item.label;
+                }
+
+            });
+
+            $("#ui-id-1").css('border-radius', '1.25rem');
+
+
+        });
+
+
+    </script>
+
+}
+

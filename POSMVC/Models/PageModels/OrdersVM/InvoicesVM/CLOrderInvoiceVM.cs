@@ -29,11 +29,21 @@ namespace POSMVC.Models.PageModels.OrdersVM.CLOrderInvoice
         public decimal? PaidAmount { get; set; }
         public decimal? DueAmount { get; set; }
         #endregion
+
+        public List<ListCLPayments> listPayment { get; set; }
+
     }
 
     public class ListOfOrderDetail
     {
         public Products Product { get; set; }
         public OrderDetails OrderDetail { get; set; }
+    }
+
+    public class ListCLPayments
+    {
+        public Payment Payment { get; set; }
+        public PaymentMethods PaymentMethods { get; set; }
+
     }
 }

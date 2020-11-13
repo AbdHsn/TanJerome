@@ -1,0 +1,177 @@
+﻿@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@model IEnumerable<POSMVC.Models.PageModels.ManufacturersVM.ListManufacturerVM>
+
+
+@{
+    ViewData["Title"] = "Search Manufacturers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var searchValue = (string)ViewBag.SearchValue;
+}
+
+<div class="container-fluid">
+
+    <div class="row">
+ 
+
+        <div class="col-12">
+            <div class="card mb-30">
+                <div class="card-body pb-0">
+                    <div class="justify-content-between align-items-center mb-20">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="card-title mb-0">Search Result</h6>
+                            </div>
+                            <div class="col-md-6 float-right pr-4">
+                                <span class="badge font-14 badge-soft-info float-right">
+                                    <a href="/Manufacturers/Manufacturers?page=1"><i class="zmdi zmdi-arrow-back"></i> Back Records</a>
+                                </span>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button type="button" class="btn btn-sm btn-outline-success" onclick='openModalCreateForm("mdlCreateForm","CreateForm","Manufacturers","CreateManufacturer")'><i class="zmdi zmdi-collection-plus"></i> New Manufacturer </button>
+                            </div>
+                            <div class="col-md-6 float-right">
+                                <div class="input-group">
+                                    <input class="form-control" value="@searchValue" name="manufacturer" type="search" placeholder="Search by Manufacturer Name" id="searchManufacturer">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (Model.Count() <= 0)
+                    {
+                        <div class="text-center">
+                            <span class="badge font-11 badge-soft-purple"> There is no record found</span>
+
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="table-responsive order-stats">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th width="45%">Supplier</th>
+                                        <th width="45%">Contact Persion</th>
+                                        <th width="10%">
+
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+
+                                                <div class="media">
+                                                    <img src="~/@item.Manufacturer.SmallImage" class="mr-3 media-thumb" alt="Supplier Logo">
+                                                    <div class="media-body">
+                                                        <h5 class="mt-2 font-14"> @item.Manufacturer.ManufacturerName</h5>
+                                                        @item.Manufacturer.ContactInfo
+                                                    </div>
+                                                </div>
+                                            </td>
+
+                                            <td>
+                                                <h5 class="mt-0 font-14">Person Name: @item.Manufacturer.ContactName</h5>
+                                                Designation :@item.Manufacturer.ContactTitle
+                                            </td>
+                                            <td>
+                                                <a href="#" class="mr-2" data-toggle="tooltip" title="" data-original-title="Update Info" onclick='openModalUpdateForm("mdlUpdateForm", "UpdateForm", "Manufacturers","EditManufacturer", "?id=@item.Manufacturer.Id")'><i class="fa fa-edit text-info font-18"></i></a>
+                                                <a href="#" data-toggle="tooltip" title="" data-original-title="Delete" onclick='deleteConfirmation({id: @item.Manufacturer.Id}, "@item.Manufacturer.ManufacturerName", "Manufacturers", "DeleteManufacturer")'><i class="fa fa-trash text-danger font-18"></i></a>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-group pull-right">
+                            @Html.PagedListPager((IPagedList)Model, page => Url.Action("Manufacturers", new { page = page }),
+                           new X.PagedList.Mvc.Common.PagedListRenderOptionsBase
+                           {
+                               DisplayItemSliceAndTotal = true,
+                               ContainerDivClasses = new[] { "navigation", "btn btn-default" },
+                               LiElementClasses = new[] { "page-item" },
+                               PageClasses = new[] { "btn-success", "page-link" },
+                               ActiveLiElementClass = "btn-defult"
+                           })
+                        </div>
+                    }
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="mdlCreateForm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-modal="false">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mt-0 font-16" id="myLargeModalLabel">Add New Manufacturer</h5>
+                    <button type="button" class="close" onclick='closeModalCreateForm("mdlCreateForm","CreateForm")'>
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="CreateForm">
+                        <div class="text-center">
+                            <img src="~/ProjectImage/loading.gif" alt="Loading ..." />
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="mdlUpdateForm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-modal="false">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mt-0 font-16" id="myLargeModalLabel">Update Manufacturer</h5>
+                    <button type="button" class="close" onclick='closeModalUpdateForm("mdlUpdateForm","UpdateForm")'>
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="UpdateForm">
+                        <div class="text-center">
+                            <img src="~/ProjectImage/loading.gif" alt="Loading ..." />
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+@section Scripts{
+
+    
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('ul.pagination > li.disabled > a').addClass('page-link');
+
+            $('#searchManufacturer').autocomplete({
+                minLength: 2,
+                source: '/Manufacturers/ManufacturerSearch',
+                select: function () {
+                    window.location.href = "/Manufacturers/SearchResult?manufacturer=" + $(this).val();
+                }
+            });
+
+        });
+    </script>
+
+}
+

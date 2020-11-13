@@ -26,11 +26,20 @@ namespace POSMVC.Models.PageModels.OrdersVM.CCOrderInvoice
         public decimal? DueAmount { get; set; }
         #endregion
 
+        public List<ListCCPayments> listPayment { get; set; }
+
     }
 
     public class ListOfOrderDetail
     {
         public Products Product { get; set; }
         public OrderDetails OrderDetail { get; set; }
+    }
+
+    public class ListCCPayments
+    {
+        public Payment Payment { get; set; }
+        public PaymentMethods PaymentMethods { get; set; }
+
     }
 }

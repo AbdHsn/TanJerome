@@ -16,8 +16,8 @@ namespace POSMVC.Models.Entities
         public decimal? DiscountAmount { get; set; }
         public decimal? GrandTotal { get; set; }
         public string BillingAddress { get; set; }
-        public DateTime? OrderPlaceDate { get; set; }
         public DateTime? CollectionDate { get; set; }
+        public DateTime? OrderPlaceDate { get; set; }
         public long? UpdateBy { get; set; }
         public DateTime? LastUpdate { get; set; }
         public string OrderStatus { get; set; }

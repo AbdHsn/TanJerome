@@ -508,9 +508,17 @@ namespace POSMVC.Models.Entities
 
                 entity.Property(e => e.ContactInfo).HasMaxLength(400);
 
+                entity.Property(e => e.ContactName).HasMaxLength(50);
+
+                entity.Property(e => e.ContactTitle).HasMaxLength(20);
+
                 entity.Property(e => e.ManufacturerName).HasMaxLength(200);
 
                 entity.Property(e => e.SmallImage).HasMaxLength(100);
+
+                entity.Property(e => e.Url)
+                    .HasColumnName("URL")
+                    .HasMaxLength(100);
             });
 
             modelBuilder.Entity<OrderDetails>(entity =>
@@ -545,6 +553,8 @@ namespace POSMVC.Models.Entities
                 entity.Property(e => e.DiscountRate).HasColumnType("decimal(18, 2)");
 
                 entity.Property(e => e.GrandTotal).HasColumnType("decimal(18, 2)");
+
+                entity.Property(e => e.LastUpdate).HasColumnType("datetime");
 
                 entity.Property(e => e.Note).HasMaxLength(100);
 

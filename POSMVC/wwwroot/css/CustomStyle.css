@@ -2,6 +2,10 @@
     text-align: right;
 }
 
+.line-height-1 {
+    line-height: 1.3;
+}
+
 .img-container {
     position: relative;
     width: 100%;

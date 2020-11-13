@@ -1,6 +1,7 @@
 ﻿
 //PartialView Functions
 function openModalCreateForm(modalId, loadDivId, controller, action) {
+
     $('#' + modalId).modal({
         backdrop: 'static',
         keyboard: false,
@@ -30,6 +31,15 @@ function closeModalUpdateForm(modalId, loadDivId) {
 
     var loading = '<div class="text-center"><img src="/ProjectImage/loading.gif" alt="Loading ..." /></div >';
     $('#' + loadDivId).prepend(loading);
+}
+
+function openModalWithQueryString(modalId, loadDivId, controller, action, queryString) {
+    $('#' + modalId).modal({
+        backdrop: 'static',
+        keyboard: false,
+        show: true
+    });
+    $('#' + loadDivId).load("/" + controller + "/" + action + "?" + queryString);
 }
 //~PartialView Functions
 

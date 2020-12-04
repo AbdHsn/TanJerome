@@ -18,9 +18,11 @@ using POSMVC.Models.Entities;
 using POSMVC.Models.PageModels.OrdersVM;
 using POSMVC.Models.PageModels.OrdersVM.CCOrderInvoice;
 using POSMVC.Models.PageModels.OrdersVM.CLOrderInvoice;
+using POSMVC.Models.PageModels.OrdersVM.ExchangesVM;
 using POSMVC.Models.PageModels.OrdersVM.SpecOrderInvoice;
 using POSMVC.Models.SharedModels;
 using X.PagedList;
+using static POSMVC.Models.PageModels.OrdersVM.ExchangeVM;
 
 namespace POSMVC.Controllers
 {
@@ -131,6 +133,90 @@ namespace POSMVC.Controllers
 
             return View(result);
         }
+
+        
+        public async Task<IActionResult> UncollectedOrders(int? page, string orderStatus = "Uncollected")
+        {
+            var pageNumber = page ?? 1;
+            int pageRowSize = 10;
+
+            var fetchOrders = new List<OrdersVM>();
+            if (string.IsNullOrEmpty(orderStatus) || orderStatus == "All")
+            {
+                var fetchOrder = from o in _context.Orders
+                                 join u in _context.Users on o.UserId equals u.Id
+                                 join ut in _context.UserType on u.UserTypeId equals ut.Id
+                                 join pd in _context.PersonalDetail on u.Id equals pd.UserId
+                                 orderby o.OrderPlaceDate descending
+                                 select new OrdersVM
+                                 {
+                                     Orders = o,
+                                     Users = u,
+                                     UserType = ut,
+                                     PersonalDetail = pd
+                                 };
+                fetchOrders = fetchOrder.ToList();
+            }
+            else
+            {
+                var fetchOrder = from o in _context.Orders
+                                 where o.OrderStatus == orderStatus
+                                 join u in _context.Users on o.UserId equals u.Id
+                                 join ut in _context.UserType on u.UserTypeId equals ut.Id
+                                 join pd in _context.PersonalDetail on u.Id equals pd.UserId
+                                 orderby o.OrderPlaceDate descending
+                                 select new OrdersVM
+                                 {
+                                     Orders = o,
+                                     Users = u,
+                                     UserType = ut,
+                                     PersonalDetail = pd
+                                 };
+                fetchOrders = fetchOrder.ToList();
+            }
+
+            var orders = new List<OrdersVM>();
+            foreach (var item in fetchOrders)
+            {
+                var orderVm = new OrdersVM();
+                orderVm.Orders = item.Orders;
+                orderVm.Users = item.Users;
+                orderVm.UserType = item.UserType;
+                orderVm.PersonalDetail = item.PersonalDetail;
+
+                //Fetch Payment data.
+                var paidAmounts = _context.Payment.Where(p => p.InstrumentNo == item.Orders.OrderNo) == null ? 0 : (decimal)_context.Payment.Where(p => p.InstrumentNo == item.Orders.OrderNo).Sum(s => s.PaidAmount);
+                orderVm.PaidAmount = paidAmounts;
+                orderVm.DueAmount = (decimal)(item.Orders.GrandTotal - paidAmounts);
+
+                if (paidAmounts == 0)
+                {
+                    orderVm.PaidStatus = "Not Paid";
+                }
+                if (paidAmounts >= item.Orders.GrandTotal)
+                {
+                    orderVm.PaidStatus = "Full Paid";
+                }
+                if (paidAmounts > 0 && paidAmounts < item.Orders.GrandTotal)
+                {
+                    orderVm.PaidStatus = "Partial Paid";
+                }
+
+                orders.Add(orderVm);
+            }
+
+            ViewData["ddlOrderStatus"] = new SelectList(
+                from DefaultValues.OrderStatus e in Enum.GetValues(typeof(DefaultValues.OrderStatus))
+                select new { Id = (int)e, Name = e.ToString() }, "Id", "Name");
+
+            ViewData["SelectedOrderStatus"] = string.IsNullOrEmpty(orderStatus) ? "All" : orderStatus;
+            ViewData["PageNumber"] = pageNumber;
+
+            var result = await orders.ToPagedListAsync(pageNumber, pageRowSize);
+
+            return View(result);
+        }
+
         public async Task<IActionResult> OrdersStatusModified(long orderId, string newOrderStatus,  int? page, string oldOrderStatus = null)
         {
             var fetchOrder = await _context.Orders.FindAsync(orderId);
@@ -174,6 +260,117 @@ namespace POSMVC.Controllers
             return PartialView("_OrderHistory");
         }
 
+        #endregion
+
+        #region Exchange
+        public async Task<IActionResult> Exchanges(ExchangeVM model)
+        {
+            var returnModel = (dynamic)null;
+            if (model.FromDate != null && model.ToDate != null)
+            {
+                var fetchExchange = from ex in _context.Exchange
+                                   where ex.ExchangeDate.Value.Date >= model.FromDate.Value.Date
+                                   && ex.ExchangeDate.Value.Date < model.ToDate.Value.Date.AddDays(1)
+                                   join u in _context.Users on ex.UserId equals u.Id
+                                   join o in _context.Orders on ex.OrderId equals o.Id
+                                   join or in _context.OrderReturn on ex.ReturnId equals or.Id
+                                   orderby ex.ExchangeDate descending
+                                   select new ListExchange
+                                   {
+                                       Exchange = ex,
+                                       Order = o,
+                                       OrderReturn = or,
+                                       User = u
+                                   };
+
+                returnModel = new ExchangeVM()
+                {
+                    lstExchange = fetchExchange.ToList(),
+                    FromDate = model.FromDate,
+                    ToDate = model.ToDate,
+                    TotalRecords = fetchExchange.Count(),
+                    TotalReturnAmount = (decimal)fetchExchange.Sum(s=> s.OrderReturn.GrandTotal),
+                    TotalEarnAmount = (decimal)fetchExchange.Sum(s=> s.Order.GrandTotal)
+                };
+                return View(returnModel);
+            }
+            else if (!string.IsNullOrEmpty(model.OrderNo))
+            {
+                var getOrder = _context.Orders.Where(o => o.OrderNo == model.OrderNo).FirstOrDefault();
+                if (getOrder != null)
+                {
+                    var fetchExchange = from ex in _context.Exchange
+                                        where ex.ExchangeDate.Value.Date >= model.FromDate.Value.Date
+                                        && ex.ExchangeDate.Value.Date < model.ToDate.Value.Date.AddDays(1)
+                                        join u in _context.Users on ex.UserId equals u.Id
+                                        join o in _context.Orders on ex.OrderId equals o.Id
+                                        join or in _context.OrderReturn on ex.ReturnId equals or.Id
+                                        orderby ex.ExchangeDate descending
+                                        select new ListExchange
+                                        {
+                                            Exchange = ex,
+                                            Order = o,
+                                            OrderReturn = or,
+                                            User = u
+                                        };
+
+                    returnModel = new ExchangeVM()
+                    {
+                        lstExchange = fetchExchange.ToList(),
+                        FromDate = model.FromDate,
+                        ToDate = model.ToDate,
+                        TotalRecords = fetchExchange.Count(),
+                        TotalReturnAmount = (decimal)fetchExchange.Sum(s => s.OrderReturn.GrandTotal),
+                        TotalEarnAmount = (decimal)fetchExchange.Sum(s => s.Order.GrandTotal)
+                    };
+                }
+                return View(returnModel);
+            }
+            
+            return View(returnModel);
+        }
+
+        [HttpGet, ActionName("CreateExchange")]
+        public async Task<IActionResult> CreateExchange(string orderNo)
+        {
+            var returnModel = (dynamic)null;
+            var order = _context.Orders.Where(o => o.OrderNo == orderNo && (o.OrderStatus == DefaultValues.OrderStatus.Collected.ToString()|| o.OrderStatus == DefaultValues.OrderStatus.Uncollected.ToString())).FirstOrDefault();
+            if (order != null)
+            {
+                returnModel = new CreateExchangeVM();
+                returnModel.Order = order;
+                returnModel.PersonalDetail = _context.PersonalDetail.Where(u => u.UserId == order.UserId).FirstOrDefault();
+                returnModel.User = _context.Users.Find(order.UserId);
+
+                var getOrderReturnDetail = from ord in _context.OrderReturnDetails
+                                           where ord.OrderId == order.Id
+                                           select new
+                                           {
+                                               OrderReturnDetails = ord
+                                           };
+                var getDetail = (from od in _context.OrderDetails
+                                 where od.OrderId == order.Id
+                                 join p in _context.Products on od.ProductId equals p.Id
+                                 select new ListReturnableItem
+                                 {
+                                     OrderDetails = od,
+                                     Products = p,
+                                     PreviousQuantity = (int)getOrderReturnDetail.Where(or => or.OrderReturnDetails.ProductId == od.ProductId).Sum(s => s.OrderReturnDetails.Quantity),
+                                     ReturnableQuantity = (int)od.Quantity - (int)getOrderReturnDetail.Where(or => or.OrderReturnDetails.ProductId == od.ProductId).Sum(s => s.OrderReturnDetails.Quantity),
+                                 }).ToList();
+                returnModel.lstReturnableItems = getDetail;
+
+                await Task.Run(() => {
+                    var ddlProduct = from s in _context.Stock
+                                     join p in _context.Products on s.ProductId equals p.Id
+                                     select new { ProductCode = p.ProductCode + " ( Available Qty: " + s.AvailableQuantity + " )", Id = p.Id };
+                    ViewData["Product"] = new SelectList(ddlProduct, "Id", "ProductCode");
+                });
+
+            }
+            return PartialView("Exchanges/_CreateExchange", returnModel);
+        }
+        
         #endregion
 
         #region Payment
@@ -257,29 +454,44 @@ namespace POSMVC.Controllers
 
                         _context.Orders.Add(model.Order);
                         _context.SaveChanges();
+
+                        //Grouping base on product
+                        var grpProducts = from p in model.ListOrderDetails
+                                          group p by p.ProductId into g
+                                          select new { productId = g.Key, productDetail = g.ToList() };
+
                         //Importing Order Child record...
-                        foreach (var item in model.ListOrderDetails)
+                        foreach (var item in grpProducts)
                         {
                             //Checking stock is available or not, if not return back.
                             var isStockAvailable = from s in _context.Stock
-                                                   where s.ProductId == item.ProductId
+                                                   where s.ProductId == item.productId
                                                    join p in _context.Products on s.ProductId equals p.Id
                                                    select new { s, p };
 
                             var currentStock = isStockAvailable.FirstOrDefault();
-                            if (item.Quantity > currentStock.s.AvailableQuantity)
+                            int totalItemQuantity = (int)item.productDetail.Sum(s => s.Quantity);
+
+                            if (totalItemQuantity > currentStock.s.AvailableQuantity)
                             {
                                 return result = Json(new { success = false, message = " Order can't proceed, "+ currentStock.p.ProductCode+ " out of stock.", redirectUrl = "" });
                             }
 
-                            item.OrderId = model.Order.Id;
-                            //item.CollectionDate = DateTime.Now;
-                            _context.OrderDetails.Add(item);
+                            decimal unitPrice = (decimal)item.productDetail.FirstOrDefault().Price;
+                            var orderDetail = new OrderDetails()
+                            {
+                                OrderId = model.Order.Id,
+                                ProductId = item.productId,
+                                Quantity = totalItemQuantity,
+                                Price = unitPrice,
+                                Total = totalItemQuantity * unitPrice
+                            };
+                            _context.OrderDetails.Add(orderDetail);
                             _context.SaveChanges();
 
                             //Updating Stock of current item
                             currentStock.s.LastQuantity = currentStock.s.AvailableQuantity;
-                            currentStock.s.AvailableQuantity -= item.Quantity;
+                            currentStock.s.AvailableQuantity -= totalItemQuantity;
                             currentStock.s.LastUpdate = DateTime.UtcNow;
 
                             _context.Stock.Update(currentStock.s);
@@ -287,8 +499,8 @@ namespace POSMVC.Controllers
                             //Creating stock trace
                             _cmnBusinessFunction.CreateStockTrace(new CreateStockTraceBM()
                             {
-                                NewQuantity = -Convert.ToInt32(item.Quantity),
-                                ProductId = Convert.ToInt64(item.ProductId),
+                                NewQuantity = -totalItemQuantity,
+                                ProductId = (long)item.productId,
                                 ReferenecId = model.Order.OrderNo,
                                 TableReference = "Sales Order",
                                 Note = "Generated From Orders/CreateCLOrder"
@@ -465,29 +677,44 @@ namespace POSMVC.Controllers
                         model.Order.OrderStatus = DefaultValues.OrderStatus.InProcess.ToString();
                         _context.Orders.Add(model.Order);
                         _context.SaveChanges();
+
+                        //Grouping base on product
+                        var grpProducts = from p in model.ListOrderDetails
+                                          group p by p.ProductId into g
+                                          select new { productId = g.Key, productDetail = g.ToList() };
+
                         //Importing Order Child record...
-                        foreach (var item in model.ListOrderDetails)
+                        foreach (var item in grpProducts)
                         {
                             //Checking stock is available or not, if not return back.
                             var isStockAvailable = from s in _context.Stock
-                                                   where s.ProductId == item.ProductId
+                                                   where s.ProductId == item.productId
                                                    join p in _context.Products on s.ProductId equals p.Id
                                                    select new { s, p };
 
                             var currentStock = isStockAvailable.FirstOrDefault();
-                            if (item.Quantity > currentStock.s.AvailableQuantity)
+
+                            int totalItemQuantity = (int)item.productDetail.Sum(s => s.Quantity);
+                            if (totalItemQuantity > currentStock.s.AvailableQuantity)
                             {
                                 return result = Json(new { success = false, message = " Order can't proceed, " + currentStock.p.ProductCode + " out of stock.", redirectUrl = "" });
                             }
 
-                            item.OrderId = model.Order.Id;
-                            //item.CollectionDate = DateTime.Now;
-                            _context.OrderDetails.Add(item);
+                            decimal unitPrice = (decimal)item.productDetail.FirstOrDefault().Price;
+                            var orderDetail = new OrderDetails()
+                            {
+                                OrderId = model.Order.Id,
+                                ProductId = item.productId,
+                                Quantity = totalItemQuantity,
+                                Price = unitPrice,
+                                Total = totalItemQuantity * unitPrice
+                            };
+                            _context.OrderDetails.Add(orderDetail);
                             _context.SaveChanges();
 
                             //Updating Stock of current item
                             currentStock.s.LastQuantity = currentStock.s.AvailableQuantity;
-                            currentStock.s.AvailableQuantity -= item.Quantity;
+                            currentStock.s.AvailableQuantity -= totalItemQuantity;
                             currentStock.s.LastUpdate = DateTime.UtcNow;
 
                             _context.Stock.Update(currentStock.s);
@@ -495,8 +722,8 @@ namespace POSMVC.Controllers
                             //Creating stock trace
                             _cmnBusinessFunction.CreateStockTrace(new CreateStockTraceBM()
                             {
-                                NewQuantity = -Convert.ToInt32(item.Quantity),
-                                ProductId = Convert.ToInt64(item.ProductId),
+                                NewQuantity = -totalItemQuantity,
+                                ProductId = (long)item.productId,
                                 ReferenecId = model.Order.OrderNo,
                                 TableReference = "Sales Order",
                                 Note = "Generated From Orders/CreateCLOrder"
@@ -632,29 +859,42 @@ namespace POSMVC.Controllers
                         newOrder.OrderStatus = DefaultValues.OrderStatus.Collected.ToString();
                         _context.Orders.Add(newOrder);
                         _context.SaveChanges();
+
+                        //Grouping base on product
+                        var grpProducts = from p in model.ListOrderDetails
+                                          group p by p.ProductId into g
+                                          select new { productId = g.Key, productDetail = g.ToList() };
+
                         //Importing Order Child record...
-                        foreach (var item in model.ListOrderDetails)
+                        foreach (var item in grpProducts)
                         {
                             //Checking stock is available or not, if not return back.
                             var isStockAvailable = from s in _context.Stock
-                                                   where s.ProductId == item.ProductId
+                                                   where s.ProductId == item.productId
                                                    join p in _context.Products on s.ProductId equals p.Id
                                                    select new { s, p };
 
                             var currentStock = isStockAvailable.FirstOrDefault();
-                            if (item.Quantity > currentStock.s.AvailableQuantity)
+                            int totalItemQuantity = (int)item.productDetail.Sum(s => s.Quantity);
+                            if (totalItemQuantity > currentStock.s.AvailableQuantity)
                             {
                                 return result = Json(new { success = false, message = " Order can't proceed, " + currentStock.p.ProductCode + " out of stock.", redirectUrl = "" });
                             }
-
-                            item.OrderId = newOrder.Id;
-                            //item.CollectionDate = DateTime.Now;
-                            _context.OrderDetails.Add(item);
+                           
+                            decimal unitPrice = (decimal)item.productDetail.FirstOrDefault().Price;
+                            var orderDetail = new OrderDetails() { 
+                                OrderId = newOrder.Id,
+                                ProductId = item.productId,
+                                Quantity = totalItemQuantity,
+                                Price = unitPrice,
+                                Total = totalItemQuantity * unitPrice 
+                            };
+                            _context.OrderDetails.Add(orderDetail);
                             _context.SaveChanges();
 
                             //Updating Stock of current item
                             currentStock.s.LastQuantity = currentStock.s.AvailableQuantity;
-                            currentStock.s.AvailableQuantity -= item.Quantity;
+                            currentStock.s.AvailableQuantity -= totalItemQuantity;
                             currentStock.s.LastUpdate = DateTime.UtcNow;
 
                             _context.Stock.Update(currentStock.s);
@@ -662,8 +902,8 @@ namespace POSMVC.Controllers
                             //Creating stock trace
                             _cmnBusinessFunction.CreateStockTrace(new CreateStockTraceBM()
                             {
-                                NewQuantity = -Convert.ToInt32(item.Quantity),
-                                ProductId = Convert.ToInt64(item.ProductId),
+                                NewQuantity = -totalItemQuantity,
+                                ProductId = Convert.ToInt64(item.productId),
                                 ReferenecId = newOrder.OrderNo,
                                 TableReference = "Sales Order",
                                 Note = "Generated From Orders/CreateCCOrder"
@@ -1001,6 +1241,82 @@ namespace POSMVC.Controllers
                 return BadRequest();
             }
         }
+
+
+        [Produces("application/json")]
+        [HttpGet, ActionName("UncollectedOrdersSearchResult")]
+        public async Task<IActionResult> UncollectedOrdersSearchResult(string orderNo)
+        {
+            try
+            {
+                var pageNumber = 1;
+                int pageRowSize = 20;
+                string orderStatus = "";
+
+                var fetchOrders = new List<OrdersVM>();
+
+                var fetchOrder = from o in _context.Orders
+                                 where o.OrderNo == orderNo && o.OrderStatus == "Uncollected"
+                                 join u in _context.Users on o.UserId equals u.Id
+                                 join ut in _context.UserType on u.UserTypeId equals ut.Id
+                                 join pd in _context.PersonalDetail on u.Id equals pd.UserId
+                                 orderby o.OrderPlaceDate descending
+                                 select new OrdersVM
+                                 {
+                                     Orders = o,
+                                     Users = u,
+                                     UserType = ut,
+                                     PersonalDetail = pd
+                                 };
+                fetchOrders = fetchOrder.ToList();
+
+                var orders = new List<OrdersVM>();
+                foreach (var item in fetchOrders)
+                {
+                    var orderVm = new OrdersVM();
+                    orderVm.Orders = item.Orders;
+                    orderVm.Users = item.Users;
+                    orderVm.UserType = item.UserType;
+                    orderVm.PersonalDetail = item.PersonalDetail;
+
+                    //Fetch Payment data.
+                    var paidAmounts = _context.Payment.Where(p => p.InstrumentNo == item.Orders.OrderNo) == null ? 0 : (decimal)_context.Payment.Where(p => p.InstrumentNo == item.Orders.OrderNo).Sum(s => s.PaidAmount);
+                    orderVm.PaidAmount = paidAmounts;
+                    orderVm.DueAmount = (decimal)(item.Orders.GrandTotal - paidAmounts);
+
+                    if (paidAmounts == 0)
+                    {
+                        orderVm.PaidStatus = "Not Paid";
+                    }
+                    if (paidAmounts >= item.Orders.GrandTotal)
+                    {
+                        orderVm.PaidStatus = "Full Paid";
+                    }
+                    if (paidAmounts > 0 && paidAmounts < item.Orders.GrandTotal)
+                    {
+                        orderVm.PaidStatus = "Partial Paid";
+                    }
+                    orders.Add(orderVm);
+                }
+
+                ViewData["ddlOrderStatus"] = new SelectList(
+                    from DefaultValues.OrderStatus e in Enum.GetValues(typeof(DefaultValues.OrderStatus))
+                    select new { Id = (int)e, Name = e.ToString() }, "Id", "Name");
+
+                ViewData["SelectedOrderStatus"] = string.IsNullOrEmpty(orderStatus) ? "All" : orderStatus;
+                ViewData["PageNumber"] = pageNumber;
+                ViewData["SearchValue"] = orderNo;
+                var result = await orders.ToPagedListAsync(pageNumber, pageRowSize);
+
+                return View("SearchUncollectedOrders", result);
+            }
+            catch (Exception ex)
+            {
+                string err = ex.ToString();
+                return BadRequest();
+            }
+        }
+
 
         #endregion
     }

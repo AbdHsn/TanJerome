@@ -15,6 +15,7 @@ using POSMVC.Models.Entities;
 using POSMVC.Models.PageModels.OrdersVM;
 using POSMVC.Models.PageModels.PaymentsVM;
 using X.PagedList;
+using static POSMVC.Models.PageModels.PaymentsVM.GetTransactionVM;
 
 namespace POSMVC.Controllers
 {
@@ -42,6 +43,57 @@ namespace POSMVC.Controllers
             _he = he;
         }
         #endregion
+        public async Task<IActionResult> GetTransaction(GetTransactionVM model)
+        {
+            var result = (dynamic)null;
+  
+            if (model.FromDate != null && model.ToDate != null)
+            {
+                    var fetchPayment = from p in _context.Payment
+                                       where p.TransactionDate.Value.Date >= model.FromDate.Value.Date
+                                       && p.TransactionDate.Value.Date < model.ToDate.Value.Date.AddDays(1)
+                                       join u in _context.Users on p.UserId equals u.Id
+                                       orderby p.TransactionDate descending
+                                       select new ListPayment
+                                       {
+                                           Payment = p,
+                                           User = u
+                                       };
+
+                result = new GetTransactionVM()
+                {
+                    lstPayment = fetchPayment.ToList(),
+                    FromDate = model.FromDate,
+                    ToDate = model.ToDate,
+                    TotalRecords = fetchPayment.Count(),
+                    TotalPaid = (decimal)fetchPayment.Sum(s => s.Payment.PaidAmount),
+                };
+                return View(result);
+            }
+            else if(!string.IsNullOrEmpty(model.OrderNo))
+            {
+                var fetchPayment = from p in _context.Payment
+                                   where p.InstrumentNo == model.OrderNo
+                                   join u in _context.Users on p.UserId equals u.Id
+                                   orderby p.TransactionDate descending
+                                   select new ListPayment
+                                   {
+                                       Payment = p,
+                                       User = u
+                                   };
+
+                result = new GetTransactionVM()
+                {
+                    lstPayment = fetchPayment.ToList(),
+                    OrderNo = model.OrderNo,
+                    TotalRecords = fetchPayment.Count(),
+                    TotalPaid = (decimal)fetchPayment.Sum(s => s.Payment.PaidAmount),
+                };
+                return View(result);
+            }
+
+            return View(result);
+        }
 
         [HttpGet, ActionName("ViewTransactions")]
         public async Task<IActionResult> Transactions(long orderId)

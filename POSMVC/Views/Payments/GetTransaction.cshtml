@@ -1,0 +1,150 @@
+﻿@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@model POSMVC.Models.PageModels.PaymentsVM.GetTransactionVM
+
+
+@{
+    ViewData["Title"] = "Transactions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 box-margin">
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="justify-content-between align-items-center mb-20">
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h6 class="card-title mb-0">Transactions</h6>
+                            </div>
+                            <div class="col-md-9 float-right">
+                                <form id="GetOrderByDateRange" asp-controller="Payments" asp-action="GetTransaction" method="get">
+                                    <label class="text-info mt-1">Please choose your desire criteria to get data.</label>
+                                    <div class="input-group">
+                                        @if (Model?.FromDate != null && Model?.ToDate != null)
+                                        {
+                                            <input name="FromDate" id="fromDate" class="form-control" value='@(Model == null ? "" : Model.FromDate.Value.ToShortDateString())' placeholder="From Date" type="text" data-provide="datepicker" data-date-autoclose="true" />
+                                            <input name="ToDate" id="toDate" class="form-control" value='@(Model == null ? "" : Model.ToDate.Value.ToShortDateString())' placeholder="To Date" type="text" data-provide="datepicker" data-date-autoclose="true" />
+                                        }
+                                        else
+                                        {
+                                            <input name="FromDate" id="fromDate" class="form-control" placeholder="From Date" type="text" data-provide="datepicker" data-date-autoclose="true" />
+                                            <input name="ToDate" id="toDate" class="form-control" placeholder="To Date" type="text" data-provide="datepicker" data-date-autoclose="true" />
+                                        }
+                                        <button type="submit" class="btn btn-fill-default" style="height:40px;">Get Data</button>
+
+                                        <input name="OrderNo" id="searchOrder" class="form-control" value='@(Model == null ? "" : Model.OrderNo)' placeholder="Filter by Order No" type="search" />
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Table -->
+                    <div class="table-responsive">
+                        @if (Model != null)
+                        {
+                            @if (Model.lstPayment.Count() <= 0)
+                            {
+                                <div class="text-center">
+                                    <span class="badge font-11 badge-soft-purple"> There is no record found</span>
+
+                                </div>
+                            }
+                            else
+                            {
+                                <label class="label-warning">Record Found : @Model.TotalRecords</label>
+                                @if (Model.FromDate != null && Model.ToDate != null)
+                                {
+                                    <label class="label-info">Chosen Date Range: @Model.FromDate.Value.ToShortDateString() To @Model.ToDate.Value.ToShortDateString()</label>
+                                }
+                                if (Model.OrderNo != null)
+                                {
+                                    <label class="label-info">Order No: @Model.OrderNo</label>
+                                }
+                                <label class="label-primary">Total Paid: @Model.TotalPaid</label>
+
+                                <a href="#" id="lnkExport" class="badge badge-primary pull-right mx-1 px-3">Export</a>
+                                @*<a id="lnkPrint" target="_blank" asp-action="PrintOrderByDateRange" asp-controller="Reports" asp-route-fromDate='@(Model.FromDate == null ? "" : Model.FromDate.Value.ToShortDateString())' asp-route-toDate='@(Model.ToDate == null ? "" : Model.ToDate.Value.ToShortDateString())' asp-route-orderNo='@Model.OrderNo' class="badge badge-primary pull-right mx-1 px-3">Print</a>*@
+                                <table class="table table-borderless text-nowrap" id="tblPayment">
+                                    <thead>
+                                        <tr>
+                                            <th>SL</th>
+                                            <th>Transactions</th>
+                                            <th>Customers</th>
+                                            <th>Amounts</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.lstPayment)
+                                        {
+                                            <tr>
+                                                <td width="5%">
+                                                    <span class="font-13">@(Model.lstPayment.IndexOf(item)+1)</span>
+                                                </td>
+                                                <td width="25%">
+                                                    <span class="font-13">Transaction No: @item.Payment.TransactionNo</span>
+                                                    <p class="m-0"><small>Order No: @item.Payment.InstrumentNo</small> </p>
+                                                    <p class="m-0"><small>Transaction Made at @item.Payment.TransactionDate.Value.ToString("dddd, MMM dd yyyy")</small> </p>
+                                                </td>
+                                                <td width="25%">
+                                                    <span class="font-13">@item.User.FirstName @item.User.LastName </span>
+                                                    <p class="m-0"><small>Mobile: @item.User.MobileNo@(item.User.OtherContactNo != null? ", "+ item.User.OtherContactNo : "")</small> </p>
+                                                </td>
+                                                <td width="10%">
+                                                    <span class="font-13">@item.Payment.PaidAmount</span>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div> <!-- end col -->
+    </div>
+    <!-- end row -->
+</div>
+
+
+@section Scripts{
+
+    <script src="~/js/table-to-excel.js"></script>
+    <script src="~/js/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript">
+
+        $('#searchOrder').autocomplete({
+            minLength: 2,
+            source: '/Orders/OrderSearch',
+            select: function (event, ui) {
+                window.location.href = "/Payments/GetTransaction?orderNo=" + ui.item.label;
+            }
+
+        });
+
+        var currentDateTime = new Date();
+        var getPreciseDateTime = currentDateTime.getDate() + "-"
+            + (currentDateTime.getMonth() + 1) + "-"
+            + currentDateTime.getFullYear() + "-"
+            + currentDateTime.getHours() + ":"
+            + currentDateTime.getMinutes() + ":"
+            + currentDateTime.getSeconds();
+
+        $('#lnkExport').on('click', () => {
+
+            $("#tblPayment").table2excel({
+                exclude: ".out",
+                name: "Transaction",
+                filename: "Transaction(" + getPreciseDateTime +").xls",
+                preserveColors: true
+            });
+        });
+
+    </script>
+
+}
+

@@ -40,6 +40,11 @@
         <link href="~/css/searchable-dropdown/bootstrap-select.min.css" rel="stylesheet" />
         <link href="~/css/CustomStyle.css" rel="stylesheet" />
         <!-- #endregion -->
+
+        <script src="~/js/jquery.min.js"></script>
+        <script src="~/js/jquery-ui-autocomplete.js"></script>
+        <script src="~/js/popper.min.js"></script>
+        <script src="~/js/bootstrap.min.js"></script>
     </environment>
     @RenderSection("Css", required: false)
 </head>
@@ -68,36 +73,21 @@
                         <ul class="sidebar-menu" data-widget="tree">
                             <li><a asp-controller="Home" asp-action="Index"><i class="zmdi zmdi-home"></i> <span class="font-11">HOME</span></a></li>
                             @*<li class="treeview">
-                                <a href="javascript:void(0)"><i class="zmdi zmdi-money"></i> <span class="font-11">CASH & CARRY PURCHASE</span> <i class="fa fa-angle-right"></i></a>
-                                <ul class="treeview-menu">
-                                    <li><a href="calendar.html">- Calendar</a></li>
-                                    <li><a href="widgets.html">- Widgets</a></li>
-                                    <li><a href="chat-box.html">- Chat box</a></li>
-                                    <li><a href="timeline.html">- Timeline</a></li>
-                                </ul>
-                            </li>*@
+            <a href="javascript:void(0)"><i class="zmdi zmdi-money"></i> <span class="font-11">CASH & CARRY PURCHASE</span> <i class="fa fa-angle-right"></i></a>
+            <ul class="treeview-menu">
+                <li><a href="calendar.html">- Calendar</a></li>
+                <li><a href="widgets.html">- Widgets</a></li>
+                <li><a href="chat-box.html">- Chat box</a></li>
+                <li><a href="timeline.html">- Timeline</a></li>
+            </ul>
+        </li>*@
                             <li><a asp-controller="Orders" asp-action="CCOrder"><i class="zmdi zmdi-money-off"></i> <span class="font-11" title="Cash&Carry Purchase">CC PURCHASE</span></a></li>
                             <li><a asp-controller="Orders" asp-action="CLOrder"><i class="zmdi zmdi-circle-o"></i> <span class="font-11" title="Contact Lense Purchase">CL PURCHASE</span></a></li>
                             <li><a asp-controller="Orders" asp-action="SpecOrder"><i class="zmdi zmdi-voicemail"></i> <span class="font-11" title="Spectacle Purchase">SPEC PURCHASE</span></a></li>
-                            <li><a asp-controller="Orders" asp-action="Orders"><i class="zmdi zmdi-shopping-basket"></i> <span class="font-11" title="Orders">Orders</span></a></li>
+                            <li><a asp-controller="Orders" asp-action="Orders"><i class="zmdi zmdi zmdi-shopping-cart"></i> <span class="font-11" title="Orders">Orders</span></a></li>
+                            <li><a asp-controller="Orders" asp-action="UncollectedOrders"><i class="zmdi zmdi-shopping-basket"></i> <span class="font-11" title="Uncollected Orders">UNCOLLECTED ORDERS</span></a></li>
+                            <li><a asp-controller="Orders" asp-action="Exchanges"><i class="zmdi zmdi-repeat-one"></i> <span class="font-11" title="Uncollected Orders">EXCHANGE/REFUND</span></a></li>
 
-
-                            <li class="treeview">
-                                <a href="javascript:void(0)"><i class="zmdi zmdi-shopping-cart-plus"></i> <span class="font-11">CUSTOMER COLLECTION</span> <i class="fa fa-angle-right"></i></a>
-                                <ul class="treeview-menu">
-                                    <li><a href="alert.html">- Alert</a></li>
-                                    <li><a href="avatar.html">- Avatar</a></li>
-                                    <li><a href="buttons.html">- Button</a></li>
-                                    <li><a href="card.html">- Card</a></li>
-                                    <li><a href="notification.html">- Notification</a></li>
-                                    <li><a href="general.html">- General</a></li>
-                                    <li><a href="progressbar.html">- Progressbar</a></li>
-                                    <li><a href="preloader.html">- Preloader</a></li>
-                                    <li><a href="tab.html">- Tab</a></li>
-                                    <li><a href="dropdown.html">- Dropdown</a></li>
-                                    <li><a href="typography.html">- Typography</a></li>
-                                </ul>
-                            </li>
                             <li class="treeview">
                                 <a href="javascript:void(0)"><i class="zmdi zmdi-accounts-outline"></i> <span class="font-11">PEOPLES</span> <i class="fa fa-angle-right"></i></a>
                                 <ul class="treeview-menu">
@@ -107,23 +97,10 @@
                                 </ul>
                             </li>
                             <li class="treeview">
-                                <a href="javascript:void(0)"><del><i class="zmdi zmdi-shopping-cart-plus"></i></del><span class="font-11">UNCOLLECTED ORDERS</span> <i class="fa fa-angle-right"></i></a>
-                                <ul class="treeview-menu">
-                                    <li><a href="blank.html">- Blank Page</a></li>
-                                    <li><a href="gallery.html">- Gallery</a></li>
-                                    <li><a href="light-box-gallery.html">- Light Box Gallery</a></li>
-                                    <li><a href="modals.html">- Modals</a></li>
-                                    <li><a href="profile.html">- Profile</a></li>
-                                    <li><a href="ribbons.html">- Ribbons</a></li>
-                                    <li><a href="sweet-alert.html">- Sweet Alert</a></li>
-                                </ul>
-                            </li>
-                            <li class="treeview">
                                 <a href="javascript:void(0)"><i class="zmdi zmdi-money-box"></i> <span class="font-11">PAYOUT</span> <i class="fa fa-angle-right"></i></a>
                                 <ul class="treeview-menu">
+                                    <li><a asp-controller="Payments" asp-action="GetTransaction">Transactions</a></li>
                                     <li><a asp-controller="Payments" asp-action="ReceiveLatePayment">Receive Order Payment</a></li>
-                                    <li><a asp-controller="Orders" asp-action="ReceiveOrderPayment">Receive Order Payment</a></li>
-
                                 </ul>
                             </li>
                             <li class="treeview">
@@ -397,11 +374,12 @@
     <environment include="Development">
 
         <!-- #region Templete Preferred JS -->
-        <!-- Must needed plugins to the run this Template -->
         <script src="~/js/jquery.min.js"></script>
         <script src="~/js/jquery-ui-autocomplete.js"></script>
         <script src="~/js/popper.min.js"></script>
         <script src="~/js/bootstrap.min.js"></script>
+        <!-- Must needed plugins to the run this Template -->
+
         <script src="~/js/bundle.js"></script>
         <script src="~/js/default-assets/setting.js"></script>
         <script src="~/js/default-assets/fullscreen.js"></script>
@@ -432,10 +410,9 @@
     <environment exclude="Development">
         <!-- #region Templete Preferred JS -->
         <!-- Must needed plugins to the run this Template -->
-        <script src="~/js/jquery.min.js"></script>
-        <script src="~/js/jquery-ui-autocomplete.js"></script>
-        <script src="~/js/popper.min.js"></script>
-        <script src="~/js/bootstrap.min.js"></script>
+
+
+
         <script src="~/js/bundle.js"></script>
         <script src="~/js/default-assets/setting.js"></script>
         <script src="~/js/default-assets/fullscreen.js"></script>

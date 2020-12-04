@@ -1,0 +1,300 @@
+﻿@model POSMVC.Models.PageModels.OrdersVM.ExchangesVM.CreateExchangeVM
+
+
+<br />
+<div class="container-fluid">
+
+    @if (Model != null)
+    {
+        <div class="row">
+            <div class="col-6">
+                <p class="mb-0 line-height-1"><strong>Order No: @Model.Order.OrderNo</strong></p>
+                <p class="mb-0 line-height-1"><strong>Order Date: @Model.Order.OrderPlaceDate.Value.ToString("ddd, dd MMM yyyy")</strong></p>
+                <p class="mb-0 line-height-1">
+                    <strong>Order Status: </strong>
+                    @{
+                        switch (Model.Order.OrderStatus)
+                        {
+                            case "InProcess":
+                                <span class="badge font-11 badge-soft-purple">
+                                    @Model.Order.OrderStatus
+                                </span>
+                                break;
+                            case "Uncollected":
+
+
+                                <span class="badge font-11 badge-soft-success">
+                                    @Model.Order.OrderStatus
+                                </span>
+
+                                break;
+                            case "Collected":
+
+
+                                <span class="badge font-11 badge-soft-dark">
+                                    @Model.Order.OrderStatus
+                                </span>
+
+                                break;
+                            case "Refunded":
+
+
+                                <span class="badge font-11 badge-soft-warning">
+                                    @Model.Order.OrderStatus
+                                </span>
+
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                </p>
+
+
+            </div>
+            <div class="col-6">
+                @*<h5 class="mb-0">Charged Amount $@Model.Order.GrandTotal</h5>*@
+                <br />
+                <p class="mb-0 line-height-1"><strong>Customer: @Model.User.FirstName @Model.User.LastName</strong></p>
+                <p class="mb-0 line-height-1"><strong>Contact No: @Model.PersonalDetail.MobileNo@(Model.PersonalDetail.OtherPhone != null ? ", " + Model.PersonalDetail.OtherPhone : "")</strong></p>
+
+            </div>
+        </div>
+
+        <div class="row pt-2">
+            <div class="col-12">
+                <!-- Table -->
+
+                <table class="table table-bordered" id="tblOrdered">
+                    <thead>
+                        <tr class="bg-gray">
+                            <th class="p-0 text-center" colspan="7"> <span class="font-14 font-weight-bolder">Order Returnable Details</span></th>
+                        </tr>
+                        <tr class="pt-0">
+                            <th class="px-0 pl-2 bg-transparent border-top-0">
+                                <span class="font-14">Ordered Items</span>
+                            </th>
+                            <th class="px-0 pr-2 bg-transparent border-top-0 text-right">
+                                <span class="font-14">Quantity</span>
+                            </th>
+                            <th class="px-0 pr-2 bg-transparent border-top-0 text-right">
+                                <span class="font-14">Unit Price</span>
+                            </th>
+                            <th class="px-0 pr-2 bg-transparent border-top-0 text-right">
+                                <span class="font-14">Total</span>
+                            </th>
+                            <th class="px-0 pr-2 bg-transparent border-top-0 text-right">
+                                <span class="font-14">Previous Returned Qty</span>
+                            </th>
+                            <th class="px-0 pr-2 bg-transparent border-top-0 text-right">
+                                <span class="font-14">New Return Qty</span>
+                            </th>
+                            <th class="px-0 pr-2 bg-transparent border-top-0 text-right">
+                                <span class="font-14">Refund Amount</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.lstReturnableItems)
+                        {
+                            if (item.PreviousQuantity != item.OrderDetails.Quantity)
+                            {
+                                <tr>
+                                    <td class="px-2 py-0">
+                                        <div class="checkbox d-inline m-2">
+                                            <input type="checkbox" name="checkbox-3" id="item@(Model.lstReturnableItems.IndexOf(item) + 1)" style="border-radius:13px; height:10px; width:10px">
+                                            <label for="item@(Model.lstReturnableItems.IndexOf(item) + 1)" class="cr m-0">  @item.Products.Name @item.Products.ProductCode</label>
+                                        </div>
+                                    </td>
+                                    <td class="px-2 py-0 text-right quantity">
+                                        @item.OrderDetails.Quantity
+                                    </td>
+                                    <td class="px-2 py-0 text-right price">
+                                        $@item.OrderDetails.Price
+                                    </td>
+                                    <td class="px-2 py-0 text-right">
+                                        @item.OrderDetails.Total
+                                    </td>
+                                    <td class="px-2 py-0 text-right">
+                                        @item.PreviousQuantity
+                                    </td>
+                                    <td class="px-2 py-0 text-right" id="returnQty">
+                                        <input type="number" min="0" width="10px" max="@item.ReturnableQuantity" id="_returnQty" placeholder="Return Qty" name="name" value="" />
+                                    </td>
+                                    <td class="px-2 py-0 text-right returnTotal">
+                                        0
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td class="px-2 py-0">
+                                        <div class="checkbox d-inline m-2">
+                                            <input type="checkbox" disabled title="This item already returned" name="checkbox-3" id="item@(Model.lstReturnableItems.IndexOf(item) + 1)" style="border-radius:13px; height:10px; width:10px">
+                                            <label for="item@(Model.lstReturnableItems.IndexOf(item) + 1)" class="cr m-0">  @item.Products.Name @item.Products.ProductCode</label>
+                                        </div>
+                                    </td>
+                                    <td class="px-2 py-0 text-right quantity">
+                                        @item.OrderDetails.Quantity
+                                    </td>
+                                    <td class="px-2 py-0 text-right price">
+                                        $@item.OrderDetails.Price
+                                    </td>
+                                    <td class="px-2 py-0 text-right">
+                                        @item.OrderDetails.Total
+                                    </td>
+                                    <td class="px-2 py-0 text-right">
+                                        @item.PreviousQuantity
+                                    </td>
+                                    <td class="px-2 py-0 text-right" id="returnQty">
+                                        <input type="number" min="0" width="10px" max="@item.ReturnableQuantity" disabled id="_returnQty" placeholder="Return Qty" name="name" value="" />
+                                    </td>
+                                    <td class="px-2 py-0 text-right returnTotal">
+                                        0
+                                    </td>
+                                </tr>
+                            }
+
+                        }
+                        <tr class="pt-0">
+                            <td class="py-0 px-2 border-top" colspan="3">
+                                <strong>Total Charge</strong>
+                            </td>
+                            <td class="py-0 px-2 text-right">
+                                <strong class="font-14">
+                                    $@Model.Order.GrandTotal
+                                </strong>
+                            </td>
+                            <td class="py-0 px-2 text-right">
+                            </td>
+                            <td class="py-0 px-2 text-right">
+                            </td>
+                            <td class="py-0 px-2 text-right">
+                                <strong class="font-14" id="totalReturnAmount">
+                                </strong>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div> <!-- / .row -->
+
+        <!-- #region  Add to Cart Section-->
+        <div class="row">
+            <div class="col-md-12">
+                <h6> Order Item Details </h6>
+                <hr />
+            </div>
+            <div class="col-sm-12 col-md-4 col-lg-4">
+                <label class="control-label">Choose Product</label>
+                <select id="Products_Id" class="selectpicker show-tick show-menu-arrow form-control" data-size="10" title="Select Product" asp-items="ViewBag.Product" data-live-search="true">
+                </select>
+            </div>
+            <div class="col-sm-12 col-md-2 col-lg-2">
+                <label class="control-label" for="itemUnitPrice">Unit Price</label>
+                <input class="form-control form-control-customized" id="itemUnitPrice" name="itemUnitPrice" />
+
+            </div>
+            <div class="col-sm-12 col-md-2 col-lg-2">
+                <label class="control-label ">Quantity</label>
+                <input class="form-control form-control-customized" id="itemQty" name="itemQty" />
+                <span class="text-danger"></span>
+            </div>
+            <div class="col-sm-12 col-md-2 col-lg-2">
+                <label class="control-label">Total</label>
+                <input class="form-control form-control-customized text-right" id="itemTotal" readonly />
+            </div>
+            <div class="col-sm-12 col-md-2 col-lg-2" style="padding-top:29px">
+                <button type="button" class="btn btn-sm btn-rounded btn-outline-info py-1" id="btnCart"><i class="zmdi zmdi-shopping-cart-plus"></i> Cart</button>
+                <button type="button" class="btn btn-sm btn-rounded btn-outline-danger py-1" id="btnClear"><i class="zmdi zmdi-format-clear"></i>Clear</button>
+            </div>
+
+        </div>
+        <br />
+        <!-- #endregion -->
+        <!-- #region  Cart List Preview Section-->
+        <div>
+            <div id='rowCartHeader' class="row" style="display:none">
+                <div class="col-sm-12 col-md-4 col-lg-4">
+                    <label class="control-label"> Cart Items:</label>
+                </div>
+            </div>
+
+            <div id="cartPreview">
+
+            </div>
+
+            <hr />
+            <div id='rowCartTotal' class="row" style="display:none">
+                <div class="col-sm-4 col-md-4 col-lg-4">
+                    <label class="control-label"><b>Total Cost</b></label>
+                </div>
+                <div class="col-sm-2 col-md-2 col-lg-2">
+                </div>
+                <div class="col-sm-2 col-md-2 col-lg-2">
+                </div>
+                <div class="col-sm-2 col-md-2 col-lg-2">
+                    <label id="cartTotal" class="control-label pull-right"></label>
+                </div>
+                <div class="col-sm-2 col-md-2 col-lg-2">
+                </div>
+                <br />
+            </div>
+        </div>
+        <br />
+        <br />
+        <!-- #endregion -->
+
+
+        <div class="row">
+            <div class="input-group mb-3 col-md-6">
+
+            </div>
+            <div class="clearfix pb-2 col-md-6">
+                <button type="button" id="btnPlaceOrder" class="btn btn-sm btn-outline-success float-sm-right float-md-right float-lg-right">
+                    <i id="icoPlaceOrder" class="zmdi zmdi-check"></i>
+                    Place Order & Payment Proceed
+                </button>
+            </div>
+        </div>
+
+        @*<button type="button" class="btn btn-sm btn-outline-danger pull-right" onclick='closePartialView()'><i class="zmdi zmdi-close"></i> Clear</button>*@
+
+    }
+    else
+    {
+        <div class="text-center">
+            <span class="badge font-11 badge-soft-purple"> No exchangeable record found</span>
+        </div>
+    }
+
+
+</div>
+
+
+
+    <script type="text/javascript">
+        $("tr td input[type='number']").on('change', (e) =>
+        {
+            var getUnitPrice = $(e.target).closest('tr').children('td.price').text().split("$")[1];
+            var returnQty = $(e.target).val();
+            var totalPrice = getUnitPrice * returnQty;
+            var sum = 0;
+            $(e.target).closest('tr').children('td.returnTotal').text(totalPrice);
+
+            $(".returnTotal").each(function () {
+
+                var value = $(this).text();
+                // add only if the value is number
+                if (!isNaN(value) && value.length != 0) {
+                    sum += parseFloat(value);
+                }
+            });
+            $('#totalReturnAmount').text('$'+sum);
+            console.log();
+            console.log(getUnitPrice);
+            console.log("not error");
+
+        });
+    </script>

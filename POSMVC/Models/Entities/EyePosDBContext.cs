@@ -29,11 +29,14 @@ namespace POSMVC.Models.Entities
         public virtual DbSet<Designation> Designation { get; set; }
         public virtual DbSet<DesignationTypes> DesignationTypes { get; set; }
         public virtual DbSet<Discounts> Discounts { get; set; }
+        public virtual DbSet<Exchange> Exchange { get; set; }
         public virtual DbSet<FrameDetail> FrameDetail { get; set; }
         public virtual DbSet<Health> Health { get; set; }
         public virtual DbSet<HealthDocument> HealthDocument { get; set; }
         public virtual DbSet<Manufacturer> Manufacturer { get; set; }
         public virtual DbSet<OrderDetails> OrderDetails { get; set; }
+        public virtual DbSet<OrderReturn> OrderReturn { get; set; }
+        public virtual DbSet<OrderReturnDetails> OrderReturnDetails { get; set; }
         public virtual DbSet<Orders> Orders { get; set; }
         public virtual DbSet<Payment> Payment { get; set; }
         public virtual DbSet<PaymentMethods> PaymentMethods { get; set; }
@@ -395,6 +398,21 @@ namespace POSMVC.Models.Entities
                 entity.Property(e => e.Title).HasMaxLength(10);
             });
 
+            modelBuilder.Entity<Exchange>(entity =>
+            {
+                entity.HasIndex(e => e.ExchangeNo)
+                    .HasName("UQ__Exchange__72E608F1BC61FA83")
+                    .IsUnique();
+
+                entity.Property(e => e.ExchangeDate).HasColumnType("datetime");
+
+                entity.Property(e => e.ExchangeNo)
+                    .IsRequired()
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.Status).HasMaxLength(15);
+            });
+
             modelBuilder.Entity<FrameDetail>(entity =>
             {
                 entity.Property(e => e.ColorCode).HasMaxLength(30);
@@ -536,6 +554,26 @@ namespace POSMVC.Models.Entities
                 entity.Property(e => e.VatAmount).HasColumnType("decimal(18, 2)");
 
                 entity.Property(e => e.VatRate).HasColumnType("decimal(18, 2)");
+            });
+
+            modelBuilder.Entity<OrderReturn>(entity =>
+            {
+                entity.Property(e => e.GrandTotal).HasColumnType("decimal(18, 2)");
+
+                entity.Property(e => e.ReturnDate).HasColumnType("datetime");
+
+                entity.Property(e => e.ReturnNo).HasMaxLength(20);
+
+                entity.Property(e => e.Status).HasMaxLength(25);
+            });
+
+            modelBuilder.Entity<OrderReturnDetails>(entity =>
+            {
+                entity.Property(e => e.LastUpdate).HasColumnType("datetime");
+
+                entity.Property(e => e.Price).HasColumnType("decimal(18, 2)");
+
+                entity.Property(e => e.Total).HasColumnType("decimal(18, 2)");
             });
 
             modelBuilder.Entity<Orders>(entity =>
@@ -1067,6 +1105,14 @@ namespace POSMVC.Models.Entities
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Email).HasMaxLength(50);
+
+                entity.Property(e => e.FirstName).HasMaxLength(50);
+
+                entity.Property(e => e.LastName).HasMaxLength(50);
+
+                entity.Property(e => e.MobileNo).HasMaxLength(30);
+
+                entity.Property(e => e.OtherContactNo).HasMaxLength(30);
 
                 entity.Property(e => e.Password).HasMaxLength(100);
 

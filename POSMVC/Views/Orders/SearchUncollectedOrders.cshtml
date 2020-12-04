@@ -1,0 +1,270 @@
+﻿@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@model IEnumerable<POSMVC.Models.PageModels.OrdersVM.OrdersVM>
+
+
+@{
+    ViewData["Title"] = "Orders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var ddlOrderStatus = (SelectList)ViewBag.ddlOrderStatus;
+    string selectedOrderStatus = (string)ViewBag.SelectedOrderStatus;
+    int pageNumber = (int)ViewBag.PageNumber;
+    string searchValue = (string)ViewBag.SearchValue;
+}
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-30">
+                <div class="card-body pb-0">
+                    <div class="justify-content-between align-items-center mb-20">
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="card-title mb-0">Uncollected Order Search Result</h6>
+                                @*<button type="button" class="btn btn-sm btn-outline-success" onclick='openModalCreateForm("mdlCreateForm","CreateForm","Users","CreateCustomer")'><i class="zmdi zmdi-collection-plus"></i> New Customer </button>*@
+                            </div>
+                            <div class="col-md-6 float-right">
+                                <div class="input-group">
+                                    <input class="form-control" name="orderNo" type="search" placeholder="Search by order no" id="searchOrder" value="@searchValue">
+                                  </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                            </div>
+                            <div class="col-md-6 float-right pr-4">
+                                <span class="badge font-14 badge-soft-info float-right">
+                                    <a href="@Url.Action("UncollectedOrders","Orders", new {page = 0, orderStatus= "Uncollected" })"><i class="zmdi zmdi-arrow-back"></i> Back Records</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (Model.Count() <= 0)
+                    {
+                        <div class="text-center">
+                            <span class="badge font-11 badge-soft-purple"> There is no record found</span>
+
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="table-responsive order-stats">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Order No</th>
+                                        <th>Customer</th>
+                                        <th>Order Details</th>
+                                        <th>Payment</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td width="20%">
+                                                <span class="font-15">@item.Orders.OrderNo</span>
+                                            </td>
+                                            <td width="20%">
+                                                <span class="font-15">@item.PersonalDetail.Name</span>
+
+                                                @{
+                                                    if (!string.IsNullOrEmpty(item.PersonalDetail.MobileNo))
+                                                    {
+                                                        <div><small> Mobile No: @item.PersonalDetail.MobileNo </small> </div>
+                                                    }
+
+                                                    if (!string.IsNullOrEmpty(item.PersonalDetail.OtherPhone))
+                                                    {
+                                                        <div><small> Other Contacts: @item.PersonalDetail.OtherPhone </small> </div>
+                                                    }
+                                                }
+                                                <div><small> Email: @item.Users.Email </small> </div>
+                                                <div><small> Customer Type: @item.UserType.TypeName </small> </div>
+
+
+                                            </td>
+                                            <td width="25%">
+                                                <div><small> Order Date: @item.Orders.OrderPlaceDate.Value.ToString("dddd, dd MMMM yyyy")</small> </div>
+                                                <div><small> Collection Date: @item.Orders.CollectionDate.Value.ToString("dddd, dd MMMM yyyy")</small> </div>
+                                                @{
+
+                                                    switch (item.Orders.OrderStatus)
+                                                    {
+                                                        case "InProcess":
+                                                            <div>
+                                                                Order Status:
+                                                                <span class="badge font-11 badge-soft-purple">
+                                                                    @item.Orders.OrderStatus
+                                                                </span>
+                                                            </div>
+                                                            break;
+                                                        case "Uncollected":
+                                                            <div>
+                                                                Order Status:
+                                                                <span class="badge font-11 badge-soft-success">
+                                                                    @item.Orders.OrderStatus
+                                                                </span>
+                                                            </div>
+                                                            break;
+                                                        case "Collected":
+                                                            <div>
+                                                                Order Status:
+                                                                <span class="badge font-11 badge-soft-dark">
+                                                                    @item.Orders.OrderStatus
+                                                                </span>
+                                                            </div>
+                                                            break;
+                                                        case "Refunded":
+                                                            <div>
+                                                                Order Status:
+                                                                <span class="badge font-11 badge-soft-warning">
+                                                                    @item.Orders.OrderStatus
+                                                                </span>
+                                                            </div>
+                                                            break;
+                                                        default:
+                                                            break;
+                                                    }
+                                                }
+
+                                            </td>
+                                            <td width="25%">
+                                                <div><small> Total: @item.Orders.GrandTotal</small> </div>
+                                                <div><small> Deposit: @item.PaidAmount</small> </div>
+                                                <div><small> Balance: @item.DueAmount</small> </div>
+                                                @{
+
+                                                    switch (item.PaidStatus)
+                                                    {
+                                                        case "Not Paid":
+                                                            <div>
+                                                                Payment:
+                                                                <span class="badge font-11 badge-soft-danger">
+                                                                    Not Paid
+                                                                </span>
+                                                            </div>
+                                                            break;
+                                                        case "Full Paid":
+                                                            <div>
+                                                                Payment:
+                                                                <span class="badge font-11 badge-soft-success">
+                                                                    Full Paid
+                                                                </span>
+                                                            </div>
+                                                            break;
+                                                        case "Partial Paid":
+                                                            <div>
+                                                                Payment:
+                                                                <span class="badge font-11 badge-soft-purple">
+                                                                    Partial Paid
+                                                                </span>
+                                                            </div>
+                                                            break;
+                                                        default:
+                                                            break;
+                                                    }
+                                                }
+                                            </td>
+                                            <td width="10%">
+                                                <a href="#" class="mx-2" data-toggle="tooltip" title="" data-original-title="View Transactions" onclick='openModalCreateForm("mdlViewTransaction","loadTransaction","Orders","ViewTransactions?orderId=@item.Orders.Id")'><i class="zmdi zmdi-money-box font-20"></i></a>
+                                                <a href="#" class="mr-2 font-20" data-toggle="dropdown" aria-expanded="false" type="button"><i class="zmdi zmdi-more-vert"> </i></a>
+                                                <div class="dropdown-menu shadow dropdown-menu-right animated--fade-in" role="menu">
+                                                    @{
+                                                        switch (item.Orders.OrderStatus)
+                                                        {
+                                                            case "InProcess":
+                                                                <a class="dropdown-item" role="presentation" href="@Url.Action("OrdersStatusModified", "Orders", new { orderId = item.Orders.Id, newOrderStatus = "Uncollected", page = pageNumber, oldOrderStatus = selectedOrderStatus })">&nbsp;Ready</a>
+                                                                break;
+                                                            case "Uncollected":
+                                                                <a class="dropdown-item" role="presentation" href="@Url.Action("OrdersStatusModified", "Orders", new { orderId = item.Orders.Id, newOrderStatus = "Collected", page = pageNumber, oldOrderStatus = selectedOrderStatus })">&nbsp;Collected</a>
+                                                                <a class="dropdown-item" role="presentation" href="@Url.Action("OrdersStatusModified", "Orders", new { orderId = item.Orders.Id, newOrderStatus = "Refunded", page = pageNumber, oldOrderStatus = selectedOrderStatus })">&nbsp;Refund</a>
+                                                                break;
+                                                            case "Collected":
+                                                                <a class="dropdown-item" role="presentation" href="@Url.Action("OrdersStatusModified", "Orders", new { orderId = item.Orders.Id, newOrderStatus = "Refunded", page = pageNumber, oldOrderStatus = selectedOrderStatus })">&nbsp;Refund</a>
+                                                                break;
+                                                            default:
+                                                                <a class="dropdown-item disabled" role="presentation" href="#">&nbsp;No Action Left</a>
+                                                                break;
+                                                        }
+                                                    }
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-group pull-right">
+                            @Html.PagedListPager((IPagedList)Model, page => Url.Action("Orders", new { page = page, orderStatus = selectedOrderStatus }),
+                           new X.PagedList.Mvc.Common.PagedListRenderOptionsBase
+                           {
+                               DisplayItemSliceAndTotal = true,
+                               ContainerDivClasses = new[] { "navigation", "btn btn-default" },
+                               LiElementClasses = new[] { "page-item" },
+                               PageClasses = new[] { "btn-success", "page-link" },
+                               ActiveLiElementClass = "btn-defult"
+                           })
+                        </div>
+                    }
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="mdlViewTransaction" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-modal="false">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mt-0 font-16" id="myLargeModalLabel">Transaction Details</h5>
+                    <button type="button" class="close" onclick='closeModalUpdateForm("mdlViewTransaction", "loadTransaction")'>
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="loadTransaction">
+                        <div class="text-center">
+                            <img src="~/ProjectImage/loading.gif" alt="Loading ..." />
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+@section Scripts{
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('ul.pagination > li.disabled > a').addClass('page-link');
+
+            $('#searchOrder').autocomplete({
+                minLength: 2,
+                source: '/Orders/OrderSearch',
+                select: function (event, ui) {
+                    window.location.href = "/Orders/UncollectedOrdersSearchResult?orderNo=" + ui.item.label;
+                }
+            });
+
+        });
+    </script>
+
+}
+
